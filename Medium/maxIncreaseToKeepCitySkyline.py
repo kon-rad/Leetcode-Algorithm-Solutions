@@ -25,7 +25,7 @@ The grid after increasing the height of buildings without affecting skylines is:
 gridNew = [ [8, 4, 8, 7],
             [7, 4, 7, 7],
             [9, 4, 8, 7],
-            [3, 3, 3, 3] ]
+             [3, 3, 3, 3] ]
 
 Notes:
 
@@ -35,20 +35,35 @@ All buildings in grid[i][j] occupy the entire grid cell: that is, they are a 1 x
 '''
 
 class Solution:
-    def __init__(self, grid):
-      self.grid = grid
+    def __init__(self):
       self.maxUD = []
       self.maxLR = []
+      self.answer = []
+      self.grid = []
+      self.length = 0
+      self.total = 0  
 
-    def maxIncreaseKeepingSkyline(self):
+    def maxIncreaseKeepingSkyline(self, grid):
         """
         :type grid: List[List[int]]
         :rtype: int
         """
+        self.grid = grid
         self.findMaxUD()
         self.findMaxLR()
-        print(self.maxUD)
-        print(self.maxLR)
+        self.maximize()
+        return (self.total)
+    def maximize(self):
+        self.length = len(self.grid)
+        for row in range(0, self.length):
+          for col in range(0, self.length):
+            if not (row < len(self.answer)):
+              self.answer.append([])
+            newCell = self.maxUD[col] if self.maxUD[col]<self.maxLR[row] else self.maxLR[row]
+            if newCell > self.grid[row][col]:
+              self.total += newCell - self.grid[row][col]
+            self.answer[row].append(newCell)
+        
     def findMaxUD(self):
         i = 0
         while i < len(self.grid):
