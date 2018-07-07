@@ -21,10 +21,10 @@ class Solution:
         :type nums: List[int]
         :rtype: List[int]
         """
-        dt, ans = {}, []
-        for k in nums:
-            if k in dt:
-                ans.append(k)
+        d, output = {}, []
+        for num in nums:
+            if num in d:
+                output.append(num)
             else:
-                dt[k] = True
-        return ans
+                d[num] = True
+        return output
