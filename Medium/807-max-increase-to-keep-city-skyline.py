@@ -75,10 +75,3 @@ class Solution:
     def findMaxLR(self):
       for row in self.grid:
         self.maxLR.append(max(row))
-
-grid = [[3,0,8,4],[2,4,5,7],[9,2,6,3],[0,3,1,0]]
-# UD = 9, 4, 8, 7
-# LR = 8, 7, 9, 3
-sol = Solution(grid)
-
-sol.maxIncreaseKeepingSkyline()

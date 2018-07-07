@@ -29,14 +29,3 @@ class Solution:
           if out[k] == 1:
             ans.append(k)
         return ans
-
-
-
-
-# Input:
-dataIn  = [1,2,1,3,2,5]
-# Output: [3,5]
-
-solved = Solution()
-
-print(solved.singleNumber(dataIn))

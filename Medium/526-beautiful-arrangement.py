@@ -53,10 +53,3 @@ class Solution(object):
                 new_rest.remove(each)
                 self.helper(used_values, new_rest)
                 used_values.pop()
-
-
-
-
-solu = Solution()
-
-print(solu.countArrangement(7))
