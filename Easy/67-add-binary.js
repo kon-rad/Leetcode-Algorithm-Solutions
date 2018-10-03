@@ -19,6 +19,9 @@
  * @return {string}
  */
 var addBinary = function(a, b) {
+
+  // Time complexity: O(n + m) n = first string, m = second string
+  // Space complexity: O(n)
   let i = a.length - 1,
     j = b.length - 1,
     s = 0,
