@@ -22,4 +22,4 @@ You only have to fill in the regex pattern in the blank (_________).
  */
 
 
-var Regex_Pattern = /[^\n.]{3}\.[^\n.]{3}\.[^\n.]{3}\.[^\n.]{3}/g; //Do not delete '/' and 'g'. Replace __________ with your regex.
+var Regex_Pattern = /^.{3}\..{3}\..{3}\..{3}$/g; //Do not delete '/' and 'g'. Replace __________ with your regex.
