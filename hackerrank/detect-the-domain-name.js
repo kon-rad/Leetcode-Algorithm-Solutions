@@ -49,3 +49,16 @@ function processData(input) {
   }
   console.log(output.sort().join(';'));
 }
+
+
+// version 2
+function processDataV2(input) {
+  input = input.split('\n').slice(1);
+  const regex = /https?:\/\/(ww[w2].)?([-\w.]+\.[a-z]+)/ig;
+  const output = [];
+  let match = null;
+  while ((match = regex.exec(input)) !== null) {
+      if (!output.includes(match[2])) output.push(match[2]);
+  }
+  console.log(output.sort().join(';'));
+}
