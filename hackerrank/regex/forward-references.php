@@ -31,7 +31,9 @@ You only have to fill the regex pattern in the blank (_________). -->
 <?php
 $Test_String = 'tactactictactic';
 
-$Regex_Pattern = '/^(\2tic(?!tic)|(tac))+$/';
+$Regex_Pattern = '/^(\2tic|(tac))+$/';
+
+$Regex_Pattern_Version2 = '/^(\2tic|(tac))*$/';
 
 if(preg_match($Regex_Pattern, $Test_String, $output_array)){
     print ("true  \n");
