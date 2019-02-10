@@ -54,11 +54,11 @@ function processData(input) {
 // version 2
 function processDataV2(input) {
   input = input.split('\n').slice(1);
-  const regex = /https?:\/\/(ww[w2].)?([-\w.]+\.[a-z]+)/ig;
+  const regex = /https?:\/\/(?:ww[w2].)?([-\w.]+\.[a-z]+)/gm;
   const output = [];
   let match = null;
   while ((match = regex.exec(input)) !== null) {
-      if (!output.includes(match[2])) output.push(match[2]);
+      if (!output.includes(match[1])) output.push(match[1]);
   }
   console.log(output.sort().join(';'));
 }
