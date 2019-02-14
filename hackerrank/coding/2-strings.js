@@ -74,19 +74,21 @@ function readLine() {
 
 // Complete the twoStrings function below.
 function twoStrings(s1, s2) {
-    s2 = s2.split('');
-    for (let i = 0; i < s2.length; i++) {
-        let sub = '';
-        for (let j = 0; j + i < s2.length; j++) {
-            console.log(j, j + i + 1);
+  const s2Map = getHashMap(s2);
+  s1 = s1.split('');
+  for (let i = 0; i < s1.length; i++) {
+      if (s2Map[s1[i]]) return 'YES';
+  }
 
-            sub = s2.slice(j, j + i + 1).join('');
-            console.log(sub);
-            if (s1.includes(sub)) return 'YES';
-        }
-    }
-
-    return 'NO';
+  return 'NO';
+}
+function getHashMap(s) {
+  const map = {};
+  s = s.split('');
+  for (let i = 0; i < s.length; i++) {
+      map[s[i]] = true;
+  }
+  return map;
 }
 
 function main() {
