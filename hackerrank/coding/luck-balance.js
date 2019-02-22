@@ -86,7 +86,7 @@ function luckBalance(k, contests) {
         else r += c[0];
     });
     impt.sort((a, b) => a - b);
-    k = impt.length - k;
+    k = impt.length - k > 0 ? impt.length - k : 0;
     let neg = impt.slice(0, k);
     impt = impt.slice(k);
     impt = impt.reduce((p, c) => p + c, r);
