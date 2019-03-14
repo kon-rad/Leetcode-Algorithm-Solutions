@@ -83,18 +83,23 @@ function readLine() {
 
 // Complete the countTriplets function below.
 function countTriplets(arr, r) {
-    let mp2 = {};
-    let mp3 = {};
+    let doubles = {};
+    let triplets = {};
     let count = 0;
 
     arr.forEach(val => {
-        if (mp3.hasOwnProperty(val))
-            count += mp3[val];
-
-        if (mp2.hasOwnProperty(val))
-            mp3[val * r] = (mp3[val * r] += mp2[val]) || mp2[val];
-
-        mp2[val * r] = (mp2[val * r] += 1) || 1;
+        // triplets are: val, val*r, val*r*r
+        // they must exist in consecutive indices
+        // number of triplets is 'waiting' for current val
+        if (triplets.hasOwnProperty(val)) {
+            count += triplets[val];
+        }
+        // if doubles exist for current val, create (or increment) triplets value
+        if (doubles.hasOwnProperty(val)) {
+            triplets[val * r] = (triplets[val * r] += doubles[val]) || doubles[val];
+        }
+        // create 'future' doubles values (or inclrement if already exist)
+        doubles[val * r] = (doubles[val * r] += 1) || 1;
     });
 
     return count;
