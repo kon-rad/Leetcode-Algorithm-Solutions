@@ -59,8 +59,6 @@ Explanation 2
 
 All characters occur twice except for  which occurs  times. We can delete one instance of  to have a valid string.
  */
-
-
 'use strict';
 
 const fs = require('fs');
@@ -89,36 +87,40 @@ function readLine() {
 
 // Complete the isValid function below.
 function isValid(s) {
-    if (s.length === 1) return 'YES';
     const d = {};
+    const m = {};
+    const YES = 'YES';
+    const NO = 'NO';
+    if (s.length <= 2) return YES;
     s.split('').forEach(c => {
         if (d.hasOwnProperty(c)) d[c]++;
         else d[c] = 1;
     });
-    const m = {};
     for (let c in d) {
         if (m.hasOwnProperty(d[c])) m[d[c]]++;
         else m[d[c]] = 1;
     }
     let mArr = Object.keys(m);
-    console.log(m, d);
+    if (mArr.length === 1) {
+        return YES;
+    }
     if (mArr.length === 2) {
         if ((m[mArr[0]] === 1 && parseInt(mArr[0]) === 1)
             || (m[mArr[1]] === 1 && parseInt(mArr[1]) === 1)
         ){
-            return 'YES';
+            return YES;
         }
         if (m[mArr[0]] === 1) {
             if (parseInt(mArr[0]) - parseInt(mArr[1]) === 1) {
-                return 'YES';
+                return YES;
             }
         } else if (m[mArr[1]] === 1) {
             if (parseInt(mArr[1]) - parseInt(mArr[0]) === 1) {
-                return 'YES';
+                return YES;
             }
         }
     }
-    return 'NO';
+    return NO;
 }
 
 function main() {
