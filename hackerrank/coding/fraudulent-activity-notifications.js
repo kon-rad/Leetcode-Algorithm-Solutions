@@ -55,6 +55,7 @@ Sample Output 1
 There are  days of data required so the first day a notice might go out is day . Our trailing expenditures are  with a median of  The client spends  which is less than  so no notification is sent.
  */
 
+ 
 'use strict';
 
 const fs = require('fs');
@@ -81,33 +82,46 @@ function readLine() {
     return inputString[currentLine++];
 }
 
-// Complete the activityNotifications function below.
 function activityNotifications(expenditure, d) {
-    const data = { sa: [], a: [], m: null };
-    let notice = 0;
-    expenditure.forEach(e => {
-        if (data.a.length < d) {
-            data.a.push(e);
-            return;
-        }
-        calcM(data, d);
-        if (e >= data.m * 2) {
-            notice++;
-        }
-        data.a.shift();
-        data.a.push(e);
-    });
-    return notice;
-}
-function calcM(data, d) {
-    data.sa = data.a.sort((a, b) => a - b);
-    if (d % 2 !== 0) {
-        data.m = data.sa[Math.floor(d / 2)];
-        return;
+    // since any single expenditure[i] is <= 200, create array to track by index
+    const exp = new Array(201).fill(0);
+    let n = 0, i = 0, l = expenditure.length
+    // since d could be even or odd, get the median alwasy the same way
+    // by this method, if d is odd, med1 and med2 are the same, so getting average
+    // of the two results in same number, if d is even, return two numbers
+    // to get avarage of
+    const med1 = Math.floor((d - 1) / 2), med2 = Math.ceil((d - 1) / 2);
+    // fill exp array with first d numbers
+    while (i < d) {
+        exp[expenditure[i]]++;
+        i++;
     }
-    let n1 = data.sa[d / 2 - 1];
-    let n2 = data.sa[d / 2];
-    data.m = (n1 + n2) / 2;
+    // iterate over expenditures array
+    for (i; i < l; i++) {
+        // get the median number
+        let c = (getMedVal(exp, med1) + getMedVal(exp, med2)) / 2;
+        // check if notice is made
+        if (expenditure[i] >= c * 2) n++;
+        // remove last expenditure from exp array, add new one
+        exp[expenditure[i-d]]--;
+        exp[expenditure[i]]++;
+    }
+    return n;
+}
+/**
+ * {Int[]} exp array where index is the expenditure, value is the frequency
+ * {Int} m one of the median indices of the current array under consideration
+ */
+function getMedVal(exp, m) {
+    let j = 0, k = 0;
+    for (j, k; k <= m; j++) {
+        // increment k by number of seen expenditures
+        // when k is equal to given m 'median' index
+        // return the current index, minus one for the loop
+        // increment
+        k += exp[j];
+    }
+    return j-1;
 }
 
 function main() {
