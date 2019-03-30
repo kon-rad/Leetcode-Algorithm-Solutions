@@ -43,7 +43,6 @@ class Solution:
 		i = 0
 		while i < len(nums):
 			sumof = sumof^nums[i]
-			print(sumof)
 			i = i+1
 
 		return sumof
