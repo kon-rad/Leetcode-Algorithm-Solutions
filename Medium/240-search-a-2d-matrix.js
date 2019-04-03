@@ -19,7 +19,30 @@ Given target = 5, return true.
 Given target = 20, return false.
  */
 
+
 /**
+ * O(m+n) optimal solution
+ * @param {number[][]} matrix
+ * @param {number} target
+ * @return {boolean}
+ */
+function searchMatrix(matrix, target) {
+  if (!matrix.length || !matrix[0].length) return false;
+
+  let row = 0;
+  let col = matrix[0].length - 1;
+
+  while (col >= 0 && row <= matrix.length - 1) {
+    if (matrix[row][col] === target) return true;
+    else if (matrix[row][col] > target) col--;
+    else row++;
+  }
+
+  return false;
+}
+
+/**
+ * Binary search solution
  * @param {number[][]} matrix
  * @param {number} target
  * @return {boolean}
@@ -46,18 +69,3 @@ var searchMatrix = function(matrix, target) {
   }
   return false;
 };
-
-function searchMatrix(matrix, target) {
-  if (!matrix.length || !matrix[0].length) return false;
-
-  let row = 0;
-  let col = matrix[0].length - 1;
-
-  while (col >= 0 && row <= matrix.length - 1) {
-    if (matrix[row][col] === target) return true;
-    else if (matrix[row][col] > target) col--;
-    else row++;
-  }
-
-  return false;
-}
