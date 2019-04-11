@@ -18,6 +18,7 @@ There is only one duplicate number in the array, but it could be repeated more t
  */
 
 /**
+ * Tortoise and the Hare soulution - the floyd circle algorithm
  * @param {number[]} nums
  * @return {number}
  */
