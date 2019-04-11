@@ -39,3 +39,17 @@ var findDuplicate = function(nums) {
   }
   return ptr1;
 };
+
+/**
+ * time O(n^2) space O(n) solution
+ * @param {number[]} nums
+ * @return {number}
+ */
+var findDuplicate = function(nums) {
+  if (nums === null || nums.length < 1) return -1;
+  for (let i = 0; i < nums.length; i++) {
+      for (let j = 0; j < nums.length; j++) {
+          if (i !== j && nums[i] === nums[j]) return nums[i];
+      }
+  }
+};
