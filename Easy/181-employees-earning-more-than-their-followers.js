@@ -22,3 +22,12 @@ from Employee e1, Employee e2
 where
 e1.ManagerId = e2.Id
 and e1.Salary > e2.Salary
+
+// faster solution
+select e.Name as Employee
+from Employee e
+join Employee m
+on e.ManagerId = m.Id
+where e.Salary > m.Salary
+and e.ManagerId is not null
+
