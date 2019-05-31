@@ -53,3 +53,4 @@ var findMedianSortedArrays = function(nums1, nums2) {
   }
   return (combinedArr[i1] + combinedArr[i2]) / 2;
 };
+
