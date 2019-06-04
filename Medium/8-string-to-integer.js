@@ -51,5 +51,29 @@ Explanation: The number "-91283472332" is out of the range of a 32-bit signed in
  * @return {number}
  */
 var myAtoi = function(str) {
-  return parseInt(str.replace(/[^-0-9]/g,''));
+  str = str.trim();
+  let neg = 1, res = '';
+  if (!(/^[\d\-\+]/).test(str)) {
+      return 0;
+  }
+  if ((/^[\-]/).test(str)) {
+      neg = -1;
+      str = str.slice(1);
+  } else if ((/^[\+]/).test(str)) {
+      str = str.slice(1);
+  }
+
+  for (let i = 0, len = str.length; i < len; i++) {
+      if (!(/^[\d]/).test(str[i])) {
+          break;
+      }
+      res += str[i];
+  }
+  if (res === '') return 0;
+  if (parseInt(res) >= Math.pow(2, 31) && neg !== -1) {
+      res = Math.pow(2, 31)-1;
+  } else if (parseInt(res) > Math.pow(2, 31)) {
+      res = Math.pow(2, 31);
+  }
+  return parseInt(res) * neg;
 };
