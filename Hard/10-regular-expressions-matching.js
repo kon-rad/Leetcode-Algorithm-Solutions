@@ -62,5 +62,34 @@ Output: false
  * @return {boolean}
  */
 var isMatch = function(s, p) {
+  let j = 0;
+  let pLen = p.length;
+  let sLen = s.length;
+  for (let i = 0; i < sLen; i++) {
+      console.log(j, i, s[i], p[j]);
+      if (j < pLen && (s[i] === p[j] || p[j] === '.')) {
+          j++;
+      } else if (j < pLen && p[j] === '*') {
+          if (s[i] !== s[i-1]) {
+              i--;
+              j++;
+          }
+      } else if (j < pLen-1 && p[j+1] === '*') {
+          j+=2;
+      } else {
+          return false;
+      }
+  }
+  return (j === pLen || (j === pLen - 1 && p[j] === '*'));
+};
+
+
+
+ /**
+ * @param {string} s
+ * @param {string} p
+ * @return {boolean}
+ */
+var isMatch = function(s, p) {
   return (new RegExp('^' + p + '$').test(s));
 };
