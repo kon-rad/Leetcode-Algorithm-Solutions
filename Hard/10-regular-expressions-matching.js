@@ -56,36 +56,60 @@ Output: false
 
  */
 
- /**
+/**
+ * Dynamic programming
+ * 
  * @param {string} s
  * @param {string} p
  * @return {boolean}
  */
 var isMatch = function(s, p) {
-  let j = 0;
   let pLen = p.length;
   let sLen = s.length;
-  for (let i = 0; i < sLen; i++) {
-      console.log(j, i, s[i], p[j]);
-      if (j < pLen && (s[i] === p[j] || p[j] === '.')) {
-          j++;
-      } else if (j < pLen && p[j] === '*') {
-          if (s[i] !== s[i-1]) {
-              i--;
-              j++;
+
+  const subArr = new Array(sLen+1).fill(0);
+  const cache = subArr.map(() => new Array(pLen + 1).fill(0));
+
+  const match = function(iS, iP) {
+      if (iS === sLen && iP === pLen) return true;
+      if ((iS === sLen && p[iP + 1] !== '*') || iP === pLen) return false;
+      if (cache[iS][iP] !== 0) return cache[iS][iP] === 1;
+
+      let isMatching = false;
+      let current = p[iP], next = p[iP+1];
+      if (current === '.' || current === s[iS]) {
+          if (iS === sLen) {
+              if (next === '*') {
+                  isMatching = match(iS, iP + 2);
+              } else {
+                  isMatching = false;
+              }
+          } else {
+              if (next === '*') {
+                  isMatching = match(iS+1, iP) || match(iS+1, iP+2) || match(iS, iP+2);
+              } else {
+                  isMatching = match(iS+1, iP+1);
+              }
           }
-      } else if (j < pLen-1 && p[j+1] === '*') {
-          j+=2;
       } else {
-          return false;
+          if (next === '*') {
+              isMatching = match(iS, iP + 2);
+          }
       }
+      cache[iS][iP] = isMatching ? 1 : -1;
+
+      return isMatching;
   }
-  return (j === pLen || (j === pLen - 1 && p[j] === '*'));
+
+
+  return match(0, 0);
 };
 
 
 
- /**
+/**
+ * Using regex
+ *
  * @param {string} s
  * @param {string} p
  * @return {boolean}
