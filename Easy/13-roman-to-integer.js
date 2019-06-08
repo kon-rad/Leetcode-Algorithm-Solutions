@@ -68,30 +68,14 @@ var romanToInt = function(s) {
         'CM': 900,
         'M': 1000,
     };
-    const ONES = {
-        'I': 1,
-        'X': 10,
-        'C': 100,
-        'M': 1000,
-    };
-    const FIVES = {
-        'V': 5,
-        'L': 50,
-        'D': 500,
-    }
     for (let i = 0, len = s.length; i < len; i++) {
-        if (i+1 < len && MAP.hasOwnProperty(s[i] + s[i+1])) {
+        if (i + 1 < len && MAP.hasOwnProperty(s[i] + s[i+1])) {
             res += MAP[s[i] + s[i+1]];
             i++;
             continue;
         }
-        if (FIVES.hasOwnProperty(s[i])) {
-            res += FIVES[s[i]];
-            continue;
-        }
-        if (ONES.hasOwnProperty(s[i])) {
-            res += ONES[s[i]];
-            continue;
+        if (MAP.hasOwnProperty(s[i])) {
+            res += MAP[s[i]];
         }
     }
     return res;
