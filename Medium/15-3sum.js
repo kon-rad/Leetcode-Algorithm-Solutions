@@ -26,46 +26,31 @@
  * @return {number[][]}
  */
 var threeSum = function(nums) {
-  const cache = {};
-  let len = nums.length, cur, joined, sum;
+  let len = nums.length, sum;
   let res = [];
-  for (let i = 0; i<len-2; i++) {
-    for (let j = i+1; j<len-1; j++) {
-      // if (j === i) {
-      //   continue;
-      // }
-      if (nums[i] > nums[j]) {
-        cur = [nums[j], nums[i]];
-      } else {
-        cur = [nums[i], nums[j]];
-      }
-      let original = cur.slice();
+  nums = nums.sort((a, b) => a - b);
 
-      for (let k = j+1; k<len; k++) {
-        // if (k === j || k === i) {
-        //   continue;
-        // }
-        cur = original.slice();
-        let kn = nums[k];
-        let m = 0;
-        sum = 0;
-        while (m<2 && kn > cur[m]) {
-          sum += cur[m];
-          m++;
-        }
-        cur.splice(m, 0, kn);
-        while (m<3) {
-          sum += cur[m];
-          m++;
-        }
-        joined = cur.join('_');
-        if (cache.hasOwnProperty(joined)) {
-          continue;
-        }
-        cache[joined] = true;
-        if (sum === 0) {
-          res.push(cur);
-        }
+  for (let i = 0; i<len-2; i++) {
+    while (nums[i] === nums[i+1]) i++;
+    if (nums[i] > 0) break;
+    let cur = nums[i];
+    if (cur === nums[i+1]) continue;
+    let l = i+1;
+    let r = len-1;
+    while (l < r) {
+      sum = nums[l] + nums[r] + cur;
+      if (sum === 0) {
+        res.push([cur, nums[l], nums[r]]);
+        l++;
+        r--;
+        while (nums[l] === nums[l+1] && l < r) l++;
+        while (nums[r] === nums[r+1] && l < r) r--;
+      } else if (sum < 0) {
+        l++;
+        while (nums[l] === nums[l+1] && l < r)  l++;
+      } else {
+        r--;
+        while (nums[r] === nums[r+1] && l < r) r--;
       }
     }
   }
