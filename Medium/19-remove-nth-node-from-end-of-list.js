@@ -26,6 +26,42 @@
  * }
  */
 /**
+ * Solution inspired from leetcode article
+ * @param {ListNode} head
+ * @param {number} n
+ * @return {ListNode}
+ */
+var removeNthFromEnd = function(head, n) {
+  if (head === null || (head.next === null && n === 1)) {
+    return null;
+  }
+  const dummy = new ListNode(0);
+  dummy.next = head;
+  let first = dummy;
+  let second = dummy;
+
+  // advance first pointer, to create gap of n
+  for (let i = 1; i<=n+1; i++) {
+    first = first.next;
+  }
+  // move first to the end, maintaining the gap
+  while (first !== null) {
+    first = first.next;
+    second = second.next;
+  }
+  second.next = second.next.next;
+  return dummy.next;
+};
+
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * Original solution 6/15/2019
  * @param {ListNode} head
  * @param {number} n
  * @return {ListNode}
