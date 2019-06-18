@@ -22,21 +22,21 @@
  */
 var generateParenthesis = function(n) {
   const result = [];
-  recursiveParen('', result, n, n);
+  recursiveGenerateParentheses('', result, n, n);
 
   return result;
 };
 
-function recursiveParen(string, result, open, closed) {
+function recursiveGenerateParentheses(string, result, open, closed) {
   if (closed < open) return;
   if (open === 0 && closed === 0) {
     result.push(string);
     return;
   }
   if (open > 0) {
-    recursiveParen(string+'(', result, open-1, closed);
+    recursiveGenerateParentheses(string+'(', result, open-1, closed);
   }
   if (closed > 0) {
-    recursiveParen(string+')', result, open, closed-1);
+    recursiveGenerateParentheses(string+')', result, open, closed-1);
   }
 }
