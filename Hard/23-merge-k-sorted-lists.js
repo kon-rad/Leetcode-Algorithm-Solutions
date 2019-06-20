@@ -65,3 +65,42 @@ var mergeKLists = function(lists) {
     
     return dummyHead.next;
 }
+
+/**
+ * Time: O(N log k) where k is the number of linked lists
+ * Space: O(1) - linked lists are merged in O(1) space
+ * @param {ListNode[]} lists
+ * @return {ListNode}
+ */
+var mergeKLists = function(lists) {
+    return helper(lists, 0, lists.length - 1);
+};
+
+function merge (left, right) {
+    if (!left) {
+        return right;
+    } else if (!right) {
+        return left;
+    } else if (left.val < right.val){
+        left.next = merge(left.next, right);
+        return left;
+    } else {
+        right.next = merge(left, right.next);
+        return right;
+    }
+}
+
+
+function helper(lists, start, end) {
+    if (start === end) {
+        return lists[start];
+    } else if (start < end) {
+        const mid = parseInt((start + end) / 2);
+        const left = helper(lists, start, mid);
+        const right = helper(lists, mid + 1, end);
+        return merge(left, right);
+    } else {
+        return null;
+    }
+    
+}
