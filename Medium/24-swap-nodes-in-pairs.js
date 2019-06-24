@@ -13,7 +13,8 @@ Example:
 Given 1->2->3->4, you should return the list as 2->1->4->3.
  */
 
-/**
+
+ /**
  * Definition for singly-linked list.
  * function ListNode(val) {
  *     this.val = val;
@@ -25,10 +26,11 @@ Given 1->2->3->4, you should return the list as 2->1->4->3.
  * @return {ListNode}
  */
 var swapPairs = function(head) {
-    const dummy = new ListNode(0);
-    dummy.next = head;
-    while (head && head.next) {
-        
-        head = head.next.next;
+    if (!head || !head.next) {
+        return head;
     }
+    let n = head.next;
+    head.next = swapPairs(head.next.next);
+    n.next = head;
+    return n;
 };
