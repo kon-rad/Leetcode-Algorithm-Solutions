@@ -35,18 +35,23 @@ You may not alter the values in the list's nodes, only nodes itself may be chang
  */
 var reverseKGroup = function(head, k) {
     let i = 0;
-    let n = head;
-    let top = new ListNode(0);
-    top.next = n;
-    const nodes = [];
-    while (i < k && head) {
-        nodes.push(head);
-        head = head.next;
+    let curr = head;
+    while (i !== k && curr) {
+        curr = curr.next;
         i++;
     }
-    nodes.forEach(e => {
-        top.next = e;
-        head = head.next;
-    })
     
+    if (i === k) {
+        curr = reverseKGroup(curr, k);
+        
+        while (i > 0) {
+            let tmp = head.next;
+            head.next = curr;
+            curr = head;
+            head = tmp;
+            i--;
+        }
+        head = curr;
+    }
+    return head;
 };
