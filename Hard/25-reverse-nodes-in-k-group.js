@@ -29,6 +29,8 @@ You may not alter the values in the list's nodes, only nodes itself may be chang
  * }
  */
 /**
+ * Recursive solution
+ * Not O(N) space
  * @param {ListNode} head
  * @param {number} k
  * @return {ListNode}
@@ -54,4 +56,50 @@ var reverseKGroup = function(head, k) {
         head = curr;
     }
     return head;
+};
+
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * Iterative solution
+ * O(N) time
+ * O(1) memory
+ * @param {ListNode} head
+ * @param {number} k
+ * @return {ListNode}
+ */
+var reverseKGroup = function(head, k) {
+    if (!head || k < 2) {
+        return head;
+    }
+    let len = 0;
+    let p0 = head;
+    while(p0) {
+        p0 = p0.next;
+        len++;
+    }
+    if (len < k) {
+        return head;
+    }
+    
+    let dummy = new ListNode(0);
+    dummy.next = head;
+    p0 = dummy;
+    let p1 = dummy.next;
+    for (let i = 0; i < Math.floor(len / k); i++) {
+        for (let j = 0; j < (k - 1); j++) {
+            let tmp = p1.next;
+            p1.next = tmp.next;
+            tmp.next = p0.next;
+            p0.next = tmp;
+        }
+        p0 = p1;
+        p1 = p0.next;
+    }
+    return dummy.next;
 };
