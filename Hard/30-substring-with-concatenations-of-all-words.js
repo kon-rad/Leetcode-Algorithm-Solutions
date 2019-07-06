@@ -69,6 +69,7 @@ const createDict = (words) => {
   });
   return dict;
 }
+
 const objectsAreTheSame = (obj1, obj2) => {
   let obj1Len = 0;
   let obj2Len = 0;
