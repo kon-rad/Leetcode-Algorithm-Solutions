@@ -22,48 +22,69 @@ Output: []
 
 
 
-
 /**
  * @param {string} s
  * @param {string[]} words
  * @return {number[]}
  */
 var findSubstring = function(s, words) {
-    const combinations = perm(words);
-    const output = [];
-    let sc = s;
-    combinations.forEach(com => {
-        sc = s;
-        let currentIndex = 0;
-        let matchesFound = 0;
-        while(sc.indexOf(com, currentIndex + matchesFound) > -1) {
-            let ix = sc.indexOf(com, currentIndex);
-            currentIndex += ix;
-            output.push(currentIndex);
-            matchesFound++;
-        }
-        
-    })
-    return output;
+  const res = [];
+  if (words.length < 1) {
+      return res;
+  }
+  const wordLen = words[0].length;
+  const len = s.length;
+  const totalLen = wordLen * words.length;
+  const wordDict = createDict(words);
+  for (let i = 0; i < len - totalLen + 1; i++) {
+      const currentDict = {};
+      for(let j = i; j < i + totalLen; j += wordLen) {
+          let substr = s.slice(j, j+wordLen);
+          if (substr in wordDict) {
+              if (substr in currentDict) {
+                  currentDict[substr]++;
+                  if (currentDict[substr] > wordDict[substr]) {
+                      break;
+                  }
+              } else {
+                  currentDict[substr] = 1;
+              }
+          }
+      }
+      if (objectsAreTheSame(currentDict, wordDict)) {
+          res.push(i);
+      }
+  }
+  return res;
 };
 
-function perm(xs) {
-  let ret = [];
-
-  for (let i = 0; i < xs.length; i = i + 1) {
-    let rest = perm(xs.slice(0, i).concat(xs.slice(i + 1)));
-
-    if(!rest.length) {
-        if (ret.indexOf([xs[i]].join('')) === -1) {
-            ret.push([xs[i]].join(''))
-        }
-    } else {
-      for(let j = 0; j < rest.length; j = j + 1) {
-        if (ret.indexOf([...[xs[i]], ...rest[j]].join('')) === -1) {
-            ret.push([...[xs[i]], ...rest[j]].join(''))
-        }
+const createDict = (words) => {
+  const dict = {};
+  words.forEach(w => {
+      if (w in dict) {
+          dict[w]++;
+      } else {
+          dict[w] = 1;
       }
-    }
+  });
+  return dict;
+}
+const objectsAreTheSame = (obj1, obj2) => {
+  let obj1Len = 0;
+  let obj2Len = 0;
+  for (let p in obj1) {
+      obj1Len++;
+      if (p in obj2 && obj1[p] === obj2[p]) {
+          continue;
+      }
+      return false;
   }
-  return ret;
+  for (let m in obj2) {
+      obj2Len++;
+      if (m in obj1 && obj2[m] === obj1[m]) {
+          continue;
+      }
+      return false;
+  }
+  return obj1Len === obj2Len;
 }
