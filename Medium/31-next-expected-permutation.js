@@ -56,7 +56,7 @@ var nextPermutation = function(nums) {
         }
         j--;
     }
-    swap(nums, j, len - 1);
+    swap(nums, j, i - 1);
     return reverseSort(nums, i, len - 1);
 };
 
