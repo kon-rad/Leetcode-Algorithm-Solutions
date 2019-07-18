@@ -23,7 +23,6 @@ Accepted
  * @return {void} Do not return anything, modify nums in-place instead.
  */
 var nextPermutation = function(nums) {
-    console.log(nums);
     const len = nums.length;
     if (len < 2) {
         return;
@@ -44,8 +43,10 @@ var nextPermutation = function(nums) {
         return reverseSort(nums, 0, len - 1);
     }
     
-    let val = nums[i - 1]; // this is the first item that is smaller
-    let j = len - 1; // j is the last item in array
+    // this is the first item that is smaller
+    let val = nums[i - 1];
+    // j is the last item in array
+    let j = len - 1;
     // while the index of j is greater than or equal to index i
     while (j >= i) {
         // if the next item moving left from the end
