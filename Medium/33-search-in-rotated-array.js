@@ -42,7 +42,8 @@ var search = function(nums, target) {
         }
     }
     let firstAfterMid = nums[0] - 1;
-    let midIndex = pivotPoint(nums);
+    // first find the mid point
+    let midIndex = getPivotPoint(nums);
     let numsHalf, base;
     if (target < nums[0]) {
         base = midIndex;
@@ -54,31 +55,26 @@ var search = function(nums, target) {
     let start = 0;
     let end = numsHalf.length - 1;
     let mid;
-    console.log('midIndex', midIndex, numsHalf);
     
     while (start <= end) {
         mid = Math.floor((start + end)/2);
-        console.log('mid', mid, numsHalf, numsHalf[mid], target);
         if (numsHalf[mid] === target) {
             return base + mid;
         } else if (numsHalf[mid] < target) {
-            console.log('>')
             start = mid + 1;
         } else {
             end = mid - 1;
         }
     }
-    console.log('mid', mid, numsHalf, numsHalf[mid], target);
 
     if (numsHalf[mid] !== target) {
         return -1;
     }
-    console.log('post', base, mid, start, end);
 
     return base + mid === 0 ? -1 : base + mid;
 };
 
-const pivotPoint = (nums) => {
+const getPivotPoint = (nums) => {
     const first = nums[0];
     let start = 0;
     let end = nums.length - 1;
@@ -86,16 +82,18 @@ const pivotPoint = (nums) => {
     
     while (start <= end) {
         mid = Math.floor((start + end)/2);
-        console.log('p', mid, start, end);
         if (nums[mid] > first) {
             start = mid + 1;
         } else {
             end = mid - 1;
         }
     }
-    console.log('s', start, mid);
-    if (start === 0 && nums[1] < nums[0]) {
-        return 1;
+    if (start === 0) {
+        if (nums[1] < nums[0]) {
+            return 1;
+        } else if (nums[1] > nums[2]) {
+            return 2;
+        }
     }
     return start;
 }
