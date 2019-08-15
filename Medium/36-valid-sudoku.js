@@ -53,3 +53,47 @@ The given board size is always 9x9.
 
 
  */
+
+ /**
+ * @param {character[][]} board
+ * @return {boolean}
+ */
+var isValidSudoku = function(board) {
+    let mem = {};
+    let sum = 0;
+    let ans = true;
+    for (let row of board) {
+      mem = {};
+      sum = 0;
+      for (let n of row) {
+        sum += parseInt(n);
+        if (n === '.') break;
+        if (mem.hasOwnProperty(n) || sum > 9) {
+          console.log('false', n, ans, mem, typeof n);
+          ans = false;
+          break;
+        }
+        mem[n] = true
+      }
+      if (!ans) return;
+    };
+    return ans;
+};
+
+
+let su = [
+  ["5","3",".",".","7",".",".",".","."],
+  ["6",".",".","1","9","5",".",".","."],
+  [".","9","8",".",".",".",".","6","."],
+  ["8",".",".",".","6",".",".",".","3"],
+  ["4",".",".","8",".","3",".",".","1"],
+  ["7",".",".",".","2",".",".",".","6"],
+  [".","6",".",".",".",".","2","8","."],
+  [".",".",".","4","1","9",".",".","5"],
+  [".",".",".",".","8",".",".","7","9"]
+];
+// Output: true
+
+console.log(isValidSudoku(su));
+
+
