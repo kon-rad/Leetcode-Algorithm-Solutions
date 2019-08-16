@@ -62,6 +62,7 @@ var isValidSudoku = function(board) {
     let mem = {};
     let sum = 0;
     let ans = true;
+    let columnMem = (new Array.fill([]))
     for (let rowIndex = 0, rows = board.length; rowIndex < rows; rowIndex++) {
       mem = {};
       sum = 0;
