@@ -62,10 +62,12 @@ var isValidSudoku = function(board) {
     let mem = {};
     let sum = 0;
     let ans = true;
-    for (let row of board) {
+    for (let rowIndex = 0, rows = board.length; rowIndex < rows; rowIndex++) {
       mem = {};
       sum = 0;
-      for (let n of row) {
+      let row = board[rowIndex];
+      for (let columnIndex = 0, rowLenght = row.length; columnIndex < rowLenght; columnIndex++) {
+        let n = row[columnIndex];
         sum += parseInt(n);
         if (n === '.') break;
         if (mem.hasOwnProperty(n) || sum > 9) {
