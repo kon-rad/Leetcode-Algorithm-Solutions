@@ -62,21 +62,21 @@ var isValidSudoku = function(board) {
     let mem = {};
     let sum = 0;
     let ans = true;
-    let columnMem = (new Array.fill([]))
+    let columnMem = (new Array(9).fill([]))
     for (let rowIndex = 0, rows = board.length; rowIndex < rows; rowIndex++) {
       mem = {};
-      sum = 0;
+      rowSum = 0;
       let row = board[rowIndex];
       for (let columnIndex = 0, rowLenght = row.length; columnIndex < rowLenght; columnIndex++) {
-        let n = row[columnIndex];
-        sum += parseInt(n);
-        if (n === '.') break;
-        if (mem.hasOwnProperty(n) || sum > 9) {
-          console.log('false', n, ans, mem, typeof n);
+        let currentNumber = row[columnIndex];
+        rowSum += parseInt(currentNumber);
+        if (currentNumber === '.') break;
+        if (mem.hasOwnProperty(currentNumber) || rowSum > 9 || columnMem[columnIndex].includes(currentNumber) || columnMem[columnIndex].reduce((prev, curr) => prev + curr, 0) > 9) {
+          console.log('false', currentNumber, ans, mem);
           ans = false;
           break;
         }
-        mem[n] = true
+        mem[currentNumber] = true
       }
       if (!ans) return;
     };
