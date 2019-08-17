@@ -71,7 +71,11 @@ var isValidSudoku = function(board) {
         let currentNumber = row[columnIndex];
         rowSum += parseInt(currentNumber);
         if (currentNumber === '.') break;
-        if (mem.hasOwnProperty(currentNumber) || rowSum > 9 || columnMem[columnIndex].includes(currentNumber) || columnMem[columnIndex].reduce((prev, curr) => prev + curr, 0) > 9) {
+        if (mem.hasOwnProperty(currentNumber)
+          || rowSum > 9
+          || columnMem[columnIndex].includes(currentNumber)
+          || columnMem[columnIndex].reduce((prev, curr) => prev + curr, 0) > 9
+        ) {
           console.log('false', currentNumber, ans, mem);
           ans = false;
           break;
