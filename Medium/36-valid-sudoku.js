@@ -94,4 +94,35 @@ var isValidSudoku = function(board) {
     return ans;
 };
 
+ /**
+ * @param {character[][]} board
+ * @return {boolean}
+ */
+var isValidSudoku = function(board) {
+  const seen = {};
+  let ans = true;
+  for (let row = 0; row < board.length; row++) {
+    for (let column = 0; column < board[row].length; column++) {
+      let colMem = `col: ${column} num: ${board[row][column]}`;
+      let rowMem = `row: ${row} num: ${board[row][column]}`;
+      let sectMem = `sect: ${Math.floor(row/3)}-${Math.floor(column/3)} num: ${board[row][column]}`;
+     console.log(colMem, rowMem, sectMem);
 
+      if (colMem in seen || rowMem in seen || sectMem in seen) {
+        ans = false;
+        break;
+      } else {
+        seen[colMem] = true;
+        seen[rowMem] = true;
+        seen[sectMem] = true;
+      }
+    }
+    console.log(seen);
+    if (!ans) break;
+  }
+  return ans;
+}
+
+let su = [["8","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]];
+
+console.log(isValidSudoku(su));
