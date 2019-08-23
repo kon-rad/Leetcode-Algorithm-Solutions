@@ -59,70 +59,23 @@ The given board size is always 9x9.
  * @return {boolean}
  */
 var isValidSudoku = function(board) {
-    let rowMem = {};
-    let ans = true;
-    let columnMem = (new Array(9).fill(0)).map(e => []);
-    let sectMem = {
-      0: [[], [], []],
-      1: [[], [], []],
-      2: [[], [], []]
-    };
-    for (let rowIndex = 0, rows = board.length; rowIndex < rows; rowIndex++) {
-      rowMem = {};
-      rowSum = 0;
-      let row = board[rowIndex];
-      let sectRow = rowIndex < 3 ? 0 : rowIndex < 6 ? 1 : 2;
-      for (let columnIndex = 0, rowLenght = row.length; columnIndex < rowLenght; columnIndex++) {
-        let currentNumber = row[columnIndex];
-        if (currentNumber === '.') continue;
-        rowSum += parseInt(currentNumber);
-        let sectCol = columnIndex < 3 ? 0 : columnIndex < 6 ? 1 : 2;
-        if (rowMem.hasOwnProperty(currentNumber)
-          || columnMem[columnIndex].includes(currentNumber)
-          || sectMem[sectRow][sectCol].includes(currentNumber)
-        ) {
-          ans = false;
-          break;
-        }
-        rowMem[currentNumber] = true
-        columnMem[columnIndex].push(currentNumber);
-        sectMem[sectRow][sectCol].push(currentNumber);
-      }
-      if (!ans) break;
-    };
-
-    return ans;
-};
-
- /**
- * @param {character[][]} board
- * @return {boolean}
- */
-var isValidSudoku = function(board) {
   const seen = {};
-  let ans = true;
-  for (let row = 0; row < board.length; row++) {
-    for (let column = 0; column < board[row].length; column++) {
-      let colMem = `col: ${column} num: ${board[row][column]}`;
-      let rowMem = `row: ${row} num: ${board[row][column]}`;
-      let sectMem = `sect: ${Math.floor(row/3)}-${Math.floor(column/3)} num: ${board[row][column]}`;
-     console.log(colMem, rowMem, sectMem);
+  for (let row = 0; row < 9; row++) {
+    for (let column = 0; column < 9; column++) {
+      let currentNumber = board[row][column];
+      if (currentNumber === '.') continue;
+      let colMem = `col: ${column} num: ${currentNumber}`;
+      let rowMem = `row: ${row} num: ${currentNumber}`;
+      let sectMem = `sect: ${Math.floor(row/3)}-${Math.floor(column/3)} num: ${currentNumber}`;
 
       if (colMem in seen || rowMem in seen || sectMem in seen) {
-        ans = false;
-        break;
+        return false;
       } else {
         seen[colMem] = true;
         seen[rowMem] = true;
         seen[sectMem] = true;
       }
     }
-    console.log(seen);
-    if (!ans) break;
   }
-  return ans;
+  return true;
 }
-
-let su = [["8","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]];
-
-console.log(isValidSudoku(su));
