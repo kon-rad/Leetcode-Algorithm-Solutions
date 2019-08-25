@@ -29,7 +29,7 @@ The given board size is always 9x9.
  * @return {void} Do not return anything, modify board in-place instead.
  */
 var solveSudoku = function(board) {
-    
+    return board;
 };
 
 const b = [
