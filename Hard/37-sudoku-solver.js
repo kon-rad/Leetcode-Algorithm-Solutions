@@ -39,11 +39,13 @@ var solveSudoku = function(board) {
         let sectX = Math.floor(j / 3);
         let sectY = Math.floor(i / 3);
         let num = row[j];
-        sect[sectX][sectY] = num;
-
-        console.log('num', num);
+        sect[sectX][sectY][num] = true;
+        rowMem[i][num] = true;
+        colMem[j][num] = true;
       }
     }
+
+    console.log('mem', sect, rowMem, colMem);
     return board;
 };
 
