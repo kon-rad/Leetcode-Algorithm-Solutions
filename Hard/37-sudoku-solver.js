@@ -29,11 +29,19 @@ The given board size is always 9x9.
  * @return {void} Do not return anything, modify board in-place instead.
  */
 var solveSudoku = function(board) {
+    const sect = [[{}, {}, {}], [{}, {}, {}], [{}, {}, {}]];
+    const rowMem = [{}, {}, {}, {}, {}, {}, {}, {}, {}];
+    const colMem = [{}, {}, {}, {}, {}, {}, {}, {}, {}];
+
     for (let i = 0; i < 9; i++) {
       let row = board[i];
       for (let j = 0; j < 9; j++) {
+        let sectX = Math.floor(j / 3);
+        let sectY = Math.floor(i / 3);
         let num = row[j];
-        
+        sect[sectX][sectY] = num;
+
+        console.log('num', num);
       }
     }
     return board;
