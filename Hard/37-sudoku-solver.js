@@ -32,22 +32,50 @@ var solveSudoku = function(board) {
     const sect = [[{}, {}, {}], [{}, {}, {}], [{}, {}, {}]];
     const rowMem = [{}, {}, {}, {}, {}, {}, {}, {}, {}];
     const colMem = [{}, {}, {}, {}, {}, {}, {}, {}, {}];
+    buildMem(board, sect, rowMem, colMem);
 
     for (let i = 0; i < 9; i++) {
       let row = board[i];
       for (let j = 0; j < 9; j++) {
+        let num = row[j];
+        if (num !== '.') {
+          continue;
+        }
         let sectX = Math.floor(j / 3);
         let sectY = Math.floor(i / 3);
-        let num = row[j];
-        sect[sectX][sectY][num] = true;
-        rowMem[i][num] = true;
-        colMem[j][num] = true;
+        let count = 1; 
+        let findingNumber = true; 
+        while (findingNumber) {
+          if (count in sect[sectX][sectY] || count in rowMem || count in colMem) {
+            count++;
+          } else {
+            findingNumber = false;
+            sect[sectX][sectY][num] = count;
+            rowMem[i][num] = count;
+            colMem[j][num] = count;
+            board[i][j] = count;
+          }
+        }
       }
     }
 
     console.log('mem', sect, rowMem, colMem);
     return board;
 };
+
+const buildMem = (board, sect, rowMem, colMem) => {
+  for (let i = 0; i < 9; i++) {
+    let row = board[i];
+    for (let j = 0; j < 9; j++) {
+      let sectX = Math.floor(j / 3);
+      let sectY = Math.floor(i / 3);
+      let num = row[j];
+      sect[sectX][sectY][num] = true;
+      rowMem[i][num] = true;
+      colMem[j][num] = true;
+    }
+  }
+}
 
 const b = [
   ["8","3",".",".","7",".",".",".","."],
