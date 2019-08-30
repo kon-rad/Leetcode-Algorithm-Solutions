@@ -45,7 +45,7 @@ var solveSudoku = function(board) {
         let sectY = Math.floor(i / 3);
         let count = 1; 
         let findingNumber = true; 
-        while (findingNumber) {
+        while (findingNumber && count < 10) {
           if (count in sect[sectX][sectY] || count in rowMem || count in colMem) {
             count++;
           } else {
@@ -56,10 +56,14 @@ var solveSudoku = function(board) {
             board[i][j] = count;
           }
         }
+        // TODOS: why are multiple 9's assigned?
+        // todo: if count is 10, then need to go back a step
+        // todo: find out how many steps back are needed, or if need to do brute force one by one, maybe need a dictionary of attempts made?
+        
       }
     }
 
-    console.log('mem', sect, rowMem, colMem);
+    console.log('board', board);
     return board;
 };
 
