@@ -50,10 +50,10 @@ var solveSudoku = function(board) {
             count++;
           } else {
             findingNumber = false;
-            sect[sectX][sectY][num] = count;
-            rowMem[i][num] = count;
-            colMem[j][num] = count;
-            board[i][j] = count;
+            sect[sectX][sectY][num] = count.toString();
+            rowMem[i][num] = count.toString();
+            colMem[j][num] = count.toString();
+            board[i][j] = count.toString();
           }
         }
         // TODOS: why are multiple 9's assigned?
