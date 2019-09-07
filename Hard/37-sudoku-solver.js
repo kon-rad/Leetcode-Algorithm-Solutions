@@ -41,14 +41,17 @@ var solveSudoku = function(board) {
         if (num !== '.') {
           continue;
         }
+        console.log('num', num);
         let sectX = Math.floor(j / 3);
         let sectY = Math.floor(i / 3);
         let count = 1; 
         let findingNumber = true; 
         while (findingNumber && count < 10) {
+          console.log('count', count);
           if (count in sect[sectX][sectY] || count in rowMem || count in colMem) {
             count++;
           } else {
+            console.log(sectX, sectY, num, sect);
             findingNumber = false;
             sect[sectX][sectY][num] = count.toString();
             rowMem[i][num] = count.toString();
