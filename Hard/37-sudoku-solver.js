@@ -32,6 +32,7 @@ var solveSudoku = function(board) {
     const sect = [[{}, {}, {}], [{}, {}, {}], [{}, {}, {}]];
     const rowMem = [{}, {}, {}, {}, {}, {}, {}, {}, {}];
     const colMem = [{}, {}, {}, {}, {}, {}, {}, {}, {}];
+    let backtracking = false;
     buildMem(board, sect, rowMem, colMem);
 
     for (let i = 0; i < 9; i++) {
@@ -41,6 +42,8 @@ var solveSudoku = function(board) {
         if (num !== '.') {
           continue;
         }
+        // if backtracking then set count to current num + 1;
+        
         console.log('num', num);
         let sectX = Math.floor(j / 3);
         let sectY = Math.floor(i / 3);
@@ -49,17 +52,22 @@ var solveSudoku = function(board) {
         while (findingNumber && count < 10) {
           console.log('count', count);
           if (count in sect[sectX][sectY] || count in rowMem || count in colMem) {
+            // cache what numbers were already tried & failed
             count++;
+            if (count === 10) {
+              console.log('ten here!!!!!');
+              backtracking = true;
+            }
           } else {
-            console.log(sectX, sectY, num, sect);
+            console.log('not found duplicate', count, sect[sectX][sectY], rowMem, colMem);
             findingNumber = false;
-            sect[sectX][sectY][num] = count.toString();
-            rowMem[i][num] = count.toString();
-            colMem[j][num] = count.toString();
+            sect[sectX][sectY][count.toString()] = true;
+            rowMem[i][count.toString()] = true;
+            colMem[j][count.toString()] = true;
             board[i][j] = count.toString();
           }
         }
-        // TODOS: why are multiple 9's assigned?
+        // if backtracking then decrement j by two 
         // todo: if count is 10, then need to go back a step
         // todo: find out how many steps back are needed, or if need to do brute force one by one, maybe need a dictionary of attempts made?
         
