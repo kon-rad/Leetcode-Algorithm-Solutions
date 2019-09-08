@@ -33,23 +33,32 @@ var solveSudoku = function(board) {
     const rowMem = [{}, {}, {}, {}, {}, {}, {}, {}, {}];
     const colMem = [{}, {}, {}, {}, {}, {}, {}, {}, {}];
     let backtracking = false;
+    let breakInnerLoop = false;
     buildMem(board, sect, rowMem, colMem);
 
     for (let i = 0; i < 9; i++) {
       let row = board[i];
       for (let j = 0; j < 9; j++) {
+        if (breakInnerLoop) {
+          breakInnerLoop = false;
+          break;
+        }
         let num = row[j];
-        if (num !== '.') {
+        if (num !== '.' && !backtracking) {
           continue;
         }
         // if backtracking then set count to current num + 1;
-        
+        if (backtracking) {
+          backtracking = false;
+        }
+
         console.log('num', num);
         let sectX = Math.floor(j / 3);
         let sectY = Math.floor(i / 3);
         let count = 1; 
         let findingNumber = true; 
-        while (findingNumber && count < 10) {
+        while (findingNumber && count < 10 && !backtracking) {
+          // todo: while loop get's stuck in infinite
           console.log('count', count);
           if (count in sect[sectX][sectY] || count in rowMem || count in colMem) {
             // cache what numbers were already tried & failed
@@ -57,6 +66,13 @@ var solveSudoku = function(board) {
             if (count === 10) {
               console.log('ten here!!!!!');
               backtracking = true;
+              // when backtracking - can't modify original num
+              j = j - 2;
+              if (j < 0) {
+                breakInnerLoop = true;
+                i = i - 2;
+              }
+              break;
             }
           } else {
             console.log('not found duplicate', count, sect[sectX][sectY], rowMem, colMem);
