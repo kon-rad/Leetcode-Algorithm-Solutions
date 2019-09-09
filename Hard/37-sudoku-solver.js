@@ -32,6 +32,7 @@ var solveSudoku = function(board) {
     const sect = [[{}, {}, {}], [{}, {}, {}], [{}, {}, {}]];
     const rowMem = [{}, {}, {}, {}, {}, {}, {}, {}, {}];
     const colMem = [{}, {}, {}, {}, {}, {}, {}, {}, {}];
+    const originalNumbers = {};
     let backtracking = false;
     let breakInnerLoop = false;
     buildMem(board, sect, rowMem, colMem);
@@ -44,7 +45,13 @@ var solveSudoku = function(board) {
           break;
         }
         let num = row[j];
+        // if current item is already a number
+        // and not backtrackign currently, then skip it. 
         if (num !== '.' && !backtracking) {
+          let encodeOriginal = `${i}-${j}`;
+          if (!(encodeOriginal in originalNumbers)) {
+            originalNumbers[encodeOriginal] = true;
+          }
           continue;
         }
         // if backtracking then set count to current num + 1;
