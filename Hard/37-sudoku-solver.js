@@ -62,8 +62,8 @@ var solveSudoku = function(board) {
         console.log('num', num);
         let sectX = Math.floor(j / 3);
         let sectY = Math.floor(i / 3);
-        let count = 1; 
-        let findingNumber = true; 
+        let count = 1;
+        let findingNumber = true;
         while (findingNumber && count < 10 && !backtracking) {
           // todo: while loop get's stuck in infinite
           console.log('count', count);
