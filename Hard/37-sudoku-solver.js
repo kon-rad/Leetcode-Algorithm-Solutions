@@ -35,22 +35,26 @@ var solveSudoku = function(board) {
     const originalNumbers = {};
     let backtracking = false;
     let breakInnerLoop = false;
-    buildMem(board, sect, rowMem, colMem);
 
     for (let i = 0; i < 9; i++) {
       let row = board[i];
+      console.log('board', board);
       for (let j = 0; j < 9; j++) {
+        console.log('i, j, row, breakInnerLoop', i, j, row, breakInnerLoop);
         if (breakInnerLoop) {
           breakInnerLoop = false;
+          console.log('breakInnerLoop', breakInnerLoop);
           break;
         }
         let num = row[j];
         // if current item is already a number
         // and not backtrackign currently, then skip it. 
         if (num !== '.' && !backtracking) {
-          let encodeOriginal = `${i}-${j}`;
-          if (!(encodeOriginal in originalNumbers)) {
-            originalNumbers[encodeOriginal] = true;
+          if (!backtracking) {
+            let encodeOriginal = `${i}-${j}`;
+            if (!(encodeOriginal in originalNumbers)) {
+              originalNumbers[encodeOriginal] = true;
+            }
           }
           continue;
         }
@@ -63,31 +67,38 @@ var solveSudoku = function(board) {
         let sectX = Math.floor(j / 3);
         let sectY = Math.floor(i / 3);
         let count = 1;
+        let countString = count.toString();
         let findingNumber = true;
         while (findingNumber && count < 10 && !backtracking) {
           // todo: while loop get's stuck in infinite
-          console.log('count', count);
-          if (count in sect[sectX][sectY] || count in rowMem || count in colMem) {
+          console.log('count, i, j', countString, i, j);
+          if (countString in sect[sectX][sectY] || countString in rowMem[i] || countString in colMem[j]) {
             // cache what numbers were already tried & failed
             count++;
-            if (count === 10) {
-              console.log('ten here!!!!!');
+            countString = count.toString();
+            if (countString === '10') {
               backtracking = true;
               // when backtracking - can't modify original num
-              j = j - 2;
+              j = j - (j === 0 ? 1 : 2);
+              console.log('ten here!!!!! j, i', j, i);
               if (j < 0) {
                 breakInnerLoop = true;
-                i = i - 2;
+                // back to start, unable to find solution
+                if (i === 0) {
+                  return [];
+                }
+
+                i = i - 1;
               }
               break;
             }
           } else {
             console.log('not found duplicate', count, sect[sectX][sectY], rowMem, colMem);
             findingNumber = false;
-            sect[sectX][sectY][count.toString()] = true;
-            rowMem[i][count.toString()] = true;
-            colMem[j][count.toString()] = true;
-            board[i][j] = count.toString();
+            sect[sectX][sectY][countString] = true;
+            rowMem[i][countString] = true;
+            colMem[j][countString] = true;
+            board[i][j] = countString;
           }
         }
         // if backtracking then decrement j by two 
@@ -100,20 +111,6 @@ var solveSudoku = function(board) {
     console.log('board', board);
     return board;
 };
-
-const buildMem = (board, sect, rowMem, colMem) => {
-  for (let i = 0; i < 9; i++) {
-    let row = board[i];
-    for (let j = 0; j < 9; j++) {
-      let sectX = Math.floor(j / 3);
-      let sectY = Math.floor(i / 3);
-      let num = row[j];
-      sect[sectX][sectY][num] = true;
-      rowMem[i][num] = true;
-      colMem[j][num] = true;
-    }
-  }
-}
 
 const b = [
   ["8","3",".",".","7",".",".",".","."],
