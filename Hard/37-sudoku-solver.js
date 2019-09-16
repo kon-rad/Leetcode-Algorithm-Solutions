@@ -83,25 +83,9 @@ var solveSudoku = function(board) {
           console.log('count, i, j', countString, i, j);
           // todo find out why gets stuck in loop
           if (sect[sectX][sectY][countString] || rowMem[i][countString] || colMem[j][countString]) {
-            // cache what numbers were already tried & failed
+            // todo: cache what numbers were already tried & failed
             count++;
             countString = count.toString();
-            if (countString === '10') {
-              backtracking = true;
-              // when backtracking - can't modify original num
-              j = j - (j === 0 ? 1 : 2);
-              console.log('ten here!!!!! i, j', i, j);
-              if (j < 0) {
-                breakInnerLoop = true;
-                // back to start, unable to find solution
-                if (i === 0) {
-                  return [];
-                }
-
-                i = i - 1;
-              }
-              break;
-            }
           } else {
             console.log('found new number', count, sect[sectX][sectY], rowMem, colMem);
             findingNumber = false;
@@ -111,14 +95,52 @@ var solveSudoku = function(board) {
             board[i][j] = countString;
           }
         }
+        // todo find out why getting empty dots and duplicate values
+
+// num .
+// count, i, j 1 8 2
+// count, i, j 2 8 2
+// count, i, j 3 8 2
+// count, i, j 4 8 2
+// count, i, j 5 8 2
+// count, i, j 6 8 2
+// count, i, j 7 8 2
+// count, i, j 8 8 2
+// count, i, j 9 8 2
+// ten here!!!!! i, j 8 0
+// board [ [ '8', '3', '1', '2', '7', '4', '5', '6', '9' ],
+//   [ '6', '2', '4', '1', '9', '5', '3', '7', '8' ],
+//   [ '5', '9', '8', '3', '6', '.', '.', '6', '.' ],
+//   [ '1', '4', '2', '5', '6', '3', '7', '8', '3' ],
+//   [ '4', '5', '3', '8', '1', '3', '2', '9', '1' ],
+//   [ '7', '6', '9', '4', '2', '.', '.', '.', '6' ],
+//   [ '.', '6', '5', '7', '3', '1', '2', '8', '4' ],
+//   [ '2', '1', '7', '4', '1', '9', '6', '3', '5' ],
+//   [ '3', '8', '.', '.', '8', '.', '.', '7', '9' ] ]
+        if (countString === '10') {
+          backtracking = true;
+          // when backtracking - can't modify original num
+          j = j - (j === 0 ? 1 : 2);
+          console.log('ten here!!!!! i, j', i, j);
+          if (j < 0) {
+            breakInnerLoop = true;
+            // back to start, unable to find solution
+            if (i === 0) {
+              return [];
+            }
+
+            i = i - 1;
+          }
+          break;
+        }
         // if backtracking then decrement j by two 
         // todo: if count is 10, then need to go back a step
         // todo: find out how many steps back are needed, or if need to do brute force one by one, maybe need a dictionary of attempts made?
         
       }
+      console.log('board', board);
     }
 
-    console.log('board', board);
     return board;
 };
 
