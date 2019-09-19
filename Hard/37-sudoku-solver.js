@@ -33,33 +33,28 @@ var solveSudoku = function(board) {
     const rowDict = [{}, {}, {}, {}, {}, {}, {}, {}, {}];
     const colDict = [{}, {}, {}, {}, {}, {}, {}, {}, {}];
     const originalNumbers = {};
+    let i = 0, j = 0;
     let backtracking = false;
     let breakInnerLoop = false;
-    let startInnerLoopAtIndexEight = false;
+    let encodeOriginal = '';
     buildDictionary(board, sect, rowDict, colDict);
 
-    for (let i = 0; i < 9; i++) {
+    for (i; i < 9; i++) {
       let row = board[i];
-      console.log('new row, i, backtracking, breakInnerLoop', i, backtracking, breakInnerLoop);
+      console.log('new: i, board, backtracking, breakInnerLoop', i, board, backtracking, breakInnerLoop, j);
       // if (i === 1) return;
-      for (let j = 0; j < 9; j++) {
+      if (j === 9) j = 0;
+      for (j; j < 9; j++) {
         console.log('new inner loop: i, j, row, backtracking, breakInnerLoop', i, j, row, backtracking, breakInnerLoop);
-        if (i === 3) return;
+        // if (i === 3) return;
         if (breakInnerLoop) {
           console.log('breakInnerLoop, backtracking, *set to false', breakInnerLoop, backtracking);
           breakInnerLoop = false;
           backtracking = false;
           i = i-2;
-          startInnerLoopAtIndexEight = true;
           if (i < 0) {
             i = -1;
           }
-          break;
-        }
-        if (startInnerLoopAtIndexEight && j === 0) {
-          startInnerLoopAtIndexEight = false;
-          // 7 plus one on next iteration equals 8
-          j = 7;
           break;
         }
         let num = row[j];
@@ -69,7 +64,7 @@ var solveSudoku = function(board) {
         // and not backtrackign currently, then skip it. 
         if (num !== '.' && !backtracking) {
           if (!backtracking) {
-            let encodeOriginal = `${i}-${j}`;
+            encodeOriginal = `${i}-${j}`;
             if (!(encodeOriginal in originalNumbers)) {
               originalNumbers[encodeOriginal] = true;
             }
@@ -87,28 +82,44 @@ var solveSudoku = function(board) {
 
         // if backtracking then set count to current num + 1;
         if (backtracking) {
+          if (`${i}-${j}` in originalNumbers) {
+            j = j - 2;
+            if (j < 0) {
+              breakInnerLoop = true;
+              j = 8;
+              i = i - 2;
+              if (i < 0) {
+                i = -1;
+              }
+              // todo: since break here why is breakInnerLoop flag necessary?
+              break;
+            }
+            continue
+          } else {
+            // if current position is not one of the original board, then remove it from board and dictionary
+            sect[sectX][sectY][num] = false;
+            rowDict[i][num] = false;
+            colDict[j][num] = false;
+            board[i][j] = '.';
+          }
           backtracking = false;
           count = parseInt(num) + 1;
+          countString = count.toString();
           if (count === 10) {
             backtracking = true;
             j = j - 2;
             if (j < 0) {
-              j = 0;
               breakInnerLoop = true;
+              j = 8;
               i = i - 2;
               if (i < 0) {
                 i = -1;
-                startInnerLoopAtIndexEight = true;
               }
               // todo: since break here why is breakInnerLoop flag necessary?
               break;
             }
             continue;
           }
-          countString = count.toString();
-          sect[sectX][sectY][num] = false;
-          rowDict[i][num] = false;
-          colDict[j][num] = false;
         }
         while (findingNumber && count < 10 && !backtracking) {
           // todo: while loop get's stuck in infinite
@@ -133,7 +144,7 @@ var solveSudoku = function(board) {
           j = j - 2;
           console.log('max count reached!!! i', i);
           if (j < 0) {
-            j = 0;
+            j = 8;
             breakInnerLoop = true;
             // back to start, unable to find solution
             if (i === 0) {
@@ -170,60 +181,6 @@ const buildDictionary = (board, sect, rowDict, colDict) => {
     }
   }
 }
-
-// todo: find out how to properly go back steps
-/**
- * i, j, row 2 2 [ '5', '9', '8', '3', '4', '.', '.', '6', '.' ] true
-new inner loop: i, j, row, backtracking, breakInnerLoop 2 3 [ '5', '9', '8', '3', '4', '.', '.', '6', '.' ] true false
-current num 3
-count, i, j 4 2 3
-count, i, j 5 2 3
-count, i, j 6 2 3
-count, i, j 7 2 3
-count, i, j 8 2 3
-count, i, j 9 2 3
-max count reached!!! i 2
-i, j, row 2 1 [ '5', '9', '8', '3', '4', '.', '.', '6', '.' ] true
-new inner loop: i, j, row, backtracking, breakInnerLoop 2 2 [ '5', '9', '8', '3', '4', '.', '.', '6', '.' ] true false
-current num 8
-count, i, j 9 2 2
-max count reached!!! i 2
-i, j, row 2 0 [ '5', '9', '8', '3', '4', '.', '.', '6', '.' ] true
-new inner loop: i, j, row, backtracking, breakInnerLoop 2 1 [ '5', '9', '8', '3', '4', '.', '.', '6', '.' ] true false
-current num 9
-new row, i, backtracking, breakInnerLoop 1 true true
-new inner loop: i, j, row, backtracking, breakInnerLoop 1 0 [ '6', '2', '4', '1', '9', '5', '7', '3', '8' ] true true
-breakInnerLoop, backtracking, *set to false true true
-new row, i, backtracking, breakInnerLoop 0 false false
-new inner loop: i, j, row, backtracking, breakInnerLoop 0 0 [ '8', '3', '1', '2', '7', '6', '5', '9', '4' ] false false
-new row, i, backtracking, breakInnerLoop 1 false false
-new inner loop: i, j, row, backtracking, breakInnerLoop 1 0 [ '6', '2', '4', '1', '9', '5', '7', '3', '8' ] false false
-new inner loop: i, j, row, backtracking, breakInnerLoop 1 1 [ '6', '2', '4', '1', '9', '5', '7', '3', '8' ] false false
-new inner loop: i, j, row, backtracking, breakInnerLoop 1 2 [ '6', '2', '4', '1', '9', '5', '7', '3', '8' ] false false
-new inner loop: i, j, row, backtracking, breakInnerLoop 1 3 [ '6', '2', '4', '1', '9', '5', '7', '3', '8' ] false false
-new inner loop: i, j, row, backtracking, breakInnerLoop 1 4 [ '6', '2', '4', '1', '9', '5', '7', '3', '8' ] false false
-new inner loop: i, j, row, backtracking, breakInnerLoop 1 5 [ '6', '2', '4', '1', '9', '5', '7', '3', '8' ] false false
-new inner loop: i, j, row, backtracking, breakInnerLoop 1 6 [ '6', '2', '4', '1', '9', '5', '7', '3', '8' ] false false
-new inner loop: i, j, row, backtracking, breakInnerLoop 1 7 [ '6', '2', '4', '1', '9', '5', '7', '3', '8' ] false false
-new inner loop: i, j, row, backtracking, breakInnerLoop 1 8 [ '6', '2', '4', '1', '9', '5', '7', '3', '8' ] false false
-new row, i, backtracking, breakInnerLoop 2 false false
-new inner loop: i, j, row, backtracking, breakInnerLoop 2 0 [ '5', '9', '8', '3', '4', '.', '.', '6', '.' ] false false
-new inner loop: i, j, row, backtracking, breakInnerLoop 2 1 [ '5', '9', '8', '3', '4', '.', '.', '6', '.' ] false false
-new inner loop: i, j, row, backtracking, breakInnerLoop 2 2 [ '5', '9', '8', '3', '4', '.', '.', '6', '.' ] false false
-new inner loop: i, j, row, backtracking, breakInnerLoop 2 3 [ '5', '9', '8', '3', '4', '.', '.', '6', '.' ] false false
-new inner loop: i, j, row, backtracking, breakInnerLoop 2 4 [ '5', '9', '8', '3', '4', '.', '.', '6', '.' ] false false
-new inner loop: i, j, row, backtracking, breakInnerLoop 2 5 [ '5', '9', '8', '3', '4', '.', '.', '6', '.' ] false false
-current num .
-count, i, j 1 2 5
-count, i, j 2 2 5
-count, i, j 3 2 5
-count, i, j 4 2 5
-count, i, j 5 2 5
-count, i, j 6 2 5
-count, i, j 7 2 5
-count, i, j 8 2 5
-count, i, j 9^C
- */
 
 const b = [
   ["8","3",".",".","7",".",".",".","."],
