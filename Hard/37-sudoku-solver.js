@@ -35,28 +35,16 @@ var solveSudoku = function(board) {
     const originalNumbers = {};
     let i = 0, j = 0;
     let backtracking = false;
-    let breakInnerLoop = false;
     let encodeOriginal = '';
     buildDictionary(board, sect, rowDict, colDict);
 
     for (i; i < 9; i++) {
       let row = board[i];
-      console.log('new: i, board, backtracking, breakInnerLoop', i, board, backtracking, breakInnerLoop, j);
+      console.log('new: i, board, backtracking', i, board, backtracking, j);
       // if (i === 1) return;
       if (j === 9) j = 0;
       for (j; j < 9; j++) {
-        console.log('new inner loop: i, j, row, backtracking, breakInnerLoop', i, j, row, backtracking, breakInnerLoop);
-        // if (i === 3) return;
-        if (breakInnerLoop) {
-          console.log('breakInnerLoop, backtracking, *set to false', breakInnerLoop, backtracking);
-          breakInnerLoop = false;
-          backtracking = false;
-          i = i-2;
-          if (i < 0) {
-            i = -1;
-          }
-          break;
-        }
+        console.log('new inner loop: i, j, row, backtracking', i, j, row, backtracking);
         let num = row[j];
         let sectX = Math.floor(j / 3);
         let sectY = Math.floor(i / 3);
@@ -85,13 +73,11 @@ var solveSudoku = function(board) {
           if (`${i}-${j}` in originalNumbers) {
             j = j - 2;
             if (j < 0) {
-              breakInnerLoop = true;
               j = 8;
               i = i - 2;
               if (i < 0) {
                 i = -1;
               }
-              // todo: since break here why is breakInnerLoop flag necessary?
               break;
             }
             continue
@@ -109,13 +95,11 @@ var solveSudoku = function(board) {
             backtracking = true;
             j = j - 2;
             if (j < 0) {
-              breakInnerLoop = true;
               j = 8;
               i = i - 2;
               if (i < 0) {
                 i = -1;
               }
-              // todo: since break here why is breakInnerLoop flag necessary?
               break;
             }
             continue;
@@ -145,13 +129,10 @@ var solveSudoku = function(board) {
           console.log('max count reached!!! i', i);
           if (j < 0) {
             j = 8;
-            breakInnerLoop = true;
-            // back to start, unable to find solution
-            if (i === 0) {
-              return [];
+            i = i - 2;
+            if (i < 0) {
+              i = -1;
             }
-
-            i = i - 1;
             break;
           }
         }
