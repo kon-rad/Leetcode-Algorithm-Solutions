@@ -36,7 +36,7 @@ var solveSudoku = function(board) {
     let i = 0, j = 0;
     let backtracking = false;
     let encodeOriginal = '';
-    buildDictionary(board, sect, rowDict, colDict);
+    buildDictionary(board, sect, rowDict, colDict, originalNumbers);
 
     for (i; i < 9; i++) {
       let row = board[i];
@@ -46,24 +46,10 @@ var solveSudoku = function(board) {
       for (j; j < 9; j++) {
         console.log('new inner loop: i, j, row, backtracking', i, j, row, backtracking);
         let num = row[j];
+        console.log('current num', num);
+        
         let sectX = Math.floor(j / 3);
         let sectY = Math.floor(i / 3);
-        // if current item is already a number
-        // and not backtrackign currently, then skip it. 
-        if (num !== '.' && !backtracking) {
-          if (!backtracking) {
-            encodeOriginal = `${i}-${j}`;
-            if (!(encodeOriginal in originalNumbers)) {
-              originalNumbers[encodeOriginal] = true;
-            }
-            sect[sectX][sectY][num] = true;
-            rowDict[i][num] = true;
-            colDict[j][num] = true;
-          }
-          continue;
-        }
-
-        console.log('current num', num);
         let count = 1;
         let countString = count.toString();
         let findingNumber = true;
@@ -146,7 +132,7 @@ var solveSudoku = function(board) {
     return board;
 };
 
-const buildDictionary = (board, sect, rowDict, colDict) => {
+const buildDictionary = (board, sect, rowDict, colDict, originalNumbers) => {
   for (let i = 0; i < 9; i++) {
     let row = board[i];
     for (let j = 0; j < 9; j++) {
@@ -159,6 +145,7 @@ const buildDictionary = (board, sect, rowDict, colDict) => {
       sect[sectX][sectY][num] = true;
       rowDict[i][num] = true;
       colDict[j][num] = true;
+      originalNumbers[`${i}-${j}`] = true;
     }
   }
 }
