@@ -68,18 +68,16 @@ var solveSudoku = function (board) {
                         break;
                     }
                     continue
-                } else {
-                    // if current position is not one of the original board, then remove it from board and dictionary
-                    sect[sectX][sectY][num] = false;
-                    rowDict[i][num] = false;
-                    colDict[j][num] = false;
-                    board[i][j] = '.';
                 }
-                backtracking = false;
+                
+                // if current position is not one of the original board, then remove it from board and dictionary
+                sect[sectX][sectY][num] = false;
+                rowDict[i][num] = false;
+                colDict[j][num] = false;
+                board[i][j] = '.';
                 count = parseInt(num) + 1;
                 countString = count.toString();
                 if (count === 10) {
-                    backtracking = true;
                     j = j - 2;
                     if (j < 0) {
                         j = 8;
@@ -91,7 +89,12 @@ var solveSudoku = function (board) {
                     }
                     continue;
                 }
+                backtracking = false;
             }
+            // FIXME: somnething is wrong with the way rowDict and colDict are calculated
+
+            console.log('sect[sectX][sectY][countString], rowDict[i][countString], colDict[j][countString]', sect[sectX][sectY][countString], rowDict[i][countString], colDict[j][countString]);
+            console.log('sect, rowDict, colDict', sect, rowDict, colDict);
             while (findingNumber && count < 10 && !backtracking) {
                 // todo: while loop get's stuck in infinite
                 console.log('count, i, j', countString, i, j);
