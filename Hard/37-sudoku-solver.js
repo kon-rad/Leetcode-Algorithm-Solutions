@@ -64,12 +64,13 @@ var solveSudoku = function (board) {
                         i = i - 2;
                         if (i < 0) {
                             i = -1;
+                            j = 0;
+                            backtracking = false;
                         }
                         break;
                     }
                     continue
                 }
-                
                 // if current position is not one of the original board, then remove it from board and dictionary
                 sect[sectX][sectY][num] = false;
                 rowDict[i][num] = false;
@@ -84,17 +85,20 @@ var solveSudoku = function (board) {
                         i = i - 2;
                         if (i < 0) {
                             i = -1;
+                            j = 0;
+                            backtracking = false;
                         }
                         break;
                     }
                     continue;
                 }
                 backtracking = false;
+            } else if (num !== '.') {
+                continue;
             }
-            // FIXME: somnething is wrong with the way rowDict and colDict are calculated
 
-            console.log('sect[sectX][sectY][countString], rowDict[i][countString], colDict[j][countString]', sect[sectX][sectY][countString], rowDict[i][countString], colDict[j][countString]);
-            console.log('sect, rowDict, colDict', sect, rowDict, colDict);
+            // console.log('sect[sectX][sectY][countString], rowDict[i][countString], colDict[j][countString]', sect[sectX][sectY][countString], rowDict[i][countString], colDict[j][countString]);
+            // console.log('sect, rowDict, colDict', sect, rowDict, colDict);
             while (findingNumber && count < 10 && !backtracking) {
                 // todo: while loop get's stuck in infinite
                 console.log('count, i, j', countString, i, j);
@@ -112,9 +116,8 @@ var solveSudoku = function (board) {
                     board[i][j] = countString;
                 }
             }
-            if (countString === '10') {
+            if (count >= 10) {
                 backtracking = true;
-                // when backtracking - can't modify original num
                 j = j - 2;
                 console.log('max count reached!!! i', i);
                 if (j < 0) {
@@ -122,11 +125,12 @@ var solveSudoku = function (board) {
                     i = i - 2;
                     if (i < 0) {
                         i = -1;
+                        j = 0;
+                        backtracking = false;
                     }
                     break;
                 }
             }
-            // if backtracking then decrement j by two 
             console.log('i, j, row', i, j, row, backtracking);
         }
     }
