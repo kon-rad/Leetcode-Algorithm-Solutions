@@ -44,6 +44,8 @@ var solveSudoku = function (board) {
         if (j === 9) j = 0;
         for (j; j < 9; j++) {
             console.log('new inner loop: i, j, row, backtracking', i, j, row, backtracking);
+
+            // FIXME loop gets stuck between 1-8 and 2-5
             let num = row[j];
             let sectX = Math.floor(j / 3);
             let sectY = Math.floor(i / 3);
@@ -94,6 +96,7 @@ var solveSudoku = function (board) {
                 }
                 backtracking = false;
             } else if (num !== '.') {
+                console.log('forward 123 new inner loop: i, j, row, backtracking', i, j, row, backtracking);
                 continue;
             }
 
