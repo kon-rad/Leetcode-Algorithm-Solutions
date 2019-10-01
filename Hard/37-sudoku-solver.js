@@ -40,10 +40,10 @@ var solveSudoku = function (board) {
 
     for (i; i < 9; i++) {
         let row = board[i];
-        console.log('new: i, board, backtracking', i, board, backtracking, j);
+        console.log('start new outer loop: i, board, backtracking', i, board, backtracking, j);
         if (j === 9) j = 0;
         for (j; j < 9; j++) {
-            console.log('new inner loop: i, j, row, backtracking', i, j, row, backtracking);
+            console.log('start new inner loop: i, j, row, backtracking', i, j, row, backtracking);
 
             // FIXME loop gets stuck between 1-8 and 2-5
             let num = row[j];
@@ -52,7 +52,7 @@ var solveSudoku = function (board) {
             // if current item is already a number
             // and not backtrackign currently, then skip it. 
 
-            console.log('current num', num);
+            console.log('current num: ', num, '\n one of original: ', `${i}-${j}` in originalNumbers);
             let count = 1;
             let countString = count.toString();
             let findingNumber = true;
@@ -74,10 +74,7 @@ var solveSudoku = function (board) {
                     continue
                 }
                 // if current position is not one of the original board, then remove it from board and dictionary
-                sect[sectX][sectY][num] = false;
-                rowDict[i][num] = false;
-                colDict[j][num] = false;
-                board[i][j] = '.';
+                clearSpace(sect, sectX, sectY, num, i, j, rowDict, colDict, board);
                 count = parseInt(num) + 1;
                 countString = count.toString();
                 if (count === 10) {
@@ -95,16 +92,17 @@ var solveSudoku = function (board) {
                     continue;
                 }
                 backtracking = false;
-            } else if (num !== '.') {
-                console.log('forward 123 new inner loop: i, j, row, backtracking', i, j, row, backtracking);
+            } else if (num !== '.' && `${i}-${j}` in originalNumbers) {
+                console.log('original number: skip to new inner loop: i, j, row, backtracking', i, j, row, backtracking);
                 continue;
             }
 
             // console.log('sect[sectX][sectY][countString], rowDict[i][countString], colDict[j][countString]', sect[sectX][sectY][countString], rowDict[i][countString], colDict[j][countString]);
             // console.log('sect, rowDict, colDict', sect, rowDict, colDict);
+            clearSpace(sect, sectX, sectY, num, i, j, rowDict, colDict, board);
             while (findingNumber && count < 10 && !backtracking) {
                 // todo: while loop get's stuck in infinite
-                console.log('count, i, j', countString, i, j);
+                console.log('inside while loop: count, i, j', countString, i, j);
                 // todo find out why gets stuck in loop
                 if (sect[sectX][sectY][countString] || rowDict[i][countString] || colDict[j][countString]) {
                     // todo: cache what numbers were already tried & failed
@@ -120,6 +118,7 @@ var solveSudoku = function (board) {
                 }
             }
             if (count >= 10) {
+                clearSpace(sect, sectX, sectY, num, i, j, rowDict, colDict, board);
                 backtracking = true;
                 j = j - 2;
                 console.log('max count reached!!! i', i);
@@ -134,7 +133,7 @@ var solveSudoku = function (board) {
                     break;
                 }
             }
-            console.log('i, j, row', i, j, row, backtracking);
+            console.log('end of inner loop: i, j, row', i, j, row, backtracking);
         }
     }
 
@@ -158,6 +157,13 @@ const buildDictionary = (board, sect, rowDict, colDict, originalNumbers) => {
     }
   }
 };
+
+const clearSpace = (sect, sectX, sectY, num, i, j, rowDict, colDict, board) => {
+    sect[sectX][sectY][num] = false;
+    rowDict[i][num] = false;
+    colDict[j][num] = false;
+    board[i][j] = '.';
+}
 
 const b = [
     ["8", "3", ".", ".", "7", ".", ".", ".", "."],
