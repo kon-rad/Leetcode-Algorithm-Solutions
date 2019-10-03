@@ -45,7 +45,6 @@ var solveSudoku = function (board) {
         for (j; j < 9; j++) {
             console.log('start new inner loop: i, j, row, backtracking', i, j, row, backtracking);
 
-            // FIXME loop gets stuck between 1-8 and 2-5
             let num = row[j];
             let sectX = Math.floor(j / 3);
             let sectY = Math.floor(i / 3);
@@ -97,8 +96,6 @@ var solveSudoku = function (board) {
                 continue;
             }
 
-            // console.log('sect[sectX][sectY][countString], rowDict[i][countString], colDict[j][countString]', sect[sectX][sectY][countString], rowDict[i][countString], colDict[j][countString]);
-            // console.log('sect, rowDict, colDict', sect, rowDict, colDict);
             clearSpace(sect, sectX, sectY, num, i, j, rowDict, colDict, board);
             while (findingNumber && count < 10 && !backtracking) {
                 // todo: while loop get's stuck in infinite
