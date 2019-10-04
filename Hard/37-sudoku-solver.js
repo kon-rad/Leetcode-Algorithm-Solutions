@@ -116,9 +116,9 @@ var solveSudoku = function (board) {
             }
             if (count >= 10) {
                 clearSpace(sect, sectX, sectY, num, i, j, rowDict, colDict, board);
+                console.log('max count reached!!! i', i, 'j = ', j, ' row = ', row);
                 backtracking = true;
                 j = j - 2;
-                console.log('max count reached!!! i', i);
                 if (j < 0) {
                     j = 8;
                     i = i - 2;
