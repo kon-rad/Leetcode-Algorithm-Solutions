@@ -40,10 +40,11 @@ var solveSudoku = function (board) {
 
     for (i; i < 9; i++) {
         let row = board[i];
-        console.log('start new outer loop: i, board, backtracking', i, board, backtracking, j);
+        console.log('board\n', board);
+        // console.log('start new outer loop: i, board, backtracking', i, board, backtracking, j);
         if (j === 9) j = 0;
         for (j; j < 9; j++) {
-            console.log('start new inner loop: i, j, row, backtracking', i, j, row, backtracking);
+            // console.log('start new inner loop: i, j, row, backtracking', i, j, row, backtracking);
 
             let num = row[j];
             let sectX = Math.floor(j / 3);
@@ -51,7 +52,7 @@ var solveSudoku = function (board) {
             // if current item is already a number
             // and not backtrackign currently, then skip it. 
 
-            console.log('current num: ', num, '\n one of original: ', `${i}-${j}` in originalNumbers);
+            // console.log('current num: ', num, '\n one of original: ', `${i}-${j}` in originalNumbers);
             let count = 1;
             let countString = count.toString();
             let findingNumber = true;
@@ -92,21 +93,21 @@ var solveSudoku = function (board) {
                 }
                 backtracking = false;
             } else if (num !== '.' && `${i}-${j}` in originalNumbers) {
-                console.log('original number: skip to new inner loop: i, j, row, backtracking', i, j, row, backtracking);
+                // console.log('original number: skip to new inner loop: i, j, row, backtracking', i, j, row, backtracking);
                 continue;
             }
 
             clearSpace(sect, sectX, sectY, num, i, j, rowDict, colDict, board);
             while (findingNumber && count < 10 && !backtracking) {
                 // todo: while loop get's stuck in infinite
-                console.log('inside while loop: count, i, j', countString, i, j);
+                // console.log('inside while loop: count, i, j', countString, i, j);
                 // todo find out why gets stuck in loop
                 if (sect[sectX][sectY][countString] || rowDict[i][countString] || colDict[j][countString]) {
                     // todo: cache what numbers were already tried & failed
                     count++;
                     countString = count.toString();
                 } else {
-                    console.log('found new number', count);
+                    // console.log('found new number', count);
                     findingNumber = false;
                     sect[sectX][sectY][countString] = true;
                     rowDict[i][countString] = true;
@@ -116,7 +117,7 @@ var solveSudoku = function (board) {
             }
             if (count >= 10) {
                 clearSpace(sect, sectX, sectY, num, i, j, rowDict, colDict, board);
-                console.log('max count reached!!! i', i, 'j = ', j, ' row = ', row);
+                // console.log('max count reached!!! i', i, 'j = ', j, ' row = ', row);
                 backtracking = true;
                 j = j - 2;
                 if (j < 0) {
@@ -130,7 +131,7 @@ var solveSudoku = function (board) {
                     break;
                 }
             }
-            console.log('end of inner loop: i, j, row', i, j, row, backtracking);
+            // console.log('end of inner loop: i, j, row', i, j, row, backtracking);
         }
     }
 
