@@ -40,10 +40,10 @@ var solveSudoku = function (board) {
 
     for (i; i < 9; i++) {
         let row = board[i];
-        console.log('board\n', board);
         // console.log('start new outer loop: i, board, backtracking', i, board, backtracking, j);
         if (j === 9) j = 0;
         for (j; j < 9; j++) {
+            console.log('board\n', board);
             // console.log('start new inner loop: i, j, row, backtracking', i, j, row, backtracking);
 
             let num = row[j];
