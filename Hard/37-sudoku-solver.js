@@ -41,9 +41,13 @@ var solveSudoku = function (board) {
     for (i; i < 9; i++) {
         let row = board[i];
         // console.log('start new outer loop: i, board, backtracking', i, board, backtracking, j);
+        // jumps from i = 1 j = 0
+        // to i = 0 j = 0
         if (j === 9) j = 0;
         for (j; j < 9; j++) {
+            console.log(`i = ${i} j = ${j}`);
             console.log('board\n', board);
+            // currently goes up to i = 2 j = 5 and back loopp
             // console.log('start new inner loop: i, j, row, backtracking', i, j, row, backtracking);
 
             let num = row[j];
@@ -61,7 +65,7 @@ var solveSudoku = function (board) {
             if (backtracking) {
                 if (`${i}-${j}` in originalNumbers) {
                     j = j - 2;
-                    if (j < 0) {
+                    if (j < -1) {
                         j = 8;
                         i = i - 2;
                         if (i < 0) {
@@ -79,7 +83,7 @@ var solveSudoku = function (board) {
                 countString = count.toString();
                 if (count === 10) {
                     j = j - 2;
-                    if (j < 0) {
+                    if (j < -1) {
                         j = 8;
                         i = i - 2;
                         if (i < 0) {
@@ -120,7 +124,7 @@ var solveSudoku = function (board) {
                 // console.log('max count reached!!! i', i, 'j = ', j, ' row = ', row);
                 backtracking = true;
                 j = j - 2;
-                if (j < 0) {
+                if (j < -1) {
                     j = 8;
                     i = i - 2;
                     if (i < 0) {
