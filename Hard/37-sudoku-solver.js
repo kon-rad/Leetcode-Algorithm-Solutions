@@ -68,7 +68,7 @@ var solveSudoku = function (board) {
                     if (j < -1) {
                         j = 8;
                         i = i - 2;
-                        if (i < 0) {
+                        if (i < -1) {
                             i = -1;
                             j = 0;
                             backtracking = false;
@@ -86,7 +86,7 @@ var solveSudoku = function (board) {
                     if (j < -1) {
                         j = 8;
                         i = i - 2;
-                        if (i < 0) {
+                        if (i < -1) {
                             i = -1;
                             j = 0;
                             backtracking = false;
@@ -127,7 +127,7 @@ var solveSudoku = function (board) {
                 if (j < -1) {
                     j = 8;
                     i = i - 2;
-                    if (i < 0) {
+                    if (i < -1) {
                         i = -1;
                         j = 0;
                         backtracking = false;
