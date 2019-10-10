@@ -23,6 +23,7 @@ You may assume that the given Sudoku puzzle will have a single unique solution.
 The given board size is always 9x9.
 */
 
+// note: get inspo from this solution https://stackoverflow.com/a/19971983/6383727
 
 /**
  * @param {character[][]} board
