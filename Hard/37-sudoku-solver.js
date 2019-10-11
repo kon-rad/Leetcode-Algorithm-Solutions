@@ -39,13 +39,13 @@ var solveSudoku = function (board) {
     let encodeOriginal = '';
     buildDictionary(board, sect, rowDict, colDict, originalNumbers);
 
-    for (i; i < 9; i++) {
+    while (i < 9) {
         let row = board[i];
         // console.log('start new outer loop: i, board, backtracking', i, board, backtracking, j);
         // jumps from i = 1 j = 0
         // to i = 0 j = 0
         if (j === 9) j = 0;
-        for (j; j < 9; j++) {
+        while (j < 9) {
             console.log(`i = ${i} j = ${j}`);
             console.log('board\n', board);
             // currently goes up to i = 2 j = 5 and back loopp
