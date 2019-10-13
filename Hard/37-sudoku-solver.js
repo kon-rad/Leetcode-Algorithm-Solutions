@@ -56,7 +56,6 @@ var solveSudoku = function (board) {
             let sectY = Math.floor(i / 3);
             // if current item is already a number
             // and not backtrackign currently, then skip it. 
-
             // console.log('current num: ', num, '\n one of original: ', `${i}-${j}` in originalNumbers);
             let count = 1;
             let countString = count.toString();
@@ -110,7 +109,7 @@ var solveSudoku = function (board) {
                 if (sect[sectX][sectY][countString] || rowDict[i][countString] || colDict[j][countString]) {
                     // todo: cache what numbers were already tried & failed
                     count++;
-                    countString = count.toString();
+                    countString = count.toString()
                 } else {
                     // console.log('found new number', count);
                     findingNumber = false;
@@ -137,7 +136,9 @@ var solveSudoku = function (board) {
                 }
             }
             // console.log('end of inner loop: i, j, row', i, j, row, backtracking);
+	    j += 1;
         }
+	i += 1;
     }
 
     return board;
