@@ -52,8 +52,8 @@ var solveSudoku = function (board) {
             // console.log('start new inner loop: i, j, row, backtracking', i, j, row, backtracking);
 
             let num = row[j];
-            let sectX = Math.floor(j / 3);
-            let sectY = Math.floor(i / 3);
+            const sectX = Math.floor(j / 3);
+            const sectY = Math.floor(i / 3);
             // if current item is already a number
             // and not backtrackign currently, then skip it. 
 
@@ -65,18 +65,17 @@ var solveSudoku = function (board) {
             // if backtracking then set count to current num + 1;
             if (backtracking) {
                 if (`${i}-${j}` in originalNumbers) {
-                    j = j - 2;
-                    if (j < -1) {
+                    j = j - 1;
+                    if (j <= -1) {
                         j = 8;
-                        i = i - 2;
-                        if (i < -1) {
-                            i = -1;
+                        i = i - 1;
+                        if (i <= -1) {
+                            i = 0;
                             j = 0;
                             backtracking = false;
                         }
-                        break;
                     }
-                    continue
+                    break;
                 }
                 // if current position is not one of the original board, then remove it from board and dictionary
                 clearSpace(sect, sectX, sectY, num, i, j, rowDict, colDict, board);
