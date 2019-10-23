@@ -98,23 +98,22 @@ var solveSudoku = function (board) {
                 // console.log('original number: skip to new inner loop: i, j, row, backtracking', i, j, row, backtracking);
                 break;
             }
+            console.log('hello');
 
             clearSpace(sect, sectX, sectY, num, i, j, rowDict, colDict, board);
             while (findingNumber && count < 10 && !backtracking) {
-                // todo: while loop get's stuck in infinite
-                // console.log('inside while loop: count, i, j', countString, i, j);
-                // todo find out why gets stuck in loop
+                console.log('hellocount', count);
                 if (sect[sectX][sectY][countString] || rowDict[i][countString] || colDict[j][countString]) {
-                    // todo: cache what numbers were already tried & failed
                     count++;
                     countString = count.toString()
                 } else {
-                    // console.log('found new number', count);
+                    console.log('hello countString', countString);
                     findingNumber = false;
                     sect[sectX][sectY][countString] = true;
                     rowDict[i][countString] = true;
                     colDict[j][countString] = true;
                     board[i][j] = countString;
+                    break;
                 }
             }
             if (count >= 10) {
@@ -133,8 +132,7 @@ var solveSudoku = function (board) {
                 }
                 break;
             }
-            // console.log('end of inner loop: i, j, row', i, j, row, backtracking);
-	    j += 1;
+        j += 1;
         }
 	i += 1;
     }
