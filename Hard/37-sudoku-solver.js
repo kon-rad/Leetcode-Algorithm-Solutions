@@ -81,23 +81,22 @@ var solveSudoku = function (board) {
                 count = parseInt(num) + 1;
                 countString = count.toString();
                 if (count === 10) {
-                    j = j - 2;
-                    if (j < -1) {
+                    j = j - 1;
+                    if (j <= -1) {
                         j = 8;
-                        i = i - 2;
-                        if (i < -1) {
-                            i = -1;
+                        i = i - 1;
+                        if (i <= -1) {
+                            i = 0;
                             j = 0;
                             backtracking = false;
                         }
-                        break;
                     }
-                    continue;
+                    break;
                 }
                 backtracking = false;
             } else if (num !== '.' && `${i}-${j}` in originalNumbers) {
                 // console.log('original number: skip to new inner loop: i, j, row, backtracking', i, j, row, backtracking);
-                continue;
+                break;
             }
 
             clearSpace(sect, sectX, sectY, num, i, j, rowDict, colDict, board);
@@ -122,17 +121,17 @@ var solveSudoku = function (board) {
                 clearSpace(sect, sectX, sectY, num, i, j, rowDict, colDict, board);
                 // console.log('max count reached!!! i', i, 'j = ', j, ' row = ', row);
                 backtracking = true;
-                j = j - 2;
-                if (j < -1) {
+                j = j - 1;
+                if (j <= -1) {
                     j = 8;
-                    i = i - 2;
-                    if (i < -1) {
-                        i = -1;
+                    i = i - 1;
+                    if (i <= -1) {
+                        i = 0;
                         j = 0;
                         backtracking = false;
                     }
-                    break;
                 }
+                break;
             }
             // console.log('end of inner loop: i, j, row', i, j, row, backtracking);
 	    j += 1;
