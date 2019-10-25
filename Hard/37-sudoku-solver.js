@@ -34,10 +34,17 @@ var solveSudoku = function (board) {
     const rowDict = [{}, {}, {}, {}, {}, {}, {}, {}, {}];
     const colDict = [{}, {}, {}, {}, {}, {}, {}, {}, {}];
     const originalNumbers = {};
+    const data = {
+        sect,
+        rowDict,
+        colDict,
+        originalNumbers,
+        board
+    }
     let i = 0, j = 0;
     let backtracking = false;
     let encodeOriginal = '';
-    buildDictionary(board, sect, rowDict, colDict, originalNumbers);
+    buildDictionary(data);
 
     while (i < 9) {
         let row = board[i];
@@ -46,101 +53,69 @@ var solveSudoku = function (board) {
         // to i = 0 j = 0
         if (j === 9) j = 0;
         while (j < 9) {
-            console.log(`i = ${i} j = ${j}`);
+            console.log(`i = ${i} j = ${j} backtracking = ${backtracking}`);
             console.log('board\n', board);
             // currently goes up to i = 2 j = 5 and back loopp
             // console.log('start new inner loop: i, j, row, backtracking', i, j, row, backtracking);
 
             let num = row[j];
-            const sectX = Math.floor(j / 3);
-            const sectY = Math.floor(i / 3);
             // if current item is already a number
             // and not backtrackign currently, then skip it. 
             // console.log('current num: ', num, '\n one of original: ', `${i}-${j}` in originalNumbers);
             let count = 1;
             let countString = count.toString();
-            let findingNumber = true;
 
             // if backtracking then set count to current num + 1;
+            console.log('count', num, i, j, row);
             if (backtracking) {
-                if (`${i}-${j}` in originalNumbers) {
-                    j = j - 1;
-                    if (j <= -1) {
-                        j = 8;
-                        i = i - 1;
-                        if (i <= -1) {
-                            i = 0;
-                            j = 0;
-                            backtracking = false;
-                        }
-                    }
-                    break;
+                if (!(`${i}-${j}` in originalNumbers)) {
+                    // if current position is not one of the original board, then remove it from board and dictionary
+                    clearSpace(data, num, i, j);
+                    count = parseInt(num) + 1;
+                    countString = count.toString();
+                    backtracking = findNextNumber(data, i, j, count, countString);
                 }
-                // if current position is not one of the original board, then remove it from board and dictionary
-                clearSpace(sect, sectX, sectY, num, i, j, rowDict, colDict, board);
-                count = parseInt(num) + 1;
-                countString = count.toString();
-                if (count === 10) {
-                    j = j - 1;
-                    if (j <= -1) {
-                        j = 8;
-                        i = i - 1;
-                        if (i <= -1) {
-                            i = 0;
-                            j = 0;
-                            backtracking = false;
-                        }
-                    }
-                    break;
-                }
-                backtracking = false;
             } else if (num !== '.' && `${i}-${j}` in originalNumbers) {
                 // console.log('original number: skip to new inner loop: i, j, row, backtracking', i, j, row, backtracking);
-                break;
+                // j += 1;
+            } else {
+                console.log('hello');
+                clearSpace(data, num, i, j);
+                backtracking = findNextNumber(data, i, j, count, countString);
             }
-            console.log('hello');
-
-            clearSpace(sect, sectX, sectY, num, i, j, rowDict, colDict, board);
-            while (findingNumber && count < 10 && !backtracking) {
-                console.log('hellocount', count);
-                if (sect[sectX][sectY][countString] || rowDict[i][countString] || colDict[j][countString]) {
-                    count++;
-                    countString = count.toString()
-                } else {
-                    console.log('hello countString', countString);
-                    findingNumber = false;
-                    sect[sectX][sectY][countString] = true;
-                    rowDict[i][countString] = true;
-                    colDict[j][countString] = true;
-                    board[i][j] = countString;
-                    break;
-                }
-            }
-            if (count >= 10) {
-                clearSpace(sect, sectX, sectY, num, i, j, rowDict, colDict, board);
-                // console.log('max count reached!!! i', i, 'j = ', j, ' row = ', row);
-                backtracking = true;
-                j = j - 1;
-                if (j <= -1) {
-                    j = 8;
-                    i = i - 1;
-                    if (i <= -1) {
-                        i = 0;
-                        j = 0;
-                        backtracking = false;
-                    }
-                }
-                break;
-            }
-        j += 1;
+        j = backtracking ? j - 1 : j + 1;
         }
-	i += 1;
+	i = backtracking ? i - 1 : i + 1;
     }
 
     return board;
 };
 
-const buildDictionary = (board, sect, rowDict, colDict, originalNumbers) => {
+const findNextNumber = ({ board, sect, rowDict, colDict, originalNumbers }, i, j, count, countString) => {
+    const sectX = Math.floor(j / 3);
+    const sectY = Math.floor(i / 3);
+    console.log('inside finding', count);
+    while (count < 10) {
+        console.log('hellocount', count);
+        if (sect[sectX][sectY][countString] || rowDict[i][countString] || colDict[j][countString]) {
+            count++;
+            countString = count.toString()
+        } else {
+            console.log('hello countString', countString);
+            sect[sectX][sectY][countString] = true;
+            rowDict[i][countString] = true;
+            colDict[j][countString] = true;
+            board[i][j] = countString;
+            break;
+        }
+    }
+    if (count >= 10) {
+        return true;
+    }
+    return false;
+}
+
+const buildDictionary = ({ board, sect, rowDict, colDict, originalNumbers }) => {
   for (let i = 0; i < 9; i++) {
     let row = board[i];
     for (let j = 0; j < 9; j++) {
@@ -158,7 +133,9 @@ const buildDictionary = (board, sect, rowDict, colDict, originalNumbers) => {
   }
 };
 
-const clearSpace = (sect, sectX, sectY, num, i, j, rowDict, colDict, board) => {
+const clearSpace = ({ sect, rowDict, colDict, board }, num, i, j) => {
+    const sectX = Math.floor(j / 3);
+    const sectY = Math.floor(i / 3);
     sect[sectX][sectY][num] = false;
     rowDict[i][num] = false;
     colDict[j][num] = false;
