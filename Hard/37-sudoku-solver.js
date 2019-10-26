@@ -47,6 +47,10 @@ var solveSudoku = function (board) {
     buildDictionary(data);
 
     while (i < 9) {
+        if (i < 0) {
+            i = 0;
+            backtracking = false;
+        }
         let row = board[i];
         // console.log('start new outer loop: i, board, backtracking', i, board, backtracking, j);
         // jumps from i = 1 j = 0
@@ -58,6 +62,14 @@ var solveSudoku = function (board) {
             // currently goes up to i = 2 j = 5 and back loopp
             // console.log('start new inner loop: i, j, row, backtracking', i, j, row, backtracking);
 
+            if (j < 0) {
+                if (i === 0) {
+                    j = 0;
+                } else {
+                    j = 8;
+                }
+                break;
+            }
             let num = row[j];
             // if current item is already a number
             // and not backtrackign currently, then skip it. 
