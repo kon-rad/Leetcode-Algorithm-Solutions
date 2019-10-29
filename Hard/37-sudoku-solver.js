@@ -95,9 +95,9 @@ var solveSudoku = function (board) {
                 clearSpace(data, num, i, j);
                 backtracking = findNextNumber(data, i, j, count, countString);
             }
-        j = backtracking ? j - 1 : j + 1;
+            j = backtracking ? j - 1 : j + 1;
         }
-	i = backtracking ? i - 1 : i + 1;
+	    i = backtracking ? i - 1 : i + 1;
     }
 
     return board;
