@@ -24,6 +24,8 @@ The given board size is always 9x9.
 */
 
 // note: get inspo from this solution https://stackoverflow.com/a/19971983/6383727
+// todos: follow this https://www.codefellows.org/blog/sudoku-solver-from-scratch-in-javascript-tdd-style-a-tutorial/
+
 
 /**
  * @param {character[][]} board
@@ -86,7 +88,10 @@ var solveSudoku = function (board) {
                     count = parseInt(num) + 1;
                     countString = count.toString();
                     backtracking = findNextNumber(data, i, j, count, countString);
+                    console.log('inside');
+
                 }
+                console.log('outside');
             } else if (num !== '.' && `${i}-${j}` in originalNumbers) {
                 // console.log('original number: skip to new inner loop: i, j, row, backtracking', i, j, row, backtracking);
                 // j += 1;
