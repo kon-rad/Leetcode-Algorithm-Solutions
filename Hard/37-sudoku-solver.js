@@ -25,6 +25,7 @@ The given board size is always 9x9.
 
 // note: get inspo from this solution https://stackoverflow.com/a/19971983/6383727
 // todos: follow this https://www.codefellows.org/blog/sudoku-solver-from-scratch-in-javascript-tdd-style-a-tutorial/
+// lots of info http://www.sudokuwiki.org/sudoku.htm
 
 
 /**
