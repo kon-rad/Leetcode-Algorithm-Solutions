@@ -47,6 +47,7 @@ var solveSudoku = function (board) {
     let backtracking = false;
     let encodeOriginal = '';
     buildDictionary(data);
+    debugger;
 
     while (i < 9) {
         if (i < 0) {
