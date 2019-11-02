@@ -80,7 +80,7 @@ var solveSudoku = function (board) {
             // and not backtrackign currently, then skip it. 
             // console.log('current num: ', num, '\n one of original: ', `${i}-${j}` in originalNumbers);
             let count = 1;
-            let countString = count.toString();
+            let countString = '1';
 
             // if backtracking then set count to current num + 1;
             console.log('count', num, i, j, row);
@@ -88,8 +88,8 @@ var solveSudoku = function (board) {
                 if (!(`${i}-${j}` in originalNumbers)) {
                     // if current position is not one of the original board, then remove it from board and dictionary
                     clearSpace(data, num, i, j);
-                    count = parseInt(num) + 1;
-                    countString = count.toString();
+                    count = 1;
+                    countString = '1';
                     backtracking = findNextNumber(data, i, j, count, countString);
                     console.log('inside');
 
@@ -130,6 +130,7 @@ const findNextNumber = ({ board, sect, rowDict, colDict, originalNumbers }, i, j
         }
     }
     if (count >= 10) {
+        // board[i][j] = '0';
         return true;
     }
     return false;
