@@ -79,8 +79,8 @@ var solveSudoku = function (board) {
             // if current item is already a number
             // and not backtrackign currently, then skip it. 
             // console.log('current num: ', num, '\n one of original: ', `${i}-${j}` in originalNumbers);
-            let count = num === '.' ? 1 : parseInt(num);
-            let countString = num === '.' ? '1' : num;
+            let count = 1;
+            let countString = '1';
 
             // if backtracking then set count to current num + 1;
             console.log('count', num, i, j, row);
@@ -88,7 +88,7 @@ var solveSudoku = function (board) {
                 if (!(`${i}-${j}` in originalNumbers)) {
                     // if current position is not one of the original board, then remove it from board and dictionary
                     clearSpace(data, num, i, j);
-                    backtracking = findNextNumber(data, i, j, count, countString);
+                    backtracking = findNextNumber(data, i, j);
                     console.log('inside');
 
                 }
@@ -99,7 +99,7 @@ var solveSudoku = function (board) {
             } else {
                 console.log('hello');
                 clearSpace(data, num, i, j);
-                backtracking = findNextNumber(data, i, j, count, countString);
+                backtracking = findNextNumber(data, i, j);
             }
             j = backtracking ? j - 1 : j + 1;
         }
@@ -109,16 +109,16 @@ var solveSudoku = function (board) {
     return board;
 };
 
-const findNextNumber = ({ board, sect, rowDict, colDict, originalNumbers }, i, j, count, countString) => {
+const findNextNumber = ({ board, sect, rowDict, colDict, originalNumbers }, i, j) => {
     const sectX = Math.floor(j / 3);
     const sectY = Math.floor(i / 3);
+    let count = board[i][j] === '.' ? 1 : board[i][j];
+    let countString = count + '';
+    let numbersMoved = 0;
     console.log('inside finding', count);
-    while (count < 10) {
+    while (numbersMoved < 9) {
         console.log('hellocount', count);
-        if (sect[sectX][sectY][countString] || rowDict[i][countString] || colDict[j][countString]) {
-            count++;
-            countString = count.toString()
-        } else {
+        if (!sect[sectX][sectY][countString] && !rowDict[i][countString] && !colDict[j][countString]) {
             console.log('hello countString', countString);
             sect[sectX][sectY][countString] = true;
             rowDict[i][countString] = true;
@@ -126,7 +126,14 @@ const findNextNumber = ({ board, sect, rowDict, colDict, originalNumbers }, i, j
             board[i][j] = countString;
             break;
         }
+        count++;
+        numbersMoved++;
+        countString = count.toString()
+        if (count >= 9) {
+            count = 1;
+        }
     }
+    console.log('hellocount after while', count, board[i][j]);
     if (count >= 10) {
         // board[i][j] = '0';
         return true;
