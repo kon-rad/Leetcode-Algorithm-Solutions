@@ -119,22 +119,23 @@ const findNextNumber = ({ board, sect, rowDict, colDict, originalNumbers }, i, j
     while (numbersMoved < 9) {
         console.log('hellocount', count);
         if (!sect[sectX][sectY][countString] && !rowDict[i][countString] && !colDict[j][countString]) {
-            console.log('hello countString', countString);
+            console.log('next number found: ', countString);
             sect[sectX][sectY][countString] = true;
             rowDict[i][countString] = true;
             colDict[j][countString] = true;
             board[i][j] = countString;
-            break;
+            return false;
         }
         count++;
         numbersMoved++;
         countString = count.toString()
-        if (count >= 9) {
+        if (count > 9) {
             count = 1;
         }
     }
+    // now it gets stuck in infinite loop 
     console.log('hellocount after while', count, board[i][j]);
-    if (count >= 10) {
+    if (numbersMoved >= 9) {
         // board[i][j] = '0';
         return true;
     }
