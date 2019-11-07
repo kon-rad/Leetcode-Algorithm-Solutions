@@ -65,7 +65,6 @@ var solveSudoku = function (board) {
             console.log(`i = ${i} j = ${j} backtracking = ${backtracking}`);
             console.log('board\n', board);
             // currently goes up to i = 2 j = 5 and back loopp
-            // console.log('start new inner loop: i, j, row, backtracking', i, j, row, backtracking);
 
             if (j < 0) {
                 if (i === 0) {
@@ -93,9 +92,6 @@ var solveSudoku = function (board) {
 
                 }
                 console.log('outside');
-            } else if (num !== '.' && `${i}-${j}` in originalNumbers) {
-                // console.log('original number: skip to new inner loop: i, j, row, backtracking', i, j, row, backtracking);
-                // j += 1;
             } else {
                 console.log('hello');
                 clearSpace(data, num, i, j);
@@ -136,7 +132,6 @@ const findNextNumber = ({ board, sect, rowDict, colDict, originalNumbers }, i, j
     // now it gets stuck in infinite loop 
     console.log('hellocount after while', count, board[i][j]);
     if (numbersMoved >= 9) {
-        // board[i][j] = '0';
         return true;
     }
     return false;
