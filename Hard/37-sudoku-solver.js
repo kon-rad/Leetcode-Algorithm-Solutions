@@ -86,8 +86,7 @@ var solveSudoku = function (board) {
             if (backtracking) {
                 if (!(`${i}-${j}` in originalNumbers)) {
                     // if current position is not one of the original board, then remove it from board and dictionary
-                    clearSpace(data, num, i, j);
-                    backtracking = findNextNumber(data, i, j);
+                    backtracking = findNextNumber(data, i, j, num);
                     console.log('inside');
 
                 }
@@ -105,13 +104,16 @@ var solveSudoku = function (board) {
     return board;
 };
 
-const findNextNumber = ({ board, sect, rowDict, colDict, originalNumbers }, i, j) => {
+const findNextNumber = (data, i, j, num) => {
+    const { board, sect, rowDict, colDict, originalNumbers } = data;
     const sectX = Math.floor(j / 3);
     const sectY = Math.floor(i / 3);
+    console.log('inside finding', board[i][j]);
     let count = board[i][j] === '.' ? 1 : board[i][j];
     let countString = count + '';
     let numbersMoved = 0;
     console.log('inside finding', count);
+    clearSpace(data, num, i, j);
     while (numbersMoved < 9) {
         console.log('hellocount', count);
         if (!sect[sectX][sectY][countString] && !rowDict[i][countString] && !colDict[j][countString]) {
@@ -175,4 +177,68 @@ const b = [
     [".", ".", ".", "4", "1", "9", ".", ".", "5"],
     [".", ".", ".", ".", "8", ".", ".", "7", "9"]
 ];
-console.log('solution: ', solveSudoku(b));
+
+
+
+
+const t1 = [
+    ["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]];
+
+
+
+
+
+
+
+// var solveSudoku = function(board) {
+//     return solve(board, 0, 0);
+// };
+
+// var solve = function(board, row, col){
+    
+//     for(let i=row; i<9; i++, col=0){
+//         for(let j=col; j<9; j++){
+//             if(board[i][j] !== '.') continue;
+//             for(let c=1; c<=9; c++){
+//                 if(isValid(board, i, j, c.toString())){
+//                     board[i][j] = c.toString();
+                    
+//                     if(solve(board, i, j+1)){
+//                         return true;
+//                     }
+//                     board[i][j] = '.';
+//                 }
+//             }
+//             return false;
+//         }
+//     }
+//     return true;
+// }
+
+// var isValid = function(board, x, y, c){
+//     let rowStart = Math.floor(x/3) * 3;
+//     let colStart = Math.floor(y/3) * 3;
+    
+//     for(let i=0; i<9; i++){
+//         if(board[i][y] === c || board[x][i] === c) return false;
+//     }
+    
+//     for(let i=0; i<3; i++){
+//         for(let j=0; j<3; j++){
+//             if(board[rowStart+i][colStart+j] === c) return false;
+//         }
+//     }
+    
+//     return true;
+// }
+
+
+
+
+
+console.log('solution: ', solveSudoku(t1));
+
+
+
+
+
