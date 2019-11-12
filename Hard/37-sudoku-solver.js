@@ -83,12 +83,12 @@ var isValid = function(board, x, y, c){
     let rowStart = Math.floor(x/3) * 3;
     let colStart = Math.floor(y/3) * 3;
     
-    for(let i=0; i<9; i++){
+    for (let i=0; i<9; i++){
         if(board[i][y] === c || board[x][i] === c) return false;
     }
     
-    for(let i=0; i<3; i++){
-        for(let j=0; j<3; j++){
+    for(let i = 0; i < 3; i++){
+        for(let j = 0; j < 3; j++){
             if(board[rowStart+i][colStart+j] === c) return false;
         }
     }
