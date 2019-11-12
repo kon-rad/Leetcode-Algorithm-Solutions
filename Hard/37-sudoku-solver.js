@@ -29,143 +29,6 @@ The given board size is always 9x9.
 // inspo https://leetcode.com/problems/sudoku-solver/discuss/15752/Straight-Forward-Java-Solution-Using-Backtracking
 
 
-/**
- * @param {character[][]} board
- * @return {void} Do not return anything, modify board in-place instead.
- */
-var solveSudoku = function (board) {
-    const sect = [[{}, {}, {}], [{}, {}, {}], [{}, {}, {}]];
-    const rowDict = [{}, {}, {}, {}, {}, {}, {}, {}, {}];
-    const colDict = [{}, {}, {}, {}, {}, {}, {}, {}, {}];
-    const originalNumbers = {};
-    const data = {
-        sect,
-        rowDict,
-        colDict,
-        originalNumbers,
-        board
-    }
-    let i = 0, j = 0;
-    let backtracking = false;
-    let encodeOriginal = '';
-    buildDictionary(data);
-    debugger;
-
-    while (i < 9) {
-        if (i < 0) {
-            i = 0;
-            backtracking = false;
-        }
-        let row = board[i];
-        // console.log('start new outer loop: i, board, backtracking', i, board, backtracking, j);
-        // jumps from i = 1 j = 0
-        // to i = 0 j = 0
-        if (j === 9) j = 0;
-        while (j < 9) {
-            console.log(`i = ${i} j = ${j} backtracking = ${backtracking}`);
-            console.log('board\n', board);
-            // currently goes up to i = 2 j = 5 and back loopp
-
-            if (j < 0) {
-                if (i === 0) {
-                    j = 0;
-                } else {
-                    j = 8;
-                }
-                break;
-            }
-            let num = row[j];
-            // if current item is already a number
-            // and not backtrackign currently, then skip it. 
-            // console.log('current num: ', num, '\n one of original: ', `${i}-${j}` in originalNumbers);
-            let count = 1;
-            let countString = '1';
-
-            // if backtracking then set count to current num + 1;
-            console.log('count', num, i, j, row);
-            if (backtracking) {
-                if (!(`${i}-${j}` in originalNumbers)) {
-                    // if current position is not one of the original board, then remove it from board and dictionary
-                    backtracking = findNextNumber(data, i, j, num);
-                    console.log('inside');
-
-                }
-                console.log('outside');
-            } else {
-                console.log('hello');
-                clearSpace(data, num, i, j);
-                backtracking = findNextNumber(data, i, j);
-            }
-            j = backtracking ? j - 1 : j + 1;
-        }
-	    i = backtracking ? i - 1 : i + 1;
-    }
-
-    return board;
-};
-
-const findNextNumber = (data, i, j, num) => {
-    const { board, sect, rowDict, colDict, originalNumbers } = data;
-    const sectX = Math.floor(j / 3);
-    const sectY = Math.floor(i / 3);
-    console.log('inside finding', board[i][j]);
-    let count = board[i][j] === '.' ? 1 : board[i][j];
-    let countString = count + '';
-    let numbersMoved = 0;
-    console.log('inside finding', count);
-    clearSpace(data, num, i, j);
-    while (numbersMoved < 9) {
-        console.log('hellocount', count);
-        if (!sect[sectX][sectY][countString] && !rowDict[i][countString] && !colDict[j][countString]) {
-            console.log('next number found: ', countString);
-            sect[sectX][sectY][countString] = true;
-            rowDict[i][countString] = true;
-            colDict[j][countString] = true;
-            board[i][j] = countString;
-            return false;
-        }
-        count++;
-        numbersMoved++;
-        countString = count.toString()
-        if (count > 9) {
-            count = 1;
-        }
-    }
-    // now it gets stuck in infinite loop 
-    console.log('hellocount after while', count, board[i][j]);
-    if (numbersMoved >= 9) {
-        return true;
-    }
-    return false;
-}
-
-const buildDictionary = ({ board, sect, rowDict, colDict, originalNumbers }) => {
-  for (let i = 0; i < 9; i++) {
-    let row = board[i];
-    for (let j = 0; j < 9; j++) {
-      let num = row[j];
-      let sectX = Math.floor(j / 3);
-      let sectY = Math.floor(i / 3);
-      if (num === '.') {
-        continue;
-      }
-      sect[sectX][sectY][num] = true;
-      rowDict[i][num] = true;
-      colDict[j][num] = true;
-      originalNumbers[`${i}-${j}`] = true;
-    }
-  }
-};
-
-const clearSpace = ({ sect, rowDict, colDict, board }, num, i, j) => {
-    const sectX = Math.floor(j / 3);
-    const sectY = Math.floor(i / 3);
-    sect[sectX][sectY][num] = false;
-    rowDict[i][num] = false;
-    colDict[j][num] = false;
-    board[i][j] = '.';
-}
-
 const b = [
     ["8", "3", ".", ".", "7", ".", ".", ".", "."],
     ["6", ".", ".", "1", "9", "5", ".", ".", "."],
@@ -190,47 +53,48 @@ const t1 = [
 
 
 
-// var solveSudoku = function(board) {
-//     return solve(board, 0, 0);
-// };
+var solveSudoku = function(board) {
+    return solve(board, 0, 0);
+};
 
-// var solve = function(board, row, col){
+var solve = function(board, row, col){
     
-//     for(let i=row; i<9; i++, col=0){
-//         for(let j=col; j<9; j++){
-//             if(board[i][j] !== '.') continue;
-//             for(let c=1; c<=9; c++){
-//                 if(isValid(board, i, j, c.toString())){
-//                     board[i][j] = c.toString();
+    for(let i=row; i<9; i++, col=0){
+        for(let j=col; j<9; j++){
+            if(board[i][j] !== '.') continue;
+            for(let c=1; c<=9; c++){
+                console.log('board', board);
+                if(isValid(board, i, j, c.toString())){
+                    board[i][j] = c.toString();
                     
-//                     if(solve(board, i, j+1)){
-//                         return true;
-//                     }
-//                     board[i][j] = '.';
-//                 }
-//             }
-//             return false;
-//         }
-//     }
-//     return true;
-// }
+                    if(solve(board, i, j+1)){
+                        return true;
+                    }
+                    board[i][j] = '.';
+                }
+            }
+            return false;
+        }
+    }
+    return true;
+}
 
-// var isValid = function(board, x, y, c){
-//     let rowStart = Math.floor(x/3) * 3;
-//     let colStart = Math.floor(y/3) * 3;
+var isValid = function(board, x, y, c){
+    let rowStart = Math.floor(x/3) * 3;
+    let colStart = Math.floor(y/3) * 3;
     
-//     for(let i=0; i<9; i++){
-//         if(board[i][y] === c || board[x][i] === c) return false;
-//     }
+    for(let i=0; i<9; i++){
+        if(board[i][y] === c || board[x][i] === c) return false;
+    }
     
-//     for(let i=0; i<3; i++){
-//         for(let j=0; j<3; j++){
-//             if(board[rowStart+i][colStart+j] === c) return false;
-//         }
-//     }
+    for(let i=0; i<3; i++){
+        for(let j=0; j<3; j++){
+            if(board[rowStart+i][colStart+j] === c) return false;
+        }
+    }
     
-//     return true;
-// }
+    return true;
+}
 
 
 
