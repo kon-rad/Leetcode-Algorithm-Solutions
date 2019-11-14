@@ -68,12 +68,26 @@ const solve = (board, i, j) => {
                 }
                 board[x][y] = '.';
             }
+            console.log('board', board);
         }
     }
 }
 
 const isValid = (board, i, j) => {
-    
+    const num = board[i][j];
+
+    // check horizontal
+    for (let k = 1; k <= 9; k++) {
+        if (parseInt(board[k][j]) === k && k !== y) {
+            return false;
+        }
+        if (parseInt(board[i][k]) === k && k !== y) {
+            return false;
+        }
+    }
+
+    // check vertical
+
     return true;
 }
 
