@@ -60,37 +60,94 @@ var solveSudoku = function(board) {
 const solve = (board, i, j) => {
     for (let y = i; y < 9; y++) {
         for (let x = j; j < 9; y++) {
-            if (board[x][y] !== '.') continue;
+            if (board[y][x] !== '.') continue;
             for (let num = 1; num < 9; num++) {
-                board[x][y] = num.toString();
-                if (isValid(board, i, j)) {
+                board[y][x] = num.toString();
+                if (isValid(board, y, x + 1)) {
                     return solve(board, x, y);
                 }
-                board[x][y] = '.';
+                board[y][x] = '.';
             }
-            console.log('board', board);
+            return false;
         }
     }
+    return true;
 }
 
-const isValid = (board, i, j) => {
-    const num = board[i][j];
+const isValid = (board, y, x) => {
+    const num = board[y][x];
+    const sectionX = Math.floor(x/3);
+    const sectionY = Math.floor(y/3);
 
-    // check horizontal
-    for (let k = 1; k <= 9; k++) {
-        if (parseInt(board[k][j]) === k && k !== y) {
+    // check sections
+    for (let m = sectionY * 3; m < sectionY * 3 + 3; m++) {
+        for (let n = sectionX * 3; n < sectionX * 3 + 3; n++) {
+            if (m === y && n === x) continue;
+            if (board[m][n] === num) {
+                return false;
+            }
+        }   
+    }
+
+    for (let k = 0; k < 9; k++) {
+        // check vertical
+        if (board[k][x] === num && k !== y) {
             return false;
         }
-        if (parseInt(board[i][k]) === k && k !== y) {
+        // check horizontal
+        if (board[y][k] === num && k !== x) {
             return false;
         }
     }
-
-    // check vertical
 
     return true;
 }
 
+
+
+
+
+
+// var solveSudoku = function(board) {
+//     return solve(board, 0, 0);
+// };
+
+// var solve = function(board, row, col) {
+//     for(let i=row; i<9; i++, col=0){
+//         for(let j=col; j<9; j++){
+//             if(board[i][j] !== '.') continue;
+//             for(let c=1; c<=9; c++){
+//                 if(isValid(board, i, j, c.toString())){
+//                     board[i][j] = c.toString();
+                    
+//                     if(solve(board, i, j+1)){
+//                         return true;
+//                     }
+//                     board[i][j] = '.';
+//                 }
+//             }
+//             return false;
+//         }
+//     }
+//     return true;
+// }
+
+// var isValid = function(board, x, y, c){
+//     let rowStart = Math.floor(x/3) * 3;
+//     let colStart = Math.floor(y/3) * 3;
+    
+//     for(let i=0; i<9; i++){
+//         if(board[i][y] === c || board[x][i] === c) return false;
+//     }
+    
+//     for(let i=0; i<3; i++){
+//         for(let j=0; j<3; j++){
+//             if(board[rowStart+i][colStart+j] === c) return false;
+//         }
+//     }
+    
+//     return true;
+// }
 
 
 console.log('solution: ', solveSudoku(t1));
