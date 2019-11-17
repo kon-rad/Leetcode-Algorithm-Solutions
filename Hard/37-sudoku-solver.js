@@ -63,11 +63,12 @@ const solve = (board, i, j) => {
             if (board[y][x] !== '.') continue;
             for (let num = 1; num < 9; num++) {
                 board[y][x] = num.toString();
-                if (isValid(board, y, x + 1)) {
-                    return solve(board, x, y);
+                if (isValid(board, y, x)) {
+                    return solve(board, y, x + 1);
                 }
                 board[y][x] = '.';
             }
+            console.log(board);
             return false;
         }
     }
@@ -76,12 +77,12 @@ const solve = (board, i, j) => {
 
 const isValid = (board, y, x) => {
     const num = board[y][x];
-    const sectionX = Math.floor(x/3);
-    const sectionY = Math.floor(y/3);
+    const rowStart = Math.floor(x/3) * 3;
+    const colStart = Math.floor(y/3) * 3;
 
     // check sections
-    for (let m = sectionY * 3; m < sectionY * 3 + 3; m++) {
-        for (let n = sectionX * 3; n < sectionX * 3 + 3; n++) {
+    for (let m = colStart; m < colStart + 3; m++) {
+        for (let n = rowStart; n < rowStart + 3; n++) {
             if (m === y && n === x) continue;
             if (board[m][n] === num) {
                 return false;
@@ -103,6 +104,23 @@ const isValid = (board, y, x) => {
     return true;
 }
 
+
+var isValid = function(board, x, y, c){
+    let rowStart = Math.floor(x/3);
+    let colStart = Math.floor(y/3) * 3;
+    
+    for(let i=0; i<9; i++){
+        if(board[i][y] === c || board[x][i] === c) return false;
+    }
+    
+    for(let i=0; i<3; i++){
+        for(let j=0; j<3; j++){
+            if(board[rowStart+i][colStart+j] === c) return false;
+        }
+    }
+    
+    return true;
+}
 
 
 
