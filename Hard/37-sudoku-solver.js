@@ -47,28 +47,25 @@ const t1 = [
     [".",".",".","4","1","9",".",".","5"],
     [".",".",".",".","8",".",".","7","9"]
 ];
-
-
-
 /**
  * @param {character[][]} board
  * @return {void} Do not return anything, modify board in-place instead.
  */
 var solveSudoku = function(board) {
-    return solve(board, 0, 0);
+    solve(board, 0, 0);
 };
 
 const solve = (board, row, col) => {
-    for (let i = row; i < 9; i++, col = 0) {
-        for (let j = col; j < 9; j++) {
-            if (board[i][j] !== '.') continue;
+    for (let i = row; row < 9; row++, col = 0) {
+        for (let j = col; col < 9; col++) {
+            if (board[row][col] !== '.') continue;
             for (let k = 1; k < 10; k++) {
-                if (isValid(board, i, j, k.toString())) {
-                    board[i][j] = k.toString();
-                    if (solve(board, i, j + 1)) {
+                if (isValid(board, row, col, k.toString())) {
+                    board[row][col] = k.toString();
+                    if (solve(board, row, col + 1)) {
                         return true;
                     }
-                    board[i][j] = '.';
+                    board[row][col] = '.';
                 }
             }
             return false;
@@ -76,11 +73,13 @@ const solve = (board, row, col) => {
     }
     return true;
 }
+
 const isValid = (board, row, col, k) => {
     const rowStart = Math.floor(row / 3) * 3;
     const colStart = Math.floor(col / 3) * 3;
+    
     for (let i = 0; i < 9; i++) {
-        if (board[row][i] === k || board[i][col] === k) return false;
+        if (board[i][col] === k || board[row][i] === k) return false;
     }
     for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
