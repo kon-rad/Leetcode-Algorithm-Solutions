@@ -50,5 +50,32 @@ const search = (i, sub, cand, tar, res) => {
   search(i + 1, sub, cand, tar, res);
 }
 
+/**
+ * alternative solution
+ */
+/**
+ * @param {number[]} candidates
+ * @param {number} target
+ * @return {number[][]}
+ */
+var combinationSum = function(candidates, target) {
+  const res = [];
+  const cand = candidates.sort((a, b) => a - b);
+  
+  find(cand, res, target, [], 0);
+  return res;
+};
+
+const find = (cand, res, t, cur, i) => {
+  if (t === 0) return res.push(cur);
+  else if (t < 0 || i > cand.length) return;
+  
+  while (i < cand.length && t > 0) {
+      find(cand, res, t - cand[i], [...cur, cand[i]], i);
+      i++;
+  }
+}
+
+
 const c = [2,3,5], t = 8;
 console.log(combinationSum(c, t));
