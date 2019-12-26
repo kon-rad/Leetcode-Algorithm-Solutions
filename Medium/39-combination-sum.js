@@ -76,6 +76,34 @@ const find = (cand, res, t, cur, i) => {
   }
 }
 
+/**
+ * solution # 3
+ */
+var combinationSum = function(candidates, target) {
+  const sortedNums = candidates.sort((a, b) => a-b);
+  let opt = [];
+  
+  for (let sum=0; sum<=target; sum++) {
+      opt[sum] = [];
+      let combineList = [];
+
+      for (let i=0; i < sortedNums.length && sortedNums[i] <= sum; i++) {
+          if (sum === sortedNums[i]) {
+              combineList.push([sortedNums[i]]);
+          } else {
+              for (let prevList of opt[sum - sortedNums[i]]) {
+                  if (sortedNums[i] >= prevList[prevList.length - 1]) {
+                      combineList.push([...prevList, sortedNums[i]]);
+                  }
+              }
+          }
+      }
+      opt[sum] = combineList;
+  }
+
+  return opt[target];
+};
+
 
 const c = [2,3,5], t = 8;
 console.log(combinationSum(c, t));
