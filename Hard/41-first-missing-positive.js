@@ -23,6 +23,33 @@ Your algorithm should run in O(n) time and uses constant extra space.
  * 
  */
 
+
+/**
+ * O(n) Time and O(1) Space - best solution
+ * @param {number[]} nums
+ * @return {number}
+ */
+var firstMissingPositive = function(nums) {
+  const len = nums.length;
+  let i = 0;
+  for (i; i < len; i++) {
+
+      if (nums[i] > 0 && nums[i] < len && nums[i] !== nums[nums[i] - 1]) {
+          let val = nums[i];
+          [nums[val - 1], nums[i]] = [nums[i], nums[val - 1]];
+          i--;
+      }
+  }
+
+  for (i = 0; i < len; i++) {
+      if (nums[i] !== i+1) {
+          return i + 1;
+      }
+  }
+  return i + 1
+};
+
+
 /**
  * O(n) Time 0(n) Space
  * @param {number[]} nums
