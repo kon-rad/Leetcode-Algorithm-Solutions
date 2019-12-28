@@ -16,6 +16,7 @@ Output: 6
 
 
 /**
+ * Inefficient solution. Time complexity O(n^2)
  * @param {number[]} height
  * @return {number}
  */
@@ -32,6 +33,31 @@ var trap = function(height) {
           rightMax = rightMax > height[j] ? rightMax : height[j];
       }
       let diff = Math.min(leftMax, rightMax) - height[i];
+      vol += diff > 0 ? diff : 0;
+  }
+  return vol;
+};
+
+/**
+ * Better solution. O(n) time, O(n) auxiliry space. First create two arrays of left and right max heights. Like in above 
+ * solution, then iterate over each item and calculate water using the max heights from arrays.
+ * @param {number[]} height
+ * @return {number}
+ */
+var trap = function(height) {
+  const len = height.length;
+  let vol = 0;
+  const leftMax = [height[0]];
+  const rightMax = [];
+  rightMax[len - 1] = height[len - 1];
+  for (let i = 1; i < len; i++) {
+      leftMax[i] = Math.max(leftMax[i - 1], height[i]);
+  }
+  for (let i = len - 2; i > 0; i--) {
+      rightMax[i] = Math.max(rightMax[i + 1], height[i]);
+  }
+  for (let i = 0; i < len; i++) {
+      let diff = Math.min(leftMax[i], rightMax[i]) - height[i];
       vol += diff > 0 ? diff : 0;
   }
   return vol;
