@@ -62,3 +62,34 @@ var trap = function(height) {
   }
   return vol;
 };
+
+/**
+ * Best soluition. Space optimization of above. O(n) time O(1) space
+ * @param {number[]} height
+ * @return {number}
+ */
+var trap = function(height) {
+  const len = height.length;
+  let vol = 0;
+  let lm = 0;
+  let rm = 0;
+  let l = 0, r = len - 1;
+  while (l <= r) {
+      if (lm <= rm) {
+          if (lm < height[l]) {
+              lm = height[l];
+          } else {
+              vol += lm - height[l] > 0 ? lm - height[l] : 0;
+          }
+          l++;
+      } else {
+          if (rm < height[r]) {
+              rm = height[r];
+          } else {
+              vol += rm - height[r] > 0 ? rm - height[r] : 0;
+          }
+          r--;
+      }
+  }
+  return vol;
+};
