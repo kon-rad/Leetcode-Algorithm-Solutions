@@ -95,6 +95,7 @@ var isMatch = function(s, p) {
 let s = "abbabaaabbabbaababbabbbbbabbbabbbabaaaaababababbbabababaabbababaabbbbbbaaaabababbbaabbbbaabbbbababababbaabbaababaabbbababababbbbaaabbbbbabaaaabbababbbbaababaabbababbbbbababbbabaaaaaaaabbbbbaabaaababaaaabb",
 p = "**aa*****ba*a*bb**aa*ab****a*aaaaaa***a*aaaa**bbabb*b*b**aaaaaaaaa*a********ba*bbb***a*ba*bb*bb**a*b*bb";
 console.log(isMatch(s, p));
+// todo: implement this solution: https://leetcode.com/problems/wildcard-matching/discuss/422322/fastest-javascript-solution-with-constant-space
 // "babaaababaabababbbbbbaabaabbabababbaababbaaabbbaaab"
 // "***bba**a*bbba**aab**b"
 // "b"
