@@ -62,15 +62,20 @@ var isMatch = function(s, p) {
   for (i; i < pLen; i++) {
       let pChar = p.charAt(i);
       if (pChar === '*') {
+          while (p.charAt(i + 1) === '*') {
+              i++;
+          }
           if (isMatch(s.substring(j), p.substring(i + 1))) {
               return true;
           }
           while (j < sLen) {
               j++;
-              if (
-                  isMatch(s.substring(j), p.substring(i))
-              ) {
-                  return true;
+              if (p.charAt(i + 1) === s.charAt(j) || p.charAt(i + 1) === '?') {
+                  if (
+                      isMatch(s.substring(j), p.substring(i + 1))
+                  ) {
+                      return true;
+                  }
               }
           }
       } else if (pChar === '?') {
@@ -87,8 +92,8 @@ var isMatch = function(s, p) {
   return j === sLen && i === pLen;
 };
 
-let s = "babaaababaabababbbbbbaabaabbabababbaababbaaabbbaaab",
-p = "***bba**a*bbba**aab**b";
+let s = "abbabaaabbabbaababbabbbbbabbbabbbabaaaaababababbbabababaabbababaabbbbbbaaaabababbbaabbbbaabbbbababababbaabbaababaabbbababababbbbaaabbbbbabaaaabbababbbbaababaabbababbbbbababbbabaaaaaaaabbbbbaabaaababaaaabb",
+p = "**aa*****ba*a*bb**aa*ab****a*aaaaaa***a*aaaa**bbabb*b*b**aaaaaaaaa*a********ba*bbb***a*ba*bb*bb**a*b*bb";
 console.log(isMatch(s, p));
 // "babaaababaabababbbbbbaabaabbabababbaababbaaabbbaaab"
 // "***bba**a*bbba**aab**b"
