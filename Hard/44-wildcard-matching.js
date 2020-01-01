@@ -48,49 +48,48 @@ p = "a*c?b"
 Output: false
  */
 
-
 /**
  * @param {string} s
  * @param {string} p
  * @return {boolean}
  */
 var isMatch = function(s, p) {
+  const map = new Map();
+  return recursive(s, p, 0, 0, map);
+};
+const recursive = (s, p, i, j, map) => {
   const pLen = p.length;
   const sLen = s.length;
-  let j = 0;
-  let i = 0;
-  for (i; i < pLen; i++) {
-      let pChar = p.charAt(i);
-      if (pChar === '*') {
-          while (p.charAt(i + 1) === '*') {
-              i++;
+  if (i === sLen || j === pLen) {
+      if (i === sLen && j === pLen) {
+          return true;
+      }
+      if (j < pLen) {
+          while (j < pLen && p.charAt(j) === '*') {
+              j++;
           }
-          if (isMatch(s.substring(j), p.substring(i + 1))) {
+          if (j === pLen) {
               return true;
           }
-          while (j < sLen) {
-              j++;
-              if (p.charAt(i + 1) === s.charAt(j) || p.charAt(i + 1) === '?') {
-                  if (
-                      isMatch(s.substring(j), p.substring(i + 1))
-                  ) {
-                      return true;
-                  }
-              }
-          }
-      } else if (pChar === '?') {
-          j++;
-      } else {
-          if (pChar !== s.charAt(j)) {
-              return false;
-          } else {
-              j++;
-          }
       }
-      if (j > sLen) return false;
+      return false;
   }
-  return j === sLen && i === pLen;
-};
+  const key = `${i}:${j}`;
+  if (!map.has(key)) {
+      if (p.charAt(j) === '*') {
+          map.set(
+              key,
+              recursive(s, p, i + 1, j, map)
+              || recursive(s, p, i, j + 1, map)
+          );
+      } else if (p.charAt(j) === '?' || p.charAt(j) === s.charAt(i)) {
+          map.set(key, recursive(s, p, i + 1, j + 1, map));
+      } else {
+          return false;
+      }
+  }
+  return map.get(key);
+}
 
 let s = "abbabaaabbabbaababbabbbbbabbbabbbabaaaaababababbbabababaabbababaabbbbbbaaaabababbbaabbbbaabbbbababababbaabbaababaabbbababababbbbaaabbbbbabaaaabbababbbbaababaabbababbbbbababbbabaaaaaaaabbbbbaabaaababaaaabb",
 p = "**aa*****ba*a*bb**aa*ab****a*aaaaaa***a*aaaa**bbabb*b*b**aaaaaaaaa*a********ba*bbb***a*ba*bb*bb**a*b*bb";
