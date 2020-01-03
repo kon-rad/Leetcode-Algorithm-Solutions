@@ -45,4 +45,23 @@ var jump = function(nums) {
   return count;
 };
 
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var jump = function(nums) {
+  let len = nums.length;
+  if (len < 2) return 0;
+  let max = 0, end = 0, count = 0;
+  for (let i = 0; i < len - 1; i++) {
+      max = Math.max(max, i + nums[i]);
+      if (max >= len - 1) return count + 1;
+      if (i === end) {
+          count++;
+          end = max;
+      }
+  }
+  return count;
+};
+
 
