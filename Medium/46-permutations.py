@@ -20,17 +20,17 @@ class Solution:
         """
         result = []
         size = len(nums)
-        return self.permuteRec(nums, size, size, result)
+        return self.permuteRec(nums, size, result)
         
-    def permuteRec(self, nums, size, n, result):
-        if size == 1:
+    def permuteRec(self, nums, n, result):
+        if n == 1:
           copy = nums[:]
           result.append(copy)
           return result
-        for i in range(size):
-          result = self.permuteRec(nums, size-1, n, result)
-          if (size % 2 == 1):
-            nums[0], nums[size-1] = nums[size-1], nums[0]
+        for i in range(n):
+          result = self.permuteRec(nums, n-1, n, result)
+          if (n % 2 == 1):
+            nums[0], nums[n-1] = nums[n-1], nums[0]
           else:
-            nums[i], nums[size-1] = nums[size-1], nums[i]
+            nums[i], nums[n-1] = nums[n-1], nums[i]
         return result
