@@ -51,3 +51,26 @@ const swap = (nums, a, b) => {
 }
 const arr = [1,2,3];
 console.log(permuteUnique(arr));
+
+/**
+ * Space O(n!) 
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var permute = function(nums) {
+  let len = nums.length;
+  if (len === 0) return [];
+  let ans = [[nums[0]]];
+  for (let i = 1; i < len; i++) {
+      let newAns = [];
+      ans.forEach(el => {
+          for (let j = 0; j <= i; j++) {
+              const newEl = el.slice();
+              newEl.splice(j, 0, nums[i]);
+              newAns.push(newEl);
+          }
+      });
+      ans = newAns.slice();
+  }
+  return ans;
+};
