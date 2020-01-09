@@ -44,11 +44,15 @@ rotate the input matrix in-place such that it becomes:
 ]
  */
 
+
 /**
  * @param {number[][]} matrix
  * @return {void} Do not return anything, modify matrix in-place instead.
  */
 var rotate = function(matrix) {
+  if (matrix.length === 1) {
+      return matrix;
+  }
   helper([0,0], matrix[0][0], matrix, 0, [0,0], matrix.length, false);
   return matrix;
 };
@@ -61,36 +65,35 @@ const find = (xy, len) => {
 }
 
 const helper = (xy, n, m, count, start, len, last) => {
-  count++;
   let xy2 = find(xy, len);
   let temp = m[xy2[0]][xy2[1]];
   m[xy2[0]][xy2[1]] = n;
-  console.log(xy, xy2);
-  console.log( m);
-  if (last) {
-      return m;
-  }
+  count++;
   if (count >= 4) {
+      if (last || len === 2) {
+          return m;
+      }
       count = 0;
       start[1]++;
       xy2[1]++;
-      console.log('if', start, count, xy2, temp, m);
+      temp = m[xy2[0]][xy2[1]];
       if (start[1] >= (len - 1) - start[0]) {
           start[1] = start[0] + 1;
           start[0]++;
-          xy2[0]++;
-          xy2[1]++;
+          xy2 = start.slice(0);
+          temp = m[xy2[0]][xy2[1]];
           // check if it's in the middle 
           // or if even length, if the center square
           if (len % 2 === 0) {
               let end = (len / 2) - 1;
               if (start[1] === end) {
                   last = true;
+                  // return m;
               }
           } else {
               let end = Math.floor(len / 2);
               if (start[1] === end) {
-                  last = true;
+                  return m;
               }
           }
       }
