@@ -49,7 +49,7 @@ rotate the input matrix in-place such that it becomes:
  * @param {number[][]} matrix
  * @return {void} Do not return anything, modify matrix in-place instead.
  */
-var rotate = function(matrix) {
+var rotate1 = function(matrix) {
   if (matrix.length === 1) {
       return matrix;
   }
@@ -99,6 +99,15 @@ const helper = (xy, n, m, count, start, len, last) => {
       }
   }
   helper(xy2, temp, m, count, start, len, last);
+}
+
+const rotate = matrix => {
+  const rev = matrix.reverse();
+  for (const row in rev) {
+    console.log(row);
+  }
+  console.log(rev);
+  
 }
 
 const matrix = [
