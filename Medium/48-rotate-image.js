@@ -103,11 +103,11 @@ const helper = (xy, n, m, count, start, len, last) => {
 
 const rotate = matrix => {
   const rev = matrix.reverse();
-  for (const row in rev) {
-    console.log(row);
+  for (const i in rev) {
+    console.log(i);
   }
   console.log(rev);
-  
+
 }
 
 const matrix = [
