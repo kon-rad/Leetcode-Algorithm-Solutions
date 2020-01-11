@@ -102,13 +102,17 @@ const helper = (xy, n, m, count, start, len, last) => {
 }
 
 const rotate = matrix => {
-  const rev = matrix.reverse();
-  for (const i in rev) {
-    console.log(i);
+    const rev = matrix.reverse();
+    const len = matrix.length;
+    for (const i in rev) {
+      for (let j = parseInt(i) + 1; j < len; j++) {
+          let temp = rev[i][j];
+          rev[i][j] = rev[j][i];
+          rev[j][i] = temp;
+      }
+    }
+    return rev;
   }
-  console.log(rev);
-
-}
 
 const matrix = [
 [1,2,3],
