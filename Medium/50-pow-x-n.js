@@ -29,17 +29,19 @@ n is a 32-bit signed integer, within the range [−231, 231 − 1]
  * @return {number}
  */
 var myPow = function(x, n) {
-  let r = 1, i = 0;
-  let neg = false;
-  if (n < 0) {
-      neg = true;
-      n *= -1;
+  if (n === 0) return 1;
+  if (n === 1) return x;
+  if (x === 0) return 0;
+  
+  if (n > 0) {
+      if (n % 2 === 0) {
+          const half = myPow(x, n / 2);
+          return half * half;
+      }
+      return x * myPow(x, n - 1);
+  } else {
+      return myPow(1 / x, -n);
   }
-  while (i < n) {
-      r *= x;
-      i++;
-  }
-  return neg ? 1 / r : r;
 };
 
 // const x = 2.00000, n = 10;
