@@ -35,6 +35,8 @@ var myPow = function(x, n) {
   
   if (n > 0) {
       if (n % 2 === 0) {
+          // taking advantage of the fact that an even number can be halved
+          // and then it's powers multiplied by itself, this cuts down computation costs by half
           const half = myPow(x, n / 2);
           return half * half;
       }
