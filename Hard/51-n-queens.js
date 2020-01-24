@@ -31,7 +31,6 @@ Explanation: There exist two distinct solutions to the 4-queens puzzle as shown 
  * @return {string[][]}
  */
 var solveNQueens = function(n) {
-  if (n < 4) return [];
   const results = [];
   const colPlacements = [];
   let row = 0;
@@ -46,21 +45,41 @@ const recurse = (row, n, colPlacements, results) => {
           );
       return;
   }
+  for (let col = 0; col < n; col++) {
+      colPlacements.push(col);
+      if (isValid(colPlacements)) {
+          recurse(row + 1, n, colPlacements, results);
+      }
+      colPlacements.pop();
+  }
   
 }
-const isValid = (m, i, j, n) => {
+const isValid = (colPlacements) => {
+  let rowValidating = colPlacements.length - 1;
+  for (let ithQueenRow = 0; ithQueenRow < rowValidating; ithQueenRow++) {
+      let absColDist = Math.abs(
+          colPlacements[ithQueenRow] - colPlacements[rowValidating]
+      );
+      let rowDistance = rowValidating - ithQueenRow;
+      if (absColDist === 0 || absColDist === rowDistance) {
+          return false;
+      }
+  }
+  return true;
 }
-const generateBoardFromPlacement = (n) => {
-  const b = new Array(n);
-  for (let i = 0; i < n; i++) {
-      b[i] = new Array(n).fill('.').join('');
+const generateBoardFromPlacement = (colPlacements, n) => {
+  const b = [];
+  let totalPlaced = colPlacements.length;
+  for (let i = 0; i < totalPlaced; i++) {
+      let row = '';
+      for (let col = 0; col < n; col++) {
+          if (col === colPlacements[i]) {
+              row += 'Q';
+          } else {
+              row += '.';
+          }
+      }
+      b.push(row);
   }
   return b;
 }
-let n = 5;
-console.log(solveNQueens(n));
-
-
-
-
-
