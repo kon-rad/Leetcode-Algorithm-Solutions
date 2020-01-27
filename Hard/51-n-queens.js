@@ -31,55 +31,47 @@ Explanation: There exist two distinct solutions to the 4-queens puzzle as shown 
  * @return {string[][]}
  */
 var solveNQueens = function(n) {
-  const results = [];
-  const colPlacements = [];
-  let row = 0;
-  recurse(row, n, colPlacements, results);
-  return results;
+    const result = [];
+    const cols = [];
+    recurse(n, cols, result);
+    return result;
 };
-const recurse = (row, n, colPlacements, results) => {
-  // last base case
-  if (row === n) {
-      results.push(
-          generateBoardFromPlacement(colPlacements, n)
-          );
-      return;
-  }
-  for (let col = 0; col < n; col++) {
-      colPlacements.push(col);
-      if (isValid(colPlacements)) {
-          recurse(row + 1, n, colPlacements, results);
-      }
-      colPlacements.pop();
-  }
-  
+
+const recurse = (n, cols, result) => {
+    if (cols.length === n) {
+        return result.push(genBoard(cols));
+    }
+    for (let i = 0; i < n; i++) {
+        cols.push(i);
+        if (isValid(n, cols)) {
+            recurse(n, cols, result);
+        }
+        cols.pop();
+    }
 }
-const isValid = (colPlacements) => {
-  let rowValidating = colPlacements.length - 1;
-  for (let ithQueenRow = 0; ithQueenRow < rowValidating; ithQueenRow++) {
-      let absColDist = Math.abs(
-          colPlacements[ithQueenRow] - colPlacements[rowValidating]
-      );
-      let rowDistance = rowValidating - ithQueenRow;
-      if (absColDist === 0 || absColDist === rowDistance) {
-          return false;
-      }
-  }
-  return true;
+const isValid = (n, cols) => {
+    const len = cols.length;
+    const cur = cols[len - 1];
+    for (let i = 0; i < len - 1; i++) {
+        if (cols[i] === cur) return false;
+        const colDistance = Math.abs(cols[i] - cur);
+        if (colDistance === ((len - 1) - i)) return false;
+    }
+    return true;
 }
-const generateBoardFromPlacement = (colPlacements, n) => {
-  const b = [];
-  let totalPlaced = colPlacements.length;
-  for (let i = 0; i < totalPlaced; i++) {
-      let row = '';
-      for (let col = 0; col < n; col++) {
-          if (col === colPlacements[i]) {
-              row += 'Q';
-          } else {
-              row += '.';
-          }
-      }
-      b.push(row);
-  }
-  return b;
+const genBoard = cols => {
+    const len = cols.length;
+    const board = [];
+    for (let i = 0; i < len; i++) {
+        board.push(['']);
+        for (let j = 0; j < len; j++) {
+            if (cols[i] === j) {
+                board[i] += 'Q';
+                continue;
+            }
+            board[i] += '.';
+        }
+    }
+    return board;
 }
+console.log(solveNQueens(5));
