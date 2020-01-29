@@ -26,52 +26,36 @@ Output: [
 ]
 Explanation: There exist two distinct solutions to the 4-queens puzzle as shown above.
  */
- /**
+/**
  * @param {number} n
- * @return {string[][]}
+ * @return {number}
  */
-var solveNQueens = function(n) {
-    const result = [];
-    const cols = [];
-    recurse(n, cols, result);
-    return result;
+var totalNQueens = function(n) {
+    const col = [];
+    const res = [];
+    recursive(0, col, n, res);
+    return res.length;
 };
 
-const recurse = (n, cols, result) => {
-    if (cols.length === n) {
-        return result.push(genBoard(cols));
-    }
+const recursive = (c, col, n, res) => {
+    if (col.length === n) return res.push(col);
     for (let i = 0; i < n; i++) {
-        cols.push(i);
-        if (isValid(n, cols)) {
-            recurse(n, cols, result);
+        col.push(i);
+        if (isValid(col)) {
+            recursive(c, col, n, res);
+        } else {
+            console.log('false');
         }
-        cols.pop();
+        col.pop();
     }
 }
-const isValid = (n, cols) => {
-    const len = cols.length;
-    const cur = cols[len - 1];
-    for (let i = 0; i < len - 1; i++) {
-        if (cols[i] === cur) return false;
-        const colDistance = Math.abs(cols[i] - cur);
-        if (colDistance === ((len - 1) - i)) return false;
+const isValid = col => {
+    const cur = col[col.length - 1];
+    for (let i = 0; i < col.length - 1; i++) {
+        if (col[i] === cur) return false;
+        const diff = Math.abs(cur - col[i]);
+        if (diff === (col.length - 1) - i) return false;
     }
     return true;
 }
-const genBoard = cols => {
-    const len = cols.length;
-    const board = [];
-    for (let i = 0; i < len; i++) {
-        board.push(['']);
-        for (let j = 0; j < len; j++) {
-            if (cols[i] === j) {
-                board[i] += 'Q';
-                continue;
-            }
-            board[i] += '.';
-        }
-    }
-    return board;
-}
-console.log(solveNQueens(5));
+console.log(totalNQueens(5));
