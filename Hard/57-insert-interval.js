@@ -19,51 +19,29 @@ NOTE: input types have been changed on April 15, 2019. Please reset to default c
  */
 
 /**
+ * O(n) time comlexity
  * @param {number[][]} intervals
  * @param {number[]} newInterval
  * @return {number[][]}
  */
 var insert = function(intervals, newInterval) {
-  const ns = newInterval[0];
-  const ne = newInterval[1];
-  for (let i = 0; i < intervals.length; i++) {
-      let is = intervals[i][0];
-      let ie = intervals[i][1];
-      if (ns > is) {
-          // new one start after current
-          if (ns > ie) {
-              let nis = intervals[i+1][0];
-              let nie = intervals[i+1][1];
-              // check if new end is less then next start
-              if (
-                  i + 1 === intervals.length
-                  || ne < nis
-              ) {
-                  intervals.splice(i, 0, newInterval);
-                  break;
-              }
-              // new start becomes new start of next interval
-              if (ne >= nis && ne <= nie) {
-                  // extend next interval start to new start
-                  intervals[i+1][0] = ns;
-                  break;
-              }
-              // new end becomes new end of next interval
-              if (ns >= nis && ne >= nie) {
-                  intervals[i+1][1] = ne;
-                  break;
-              }
-          // new interval start begins inside of current interval
-          } else if (ns >= is && ns <= ie) {
-              let nis = intervals[i+1][0];
-              let nie = intervals[i+1][1];
-              while (i + 1 > intervals.length && ne > intervals[i+1][1]) {
-                  i++;
-              }
-          }
-
-      }
-  }
-  return intervals;
+    const result = [];
+    let i = 0;
+    const len = intervals.length;
+    while (i < len && intervals[i][1] < newInterval[0]) {
+        result.push(intervals[i]);
+        i++;
+    }
+    newInterval[0] = Math.min(newInterval[0], i < len ? intervals[i][0] : Infinity);
+    while (i < len && newInterval[1] >= intervals[i][0]) {
+        newInterval[1] = Math.max(newInterval[1], intervals[i][1]);
+        i++
+    }
+    result.push(newInterval);
+    return result.concat(intervals.slice(i));
 };
-console.log(canJump([2,3,1,1,4]));
+console.log(insert(
+    [[1,2],[3,5],[6,7],[8,10],[12,16]],
+    [4,8]
+    )
+);
