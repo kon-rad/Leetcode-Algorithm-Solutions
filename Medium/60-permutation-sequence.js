@@ -29,11 +29,28 @@ Input: n = 4, k = 9
 Output: "2314"
  */
 
- /**
- * @param {number} n
- * @param {number} k
- * @return {string}
- */
-var getPermutation = function(n, k) {
-    
+var getPermutation = function (n, k) {
+  let res = []
+  let f = [1]
+  let s = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+  for (let i = 1; i < n; i++) {
+    console.log('i', i, 'f', f);
+    f[i] = factorial(i)
+  }
+  --k
+  for (let i = n; i >= 1; i--) {
+    let j = Math.floor(k / f[i - 1])
+    k %= f[i - 1]
+    res += s[j]
+    s.splice(j, 1)
+  }
+  return res
 };
+
+function factorial(n, total = 1) {
+  if (n === 1) return total;
+  return factorial(n - 1, n * total);
+}
+
+console.log(getPermutation(6, 3));
+
