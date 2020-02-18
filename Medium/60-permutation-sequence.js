@@ -37,18 +37,22 @@ var getPermutation = function (n, k) {
     console.log('i', i, 'f', f);
     f[i] = factorial(i)
   }
+  console.log('f after first loop', f);
   --k
   for (let i = n; i >= 1; i--) {
     let j = Math.floor(k / f[i - 1])
     k %= f[i - 1]
     res += s[j]
+
     s.splice(j, 1)
+    console.log('f', f, 'res', res, 's', s);
   }
   return res
 };
 
 function factorial(n, total = 1) {
   if (n === 1) return total;
+  console.log('factorial, totol:', n * total, 'n', n);
   return factorial(n - 1, n * total);
 }
 
