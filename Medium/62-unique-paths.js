@@ -31,12 +31,12 @@
  * @return {number}
  */
 var uniquePaths = function(m, n) {
-  let memo = new Array(m).fill(1);
-
-  for (let j = 1; j < n; j++) {
-    for (let i = 1; i < m; i++) {
-      memo[i] += memo[i - 1];
-    }
+  let memo = new Array(m).fill().map(() => new Array(n).fill(1));
+  
+  for (let i = 1; i < m; i++) {
+      for (let j = 1; j < n; j++) {
+          memo[i][j] = memo[i - 1][j] + memo[i][j - 1];
+      }
   }
-  return memo;
+  return memo[m - 1][n - 1];
 };
