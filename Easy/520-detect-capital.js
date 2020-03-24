@@ -27,30 +27,16 @@ Output: False
 Note: The input will be a non-empty word consisting of uppercase and lowercase latin letters.
  */
 
- /**
+/**
  * @param {string} word
  * @return {boolean}
  */
 var detectCapitalUse = function(word) {
-  let isLowercase = false;
-  let uppercaseCount = 0;
-  let len = word.length;
-  let isFirstUppercase = false;
-  for (let i = 0; i < len; i++) {
-      let curUp = word[i] === word[i].toUpperCase();
-      if (curUp && i === 0) {
-          isFirstUppercase = true;
-          uppercaseCount++;
-      } else if (curUp) {
-          if (!isFirstUppercase) {
-              return false;
-          }
-          uppercaseCount++;
-      } else {
-          if (uppercaseCount > 1 && isFirstUppercase) {
-              return false;
-          }
+  if (word[0] === word[0].toUpperCase()) {
+      let restOfWord = word.slice(1);
+      if (restOfWord === restOfWord.toLowerCase() || restOfWord === restOfWord.toUpperCase()) {
+          return true;
       }
   }
-  return uppercaseCount === 0 || uppercaseCount === len || (uppercaseCount === 1 && isFirstUppercase);
+  return word === word.toLowerCase();
 };
