@@ -56,12 +56,16 @@ nums.length == index.length
 0 <= index[i] <= i
  */
 
- /**
+/**
  * @param {number[]} nums
  * @param {number[]} index
  * @return {number[]}
  */
 var createTargetArray = function(nums, index) {
-    
+  const target = [];
+  for (let i = 0, len = nums.length; i < len; i++) {
+      let j = index[i];
+      target.splice(j, 0, nums[i]);
+  }
+  return target;
 };
-
