@@ -38,7 +38,7 @@ Note: The merging process must start from the root nodes of both trees.
  */
 
  
- /**
+/**
  * Definition for a binary tree node.
  * function TreeNode(val, left, right) {
  *     this.val = (val===undefined ? 0 : val)
@@ -58,16 +58,16 @@ var mergeTrees = function(t1, t2) {
 };
 
 const sumRec = (t1, t2) => {
-	if (t1 === null) {
-			
+	if (!t1 && !t2) {
+			return;
 	}
-	if (!t1.val) {
+	if (t1 && t1.val === null) {
 			t1.val = 0;
 	}
-	if (!t2.val) {
+	if (t2 && t2.val === null) {
 			t2.val = 0;
 	}
 	t1.val += t2.val
-	if (root)
+	sumRec(t1.left, t2.left);
+	sumRec(t1.right, t2.right);
 }
-
