@@ -47,27 +47,38 @@ Note: The merging process must start from the root nodes of both trees.
  * }
  */
 /**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * Recursive solution
+ * Time complexity: O(n)
  * @param {TreeNode} t1
  * @param {TreeNode} t2
  * @return {TreeNode}
  */
 var mergeTrees = function(t1, t2) {
-	const head = t1;
-	sumRec(t1, t2);
-	return head;
+	return mergeTreesRec(t1, t2);
 };
 
-const sumRec = (t1, t2) => {
-	if (!t1 && !t2) {
-			return;
+/**
+ * 
+ * @param {*} t1 
+ * @param {*} t2 
+ */
+const mergeTreesRec = (t1, t2) => {
+	if (!t1) {
+			return t2;
 	}
-	if (t1 && t1.val === null) {
-			t1.val = 0;
+	if (!t2) {
+			return t1
 	}
-	if (t2 && t2.val === null) {
-			t2.val = 0;
-	}
-	t1.val += t2.val
-	sumRec(t1.left, t2.left);
-	sumRec(t1.right, t2.right);
+	t1.val += t2.val;
+	t1.left = mergeTreesRec(t1.left, t2.left);
+	t1.right = mergeTreesRec(t1.right, t2.right);
+	return t1;
 }
