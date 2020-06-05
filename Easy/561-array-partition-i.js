@@ -28,6 +28,9 @@ All the integers in the array will be in the range of [-10000, 10000].
  */
 var arrayPairSum = function(nums) {
   const sorted = nums.sort((a, b) => a - b);
-  
-  return sorted;
+  let sum = 0;
+  for (let i = 0; i <= nums.length - 2; i += 2) {
+      sum += Math.min(sorted[i], sorted[i + 1]);
+  }
+  return sum;
 };
