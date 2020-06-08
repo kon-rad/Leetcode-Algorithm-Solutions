@@ -25,11 +25,20 @@ Input: [4,1,2,1,2]
 Output: 4
  */
 
- /**
+/**
  * @param {number[]} nums
  * @return {number}
  */
 var singleNumber = function(nums) {
-    
+  const s = {};
+  let a = null;
+  nums.forEach(c => s.hasOwnProperty(c) ? s[c]++ : s[c] = 1);
+  for (let c in s) {
+      if (s[c] === 1) {
+          a = c;
+          break;
+      }
+  }
+  return a;
 };
 
