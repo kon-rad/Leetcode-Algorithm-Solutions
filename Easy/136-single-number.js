@@ -30,15 +30,14 @@ Output: 4
  * @return {number}
  */
 var singleNumber = function(nums) {
-  const s = {};
-  let a = null;
-  nums.forEach(c => s.hasOwnProperty(c) ? s[c]++ : s[c] = 1);
-  for (let c in s) {
-      if (s[c] === 1) {
-          a = c;
+  const map = {};
+  nums.forEach(c => map.hasOwnProperty(c) ? map[c]++ : map[c] = 1);
+  for (let c in map) {
+      if (map[c] === 1) {
+          return map[c];
           break;
       }
   }
-  return a;
 };
+
 
