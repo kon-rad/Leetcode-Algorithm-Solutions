@@ -34,10 +34,10 @@ var singleNumber = function(nums) {
   nums.forEach(c => map.hasOwnProperty(c) ? map[c]++ : map[c] = 1);
   for (let c in map) {
       if (map[c] === 1) {
-          return map[c];
-          break;
+          return c;
       }
   }
 };
+
 
 
