@@ -37,6 +37,8 @@ Output: [1,2,3,6,7,11,14,4,8,12,5,9,13,10]
  */
 
 /**
+ * Recursive solution 
+ * O(n)
  * @param {Node} root
  * @return {number[]}
  */
@@ -56,3 +58,27 @@ const preOrderRec = (result, root) => {
       root.children.forEach(child => preOrderRec(result, child));
   }
 }
+
+/**
+ * Iterative solution 
+ * O(n)
+ * @param {Node} root
+ * @return {number[]}
+ */
+var preorder = function(root) {
+  const result = [];
+  const stack = [];
+  if (!root) {
+      return result;
+  }
+  stack.push(root);
+  while (stack.length) {
+      const node = stack.pop();
+      result.push(node.val);
+      for (let i = node.children.length - 1; i >= 0; i--) {
+          stack.push(node.children[i]);
+      }
+      
+  }
+  return result
+};
