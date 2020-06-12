@@ -43,6 +43,7 @@ The total number of nodes is between [0, 10^4]
  */
 
 /**
+ * Recursive Time O(n)
  * @param {Node} root
  * @return {number[]}
  */
@@ -61,5 +62,30 @@ const traverse = (root, result) => {
   }
   result.push(root.val);
 }
+
+/**
+ * // Definition for a Node.
+ * function Node(val,children) {
+ *    this.val = val;
+ *    this.children = children;
+ * };
+ */
+
+/**
+ * Iterative Time O(n)
+ * @param {Node} root
+ * @return {number[]}
+ */
+var postorder = function(root) {
+  const result = [];
+  const stack = [root];
+  while (stack.length) {
+      const curr = stack.pop();
+      if (!curr) continue;
+      result.push(curr.val)
+      stack.push(...curr.children);
+  }
+  return result.reverse();
+};
 
 
