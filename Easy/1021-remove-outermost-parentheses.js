@@ -43,10 +43,28 @@ S is a valid parentheses string
  
  */
 
- /**
+/**
  * @param {string} S
  * @return {string}
  */
 var removeOuterParentheses = function(S) {
-    
+  let openParen = 0;
+  const sub = [];
+  let buildSub = '';
+  S.split('').forEach(c => {
+      buildSub += c;
+      if (c === '(') openParen++;
+      else if (c === ')') openParen--;
+      if (openParen === 0) {
+          sub.push(buildSub);
+          buildSub = '';
+      }
+  });
+  return sub.map(s => {
+      const arr = s.split('');
+      if (arr.length === 0) return s;
+      arr.shift();
+      arr.pop();
+      return arr.join('')
+  }).join('');
 };
