@@ -44,27 +44,21 @@ S is a valid parentheses string
  */
 
 /**
+ * O(n) time complexity
  * @param {string} S
  * @return {string}
  */
 var removeOuterParentheses = function(S) {
-  let openParen = 0;
-  const sub = [];
-  let buildSub = '';
-  S.split('').forEach(c => {
-      buildSub += c;
-      if (c === '(') openParen++;
-      else if (c === ')') openParen--;
-      if (openParen === 0) {
-          sub.push(buildSub);
-          buildSub = '';
+  let count = 0;
+  let result = '';
+  for (let i = 0, len = S.length; i < len; i++) {
+      if (S[i] === '(') {
+          if (count !== 0) result += '(';
+          count++;
+      } else {
+          if (count !== 1) result += ')';
+          count--;
       }
-  });
-  return sub.map(s => {
-      const arr = s.split('');
-      if (arr.length === 0) return s;
-      arr.shift();
-      arr.pop();
-      return arr.join('')
-  }).join('');
+  }
+  return result;
 };
