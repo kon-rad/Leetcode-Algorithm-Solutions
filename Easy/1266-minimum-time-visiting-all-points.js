@@ -33,31 +33,21 @@ points[i].length == 2
 -1000 <= points[i][0], points[i][1] <= 1000
  */
 
- /**
+/**
+ * Time: O(n)
+ * Space: O(1)
  * @param {number[][]} points
  * @return {number}
  */
 var minTimeToVisitAllPoints = function(points) {
-  const len = points.length;
-  let count = 0;
-  if (len <= 1) return count;
-  for (let i = 1; i < len; i++) {
-      let ax = points[i-1][0];
-      let ay = points[i-1][1];
-      let bx = points[i][0];
-      let by = points[i][1];
-      while (ax <= bx && ay <= by) {
-          count++;
-          points[i-1][0]++;
-          points[i-1][1]++;
-      }
-      while (ax <= bx) {
-          count++;
-          points[i-1][0]++;
-      }
-      while (ay <= by) {
-          count++;
-          points[i-1][1]++;
-      }
-  }
+    const len = points.length;
+    let count = 0;
+    if (len <= 1) return count;
+    for (let i = 1; i < len; i++) {
+        let x = Math.abs(points[i - 1][0] - points[i][0]);
+        let y = Math.abs(points[i - 1][1] - points[i][1]);
+        console.log(x, y);
+        count += Math.max(x, y);
+    }
+    return count;
 };
