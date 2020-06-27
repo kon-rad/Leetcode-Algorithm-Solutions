@@ -32,3 +32,22 @@ var dailyTemperatures = function(T) {
   }
   return result;
 };
+
+
+/**
+ * Stack solution
+ * @param {*} temperatures 
+ */
+var dailyTemperatures = function(T) {
+    const len = T.length;
+    const res = new Array(len).fill(0);
+    const stack = [];
+    for (let i = 0; i < len; i++) {
+        while (stack.length > 0 && T[stack[stack.length - 1]] < T[i]) {
+            const j = stack.pop();
+            res[j] = i - j;
+        }
+        stack.push(i);
+    }
+    return res;
+  };
