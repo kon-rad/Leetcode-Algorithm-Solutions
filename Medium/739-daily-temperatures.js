@@ -50,4 +50,4 @@ var dailyTemperatures = function(T) {
         stack.push(i);
     }
     return res;
-  };
+};
