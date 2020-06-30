@@ -25,11 +25,29 @@ Note:
 0 <= A[i].start, A[i].end, B[i].start, B[i].end < 10^9
  */
 
- /**
+/**
+ * Time: O(A+B)
+ * Space: O(A+B)
  * @param {number[][]} A
  * @param {number[][]} B
  * @return {number[][]}
  */
 var intervalIntersection = function(A, B) {
-    
+  const al = A.length;
+  const bl = B.length;
+  const res = [];
+  let i = 0, j = 0;
+  while (i < al && j < bl) {
+      let maxStart = Math.max(A[i][0], B[j][0]);
+      let minEnd = Math.min(A[i][1], B[j][1]);
+      if (maxStart <= minEnd) {
+          res.push([maxStart, minEnd]);
+      }
+      if (A[i][1] < B[j][1]) {
+          i++;
+      } else {
+          j++;
+      }
+  }
+  return res;
 };
