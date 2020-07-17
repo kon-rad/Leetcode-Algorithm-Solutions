@@ -60,3 +60,23 @@ const findBattleship = (y, x, board, mapB) => {
       y++;
   }
 }
+
+/**
+ * @param {character[][]} board
+ * @return {number}
+ */
+var countBattleships = function(board) {
+  let count = 0;
+  const yLen = board.length;
+  const xLen = board[0].length;
+  for(let y = 0; y < yLen; y++) {
+      for(let x = 0; x < xLen; x++) {
+          if (board[y][x] === 'X') {
+              if ((y === 0 || board[y-1][x] === '.') && (x === 0 || board[y][x - 1] === '.')) {
+                  count++;
+              }
+          }
+      }
+  }
+  return count;
+};
