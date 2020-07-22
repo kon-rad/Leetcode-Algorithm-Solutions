@@ -52,6 +52,7 @@ const swap = (nums, a, b) => {
 const arr = [1,2,3];
 console.log(permuteUnique(arr));
 
+/** ELEGANT SOLUTION  */
 /**
  * Space O(n!) 
  * @param {number[]} nums
@@ -74,3 +75,27 @@ var permute = function(nums) {
   }
   return ans;
 };
+
+
+/** BACKTRACKING SOLUTION  */
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var permute = function(nums) {
+    const res = [];
+    backtrack(nums, res, 0);
+    return res;
+}
+
+const backtrack = (nums, res, n) => {
+    if (n === nums.length - 1) {
+        res.push(nums.slice(0));
+        return;
+    }
+    for (let i = n; i < nums.length; i++) {
+        [nums[i], nums[n]] = [nums[n], nums[i]];
+        backtrack(nums, res, n + 1);
+        [nums[i], nums[n]] = [nums[n], nums[i]];
+    }
+}
