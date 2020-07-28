@@ -25,10 +25,26 @@ Note:
 tiles consists of uppercase English letters.
  */
 
- /**
+/**
  * @param {string} tiles
  * @return {number}
  */
 var numTilePossibilities = function(tiles) {
-    
+  const map = new Map();
+  for (let i = 0, len = tiles.length; i < len; i++) {
+      map.set(tiles[i], (map.get(tiles[i]) || 0) + 1);
+  }
+  return recursiveCount(map);
 };
+
+const recursiveCount = (map) => {
+  let sum = 0;
+  for (let [key, value] of map.entries()) {
+      if (value === 0) continue;
+      sum++;
+      map.set(key, map.get(key) - 1);
+      sum += recursiveCount(map);
+      map.set(key, map.get(key) + 1);
+  }
+  return sum;
+}
