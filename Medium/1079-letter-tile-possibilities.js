@@ -26,6 +26,7 @@ tiles consists of uppercase English letters.
  */
 
 /**
+ * This solution only calculates number of combinations, without finding what they are
  * @param {string} tiles
  * @return {number}
  */
@@ -47,4 +48,28 @@ const recursiveCount = (map) => {
       map.set(key, map.get(key) + 1);
   }
   return sum;
+}
+
+
+/**
+ * This solution finds all combinations
+ * @param {string} tiles
+ * @return {number}
+ */
+var numTilePossibilities = function(tiles) {
+  const comb = recursiveComb(tiles, new Set(), '');
+  return comb.size;
+};
+
+const recursiveComb = (tiles, seenStr, currentStr) => {
+  if (tiles.length === 0) {
+      return seenStr;
+  }
+  for(let i = 0, len = tiles.length; i < len; i++) {
+      let str = currentStr + tiles[i];
+      seenStr.add(str);
+      let newtiles = tiles.slice(0, i) + tiles.slice(i + 1);
+      recursiveComb(newtiles, seenStr, str);
+  }
+  return seenStr;
 }
