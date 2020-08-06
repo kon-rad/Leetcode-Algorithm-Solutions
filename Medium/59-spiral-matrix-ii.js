@@ -48,7 +48,7 @@ var generateMatrix = function(n) {
       // direction is 0 to 3, as there are 4 directions
       // (right, down, left, up)
       dir = (dir + 1) % 4;
-  }
+  } 
 
   return matrix;
 };
