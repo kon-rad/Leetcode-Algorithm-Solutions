@@ -27,10 +27,11 @@ tiles consists of uppercase English letters.
 
 /**
  * This solution only calculates number of combinations, without finding what they are
+ * Note: a 'sequence' is a collection of items where repetition is allowed and order does matter
  * @param {string} tiles
  * @return {number}
  */
-var numTilePossibilities = function(tiles) {
+const numTilePossibilities = function(tiles) {
   const map = new Map();
   for (let i = 0, len = tiles.length; i < len; i++) {
       map.set(tiles[i], (map.get(tiles[i]) || 0) + 1);
@@ -56,7 +57,7 @@ const recursiveCount = (map) => {
  * @param {string} tiles
  * @return {number}
  */
-var numTilePossibilities = function(tiles) {
+const numTilePossibilities = function(tiles) {
   const comb = recursiveComb(tiles, new Set(), '');
   return comb.size;
 };
@@ -76,12 +77,10 @@ const recursiveComb = (tiles, seenStr, currentStr) => {
 
 /**
  * This one is clean and very nice. 
- * Todo: how is the count incremented for multi letter combinations? 
- * Figure out how this works! I can see how one char increments the count, but how do multiple ones?
  * @param {string} tiles
  * @return {number}
  */
-var numTilePossibilities = function(tiles) {
+const numTilePossibilities = function(tiles) {
   if (tiles.length === 0) {
       return 0;
   }
