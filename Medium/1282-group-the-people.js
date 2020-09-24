@@ -50,9 +50,18 @@ var groupThePeople = function(groupSizes) {
       }
   }
   const result = [];
-  for (let k of dict) {
-      
+  for (let k in dict) {
+    let num = parseInt(k);
+    let val = dict[k];
+    for (let m = 0; m < val.length; m += num) {
+      const arr = [];
+      for (let n = m; n < m + num; n++) {
+        arr.push(val[n]);
+      }
+      result.push(arr);
+    }
   }
+return result;
 };
 
 
