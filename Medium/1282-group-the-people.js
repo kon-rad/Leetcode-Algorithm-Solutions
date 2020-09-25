@@ -64,4 +64,24 @@ var groupThePeople = function(groupSizes) {
 return result;
 };
 
-
+/**
+ * @param {number[]} groupSizes
+ * @return {number[][]}
+ */
+var groupThePeople = function(groupSizes) {
+  const dict = {};
+  const res = [];
+  for (let i = 0; i < groupSizes.length; i++) {
+      const size = groupSizes[i];
+      if (dict.hasOwnProperty(size)) {
+          dict[size].push(i);
+      } else {
+          dict[size] = [i];
+      }
+      if (dict[size].length === size) {
+          res.push(dict[size]);
+          dict[size] = [];
+      }
+  }
+return res;
+};
