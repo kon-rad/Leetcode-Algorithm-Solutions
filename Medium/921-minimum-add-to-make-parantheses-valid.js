@@ -52,3 +52,24 @@ var minAddToMakeValid = function(S) {
   }
   return count += stack.length;
 };
+
+/**
+ * @param {string} S
+ * @return {number}
+ */
+var minAddToMakeValid = function(S) {
+  let open = 0;
+  let close = 0;
+  for(let i = 0, len = S.length; i < len; i++) {
+    if (S[i] === '(') {
+      open++;
+    } else {
+      if (open > 0) {
+        open--;
+      } else {
+        close++;
+      }
+    }
+  }
+  return open + close;
+};
