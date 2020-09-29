@@ -27,23 +27,31 @@ n == mat[i].length
  * @return {number[][]}
  */
 var diagonalSort = function(mat) {
-  const sorted = [];
-  const combined = [];
-  let m = mat.length;
-  let n = 0;
-  if (mat.length > 0) {
-    n = mat[0].length;
-  };
-  mat.forEach(arr => combined.push(...arr));
-  combined.sort();
-  const res = [];
-  let ni = -1;
-  for (let i = 0; i < combined.length; i++) {
-    if (i % n === 0) {
-      res.push([]);
-      ni++;
+  // create a map of diagnal key to values of each diagnal list
+  // the key will be i-j, as it's the same for each diagnal
+  const diagnal = new Map;
+  for (let i = 0, len = mat.length; i < len; i++) {
+    for (let j = 0, len = mat[i].length; j < len; j++) {
+      let coord = i - j;
+      if (diagnal.has(coord)) {
+        // add new value
+        diagnal.set(coord, [...diagnal.get(coord), mat[i][j]]);
+      } else {
+        // create the initial array
+        diagnal.set(coord, [mat[i][j]]);
+      }
     }
-    res[ni].push(combined[i]);
   }
-  return res;
+  for (let [key, value] of diagnal) {
+    // sort each diagnal array
+    diagnal.set(key, value.sort((a, b) => a - b));
+  }
+  // set the sorted values for each diagnal
+  for (let i = 0, len = mat.length; i < len; i++) {
+    for (let j = 0, len = mat[i].length; j < len; j++) {
+      let coord = i - j;
+      mat[i][j] = diagnal.get(coord).shift();
+    }
+  }
+  return mat;
 };
