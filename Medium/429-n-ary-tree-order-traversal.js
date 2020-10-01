@@ -27,3 +27,35 @@ Constraints:
 The height of the n-ary tree is less than or equal to 1000
 The total number of nodes is between [0, 10^4]
  */
+
+ /**
+ * // Definition for a Node.
+ * function Node(val,children) {
+ *    this.val = val;
+ *    this.children = children;
+ * };
+ */
+
+/**
+ * @param {Node} root
+ * @return {number[][]}
+ */
+var levelOrder = function(root) {
+  const res = [], queue = [];
+  let num = 0, depth = 0;
+  if (root) {
+      queue.push(root);
+  }
+  while (queue.length) {
+      res.push([]);
+      num = queue.length;
+      for (let i = 0; i < num; i++) {
+          let curr = queue.shift();
+          if (!curr) continue;
+          res[depth].push(curr.val);
+          queue.push(...curr.children)
+      }
+      depth++;
+  }
+  return res;
+};
