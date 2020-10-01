@@ -36,3 +36,23 @@ var subsets = function(nums) {
   }
   return res;
 };
+
+/**
+ * Recursive back tracking
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var subsets = function(nums) {
+  const res = [];
+  backtrack(nums, res, [], 0);
+  return res;
+};
+
+const backtrack = (nums, res, temp, start) => {
+ res.push([...temp]);
+ for (let i = start, len = nums.length; i < len; i++) {
+   temp.push(nums[i]);
+   backtrack(nums, res, [...temp], i + 1);
+   temp.pop();
+ }
+}
