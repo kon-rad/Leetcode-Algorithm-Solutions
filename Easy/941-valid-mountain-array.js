@@ -68,3 +68,17 @@ var validMountainArray = function(A) {
   }
   return ans && decreasing;
 };
+
+/**
+ * @param {number[]} A
+ * @return {boolean}
+ */
+var validMountainArray = function(A) {
+  const len = A.length;
+  if (len < 3) return false;
+  let i = 0;
+  let j = len - 1;
+  while (i < len - 1 && A[i] < A[i+1]) i++;
+  while (j > 1 && A[j] < A[j-1]) j--;
+  return j === i && i !== len - 1;
+};
