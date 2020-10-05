@@ -38,90 +38,41 @@ Note:
 The answer is guaranteed to be less than 2 ^ 31.
  */
 
- /**
+/**
  * @param {number[]} commands
  * @param {number[][]} obstacles
  * @return {number}
  */
 var robotSim = function(commands, obstacles) {
-  let dir = 'N';
-  let maxEuclideanDistance = 0;
-  let pos = [0, 0];
-  let nextPos;
+  const dirs = [[0, 1], [1, 0], [0, -1], [-1, 0]];
+  const obst = obstacles.reduce((acc, cur) => {
+    acc[`${cur[0]}:${cur[1]}`] = true 
+    return acc;
+  }, {});
+  let dir = 0;
+  let max = 0;
+  let x = 0, y = 0;
   commands.forEach(c => {
-    console.log('pos', pos);
-    console.log('dir', dir);
-    if (c === -2) {
-      // turn left 90 degrees
-      switch (dir) {
-        case 'N':
-          dir = 'W';
-          break;
-        case 'E':
-          dir = 'N';
-          break;
-        case 'S':
-          dir = 'E';
-          break;
-        case 'W':
-          dir = 'S';
-          break;
-      }
-      return;
-    } else if (c === -1) {
-      // turn right 90 degrees
-      switch (dir) {
-        case 'N':
-          dir = 'E';
-          break;
-        case 'E':
-          dir = 'S';
-          break;
-        case 'S':
-          dir = 'W';
-          break;
-        case 'W':
-          dir = 'N';
-          break;
-      }
-      return;
+    if (c === -1) {
+      dir = (dir + 1) % 4
+    } else if (c === -2) {
+      dir = (dir + 3) % 4;
     } else {
-      // move forward by X places
-      switch (dir) {
-        case 'N':
-          nextPos = [pos[0], pos[1] + c];
+      let dx = dirs[dir][0]
+      let dy = dirs[dir][1]
+      for (let i = 0; i < c; i++) {
+        x += dx;
+        y += dy;
+        if (obst.hasOwnProperty(`${x}:${y}`)) {
+          x -= dx;
+          y -= dy;
           break;
-        case 'E':
-          nextPos = [pos[0] + c, pos[1]];
-          break;
-        case 'S':
-          nextPos = [pos[0], pos[1] - c];
-          break;
-        case 'W':
-          nextPos = [pos[0] - c, pos[1]];
-          break;
-      }
-      obstacles.forEach(o => {
-        if (o[0] === nextPos[0] && o[1] === nextPos[1]) {
-          return;
         }
-      });
-      pos = nextPos.slice();
-      let eucDist = getEucDist(pos);
-      console.log('eucDist', eucDist);
-      if (eucDist > maxEuclideanDistance) {
-        maxEuclideanDistance = eucDist;
       }
+      max = Math.max(max, x*x + y*y)
     }
   });
 
-  return maxEuclideanDistance;
+  return max;
 };
-
-const getEucDist = pos => {
-  let xDiff = Math.abs(pos[0]);
-  let yDiff = Math.abs(pos[1]);
-  return xDiff * xDiff + yDiff * yDiff;
-}
-
 
