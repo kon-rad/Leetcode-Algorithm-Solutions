@@ -26,19 +26,61 @@ Input: root = []
 Output: []
  */
 
+
+function TreeNode(val, left, right) {
+  this.val = (val===undefined ? 0 : val)
+  this.left = (left===undefined ? null : left)
+  this.right = (right===undefined ? null : right)
+  return this;
+}
+
+let input = [1,3,2,5,3,null,9];
+
+const r = TreeNode(1, null, null);
+console.log(r.right);
+const rootPointerL = TreeNode(null, r, null);
+r.right = TreeNode(3, null, null);
+r.left = TreeNode(2, null, null);
+rLevel2 = r.right;
+lLevel2 = r.left;
+// rLevel2.right = TreeNode(5, null, null);
+// rLevel2.left = TreeNode(3, null, null);
+// lLevel2.left = TreeNode(9, null, null);
+
+
+const printTree = r => {
+if (!r) return
+if (r.val) console.log(r.val);
+printTree(r.right);
+printTree(r.left);
+}
+printTree(rootPointerL)
 /**
- * Definition for a binary tree node.
- * function TreeNode(val, left, right) {
- *     this.val = (val===undefined ? 0 : val)
- *     this.left = (left===undefined ? null : left)
- *     this.right = (right===undefined ? null : right)
- * }
- */
+Definition for a binary tree node.
+* function TreeNode(val, left, right) {
+*     this.val = (val===undefined ? 0 : val)
+*     this.left = (left===undefined ? null : left)
+*     this.right = (right===undefined ? null : right)
+* }
+*/
 /**
- * @param {TreeNode} root
- * @return {number[]}
- */
+* @param {TreeNode} root
+* @return {number[]}
+*/
 var largestValues = function(root) {
-    
+  const res = [];
+  if (!root || root.val === undefined) {
+      return res;
+  }
+  res.push(root.val);
 };
+
+const getValsRec = (root, res, i) => {
+  
+}
+
+
+
+
+
 
