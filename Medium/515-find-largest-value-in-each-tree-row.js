@@ -26,26 +26,24 @@ Input: root = []
 Output: []
  */
 
-
+/* code for setting up test cases */
 function TreeNode(val, left, right) {
-  this.val = (val===undefined ? 0 : val)
-  this.left = (left===undefined ? null : left)
-  this.right = (right===undefined ? null : right)
-  return this;
+  const node = {}
+  node.val = (val===undefined ? 0 : val)
+  node.left = (left===undefined ? null : left)
+  node.right = (right===undefined ? null : right)
+  return node;
 }
 
-let input = [1,3,2,5,3,null,9];
 
-const r = TreeNode(1, null, null);
-console.log(r.right);
-const rootPointerL = TreeNode(null, r, null);
-r.right = TreeNode(3, null, null);
+const r = TreeNode(0, null, null);
+r.right = TreeNode(-1, null, null);
 r.left = TreeNode(2, null, null);
 rLevel2 = r.right;
 lLevel2 = r.left;
-// rLevel2.right = TreeNode(5, null, null);
-// rLevel2.left = TreeNode(3, null, null);
-// lLevel2.left = TreeNode(9, null, null);
+rLevel2.right = TreeNode(5, null, null);
+rLevel2.left = TreeNode(3, null, null);
+lLevel2.left = TreeNode(9, null, null);
 
 
 const printTree = r => {
@@ -54,29 +52,45 @@ if (r.val) console.log(r.val);
 printTree(r.right);
 printTree(r.left);
 }
-printTree(rootPointerL)
+/* end test code */
 /**
-Definition for a binary tree node.
-* function TreeNode(val, left, right) {
-*     this.val = (val===undefined ? 0 : val)
-*     this.left = (left===undefined ? null : left)
-*     this.right = (right===undefined ? null : right)
-* }
-*/
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
 /**
-* @param {TreeNode} root
-* @return {number[]}
-*/
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
 var largestValues = function(root) {
   const res = [];
+  const dict = {};
+  let level = 0;
   if (!root || root.val === undefined) {
       return res;
   }
-  res.push(root.val);
+  getValsRec(root, level + 1, dict);
+  Object.keys(dict).forEach(l => {
+    let levelMax = dict[l][0];
+    dict[l].forEach(n => {
+      if (n > levelMax) levelMax = n;
+    });
+    res.push(levelMax);
+  });
+  return res;
 };
 
-const getValsRec = (root, res, i) => {
-  
+const getValsRec = (node, level, dict) => {
+if (!node) return;
+if (!dict.hasOwnProperty(level)) {
+  dict[level] = [];
+}
+dict[level].push(node.val);
+getValsRec(node.right, level + 1, dict);
+getValsRec(node.left, level + 1, dict);
 }
 
 
