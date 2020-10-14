@@ -94,7 +94,34 @@ getValsRec(node.left, level + 1, dict);
 }
 
 
-
-
-
-
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+var largestValues = function(root) {
+  if (!root) return [];
+  const res = [];
+  const queue = [root];
+  while (queue.length > 0) {
+      let levelLenght = queue.length;
+      let max = -Infinity;
+      
+      for (let i = 0; i < levelLenght; i++) {
+          let node = queue.pop();
+          max = Math.max(node.val, max);
+          if (node.left) queue.unshift(node.left);
+          if (node.right) queue.unshift(node.right);
+          
+      }
+      res.push(max);
+  }
+  return res;
+};
