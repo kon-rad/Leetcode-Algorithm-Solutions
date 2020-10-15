@@ -27,6 +27,21 @@ Could you solve it with constant space complexity? (The output array does not co
  * @param {number[]} nums
  * @return {number[]}
  */
-var productExceptSelf = function(nums) {
-  let output = [];
+let productExceptSelf = A => {
+  let l = [...A];
+  let r = [...A];
+  const len = A.length
+
+  for (let i = 1; i < len; i++) {
+    l[i] *= l[i-1];
+  }
+  for (let i = len - 2; i > 0; i--) {
+    r[i] *= r[i+1];
+  }
+  return A.map((_, i) => {
+    let prod = 1;
+    if (i > 0) prod *= l[i-1];
+    if (i < len - 1) prod *= r[i+1];
+    return prod;
+  })
 };
