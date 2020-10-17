@@ -52,3 +52,53 @@ var generateMatrix = function(n) {
 
   return matrix;
 };
+
+/**
+ * @param {number} n
+ * @return {number[][]}
+ */
+var generateMatrix = function(n) {
+    // new matrix to populate
+    let m = [...Array(n)].map(() => (new Array(n).fill(null)));
+    // direction
+    let dir = 0;
+    // determines how long to continue in current direction
+    let len = n;
+    // the length of the next phase after direction change, it will be either the same as current or shorter by 1
+    let nextLen = n;
+    // keeps track of when to decrement the length by 1, this happens on every other direction change
+    let decrementLen = 1;
+    // array of directions, hold values of y and x increment/decrement
+    const dirs = [
+      // y, x
+      [0, 1], // right
+      [1, 0], // down
+      [0, -1], // left
+      [-1, 0], // up
+    ];
+    let x = 0;
+    let y = 0;
+    for (let i = 1; i <= n * n; i++) {
+      // write value to new matrix
+      m[y][x] = i;
+      len--;
+      if (len === 0) {
+        decrementLen--;
+        if (decrementLen === 0) {
+          // reached the edge where need to decrement the length
+          decrementLen = 2;
+          nextLen--;
+          len = nextLen;
+        } else {
+          // the edge where the two direction phases are the same length
+          len = nextLen;
+        }
+        // change direction
+        dir = (dir + 1) % 4;
+      }
+      // increment progress in spiral
+      x += dirs[dir][1];
+      y += dirs[dir][0];
+    }
+    return m
+  };
