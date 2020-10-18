@@ -102,3 +102,40 @@ var generateMatrix = function(n) {
     }
     return m
   };
+
+
+/**
+ * @param {number} n
+ * @return {number[][]}
+ */
+var generateMatrix = function(n) {
+    let m = [...Array(n)].map(() => (new Array(n).fill(1)));
+    let colStart = 0;
+    let colEnd = n - 1;
+    let rowStart = 0;
+    let rowEnd = n - 1;
+    let cnt = 1;
+    while (rowStart <= rowEnd && colStart <= colEnd) {
+      for (let i = colStart; i <= colEnd; i++) {
+        m[rowStart][i] = cnt;
+        cnt++;
+      }
+      rowStart++;
+      for (let i = rowStart; i <= rowEnd; i++) {
+        m[i][colEnd] = cnt;
+        cnt++;
+      }
+      colEnd--;
+      for (let i = colEnd; i >= colStart; i--) {
+        m[rowEnd][i] = cnt;
+        cnt++;
+      }
+      rowEnd--;
+      for (let i = rowEnd; i >= rowStart; i--) {
+        m[i][colStart] = cnt;
+        cnt++;
+      }
+      colStart++;
+    }
+    return m;
+};
