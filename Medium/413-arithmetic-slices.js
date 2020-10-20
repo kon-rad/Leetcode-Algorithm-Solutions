@@ -33,5 +33,13 @@ return: 3, for 3 arithmetic slices in A: [1, 2, 3], [2, 3, 4] and [1, 2, 3, 4] i
  * @return {number}
  */
 var numberOfArithmeticSlices = function(A) {
-    
+  let total = 0;
+  let currSliceDiff;
+  let len = A.length;
+  let currSliceLen = 0;
+  let currDiff;
+  if (len < 3) return total;
+  for (let i = 1; i < len; i++) {
+    currDiff = A[i-1] - A[i];
+  }
 };
