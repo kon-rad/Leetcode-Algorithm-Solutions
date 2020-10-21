@@ -28,18 +28,36 @@ A = [1, 2, 3, 4]
 return: 3, for 3 arithmetic slices in A: [1, 2, 3], [2, 3, 4] and [1, 2, 3, 4] itself.
  */
 
- /**
+/**
+ * Simple solution.
  * @param {number[]} A
  * @return {number}
  */
 var numberOfArithmeticSlices = function(A) {
-  let total = 0;
-  let currSliceDiff;
-  let len = A.length;
-  let currSliceLen = 0;
-  let currDiff;
-  if (len < 3) return total;
-  for (let i = 1; i < len; i++) {
-    currDiff = A[i-1] - A[i];
+  let count = 0;
+  let diff = A[1] - A[0];
+  let result = 0;
+  for (let i = 2; i < A.length; i++) {
+    if (diff === A[i] - A[i - 1]) {
+      count++;
+      result += count;
+    } else {
+      diff = A[i] - A[i - 1];
+      count = 0;
+    }
   }
+  return result;
+};
+
+/**
+ * Advanced solution, calculates the combinations
+ */
+var numberOfArithmeticSlices = function(A) {
+  var ret = 0, i, j;
+  for (i = 1; i < A.length; i = j) {
+      for (j = i + 1; j < A.length && A[j] - A[j - 1] == A[i] - A[i - 1]; j++);
+      // add number of slices in this segment
+      ret += (j - i) * (j - i - 1) / 2;
+  }
+  return ret;
 };
