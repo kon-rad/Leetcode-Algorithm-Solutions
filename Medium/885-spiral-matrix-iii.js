@@ -50,6 +50,25 @@ Note:
  * @return {number[][]}
  */
 var spiralMatrixIII = function(R, C, r0, c0) {
+  let m = R * C;
+  let colMax = C - 1;
+  let colMin = 0;
+  let rowMax = r0 + 1;
+  let rowMin = r0 - 1;
+  let c = c0;
+  let r = r0;
+  const dirs = [
+    // row, col
+    [0, 1], // right
+    [1, 0], // down
+    [0, -1], // left
+    [1, 0], // up
+  ];
+  let dirIndex = 0;
+  const result = [];
+  for (let i = 0; i < m; i++) {
     
+  }
+
 };
 
