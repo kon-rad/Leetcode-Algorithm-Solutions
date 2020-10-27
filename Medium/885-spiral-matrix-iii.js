@@ -51,8 +51,8 @@ Note:
  */
 var spiralMatrixIII = function(R, C, r0, c0) {
   let m = R * C;
-  let colMax = C - 1;
-  let colMin = 0;
+  let colMax = c0 + 1;
+  let colMin = c0 - 1;
   let rowMax = r0 + 1;
   let rowMin = r0 - 1;
   let c = c0;
@@ -62,13 +62,63 @@ var spiralMatrixIII = function(R, C, r0, c0) {
     [0, 1], // right
     [1, 0], // down
     [0, -1], // left
-    [1, 0], // up
+    [-1, 0], // up
   ];
   let dirIndex = 0;
   const result = [];
+  const colRigthEdge = C - 1;
+  const colLeftEdge = 0;
+  const rowUpperEdge = 0;
+  const rowBottomEdge = R - 1;
+  const visited = {};
   for (let i = 0; i < m; i++) {
-    
+
+    const curr = `${r}-${c}`;
+    if (!visited.hasOwnProperty(curr)) {
+      result.push([r, c]);
+      visited[curr] = true;
+    }
+    c += dirs[dirIndex][1];
+    r += dirs[dirIndex][0];
+    console.log('r, c', r, c);
+
+    if (dirIndex === 0) {
+      // moving right
+      if (c === colMax) {
+        if (c != colRigthEdge) {
+          colMax++;
+        } else {
+          // reached the edge, and the colMax equals edge
+          // need to skip down to new row
+          // then need to account for possibility of row being after the edge too
+        }
+        dirIndex = (dirIndex+1) % 4;
+      }
+    } else if (dirIndex === 1) {
+      // moving down
+      if (r === rowMax) {
+        if (r != rowBottomEdge) {
+          rowMax++;
+        }
+        dirIndex = (dirIndex+1) % 4;
+      }
+    } else if (dirIndex === 2) {
+      // moving left
+      if (c === colMin) {
+        if (c != colLeftEdge) {
+          colMin--;
+        }
+        dirIndex = (dirIndex+1) % 4;
+      }
+    } else if (dirIndex === 3) {
+      // moving up
+      if (r === rowMin) {
+        if (r != rowUpperEdge) {
+          rowMin--;
+        }
+        dirIndex = (dirIndex+1) % 4;
+      }
+    }
   }
-
+  return result;
 };
-
