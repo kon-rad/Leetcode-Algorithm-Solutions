@@ -85,10 +85,6 @@ var spiralMatrixIII = function(R, C, r0, c0) {
       if (c === colMax) {
         if (c != colRigthEdge) {
           colMax++;
-        } else {
-          // reached the edge, and the colMax equals edge
-          // need to skip down to new row
-          // then need to account for possibility of row being after the edge too
         }
         dirIndex = (dirIndex+1) % 4;
       }
