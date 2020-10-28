@@ -41,7 +41,6 @@ Note:
 
  */
 
-
 /**
  * @param {number} R
  * @param {number} C
@@ -71,16 +70,15 @@ var spiralMatrixIII = function(R, C, r0, c0) {
   const rowUpperEdge = 0;
   const rowBottomEdge = R - 1;
   const visited = {};
-  for (let i = 0; i < m; i++) {
+  while (result.length < C * R) {
 
     const curr = `${r}-${c}`;
-    if (!visited.hasOwnProperty(curr)) {
+    if (isInBounds(r, c, R, C) && !visited.hasOwnProperty(curr)) {
       result.push([r, c]);
       visited[curr] = true;
     }
     c += dirs[dirIndex][1];
     r += dirs[dirIndex][0];
-    console.log('r, c', r, c);
 
     if (dirIndex === 0) {
       // moving right
@@ -121,4 +119,8 @@ var spiralMatrixIII = function(R, C, r0, c0) {
     }
   }
   return result;
+};
+
+const isInBounds = (r, c, R, C) => {
+  return r >= 0 && r < R && c >= 0 && c < C;
 };
