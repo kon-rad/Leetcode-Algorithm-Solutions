@@ -31,22 +31,53 @@ Note: The length of each dimension in the given grid does not exceed 50.
  * @return {number}
  */
 var maxAreaOfIsland = function(grid) {
-  const seen = {};
-  const colLen = grid.length;
-  const rowLen = grid[0].length;
-  let maxArea = 0;
-  for (let i = 0; i < colLen; i++) {
-      for (let j = 0; j < rowLen; j++) {
-          if (grid[i][j] === 1 && !seen.hasOwnProperty(`${i}-${j}`)) {
-              let islandArea = getIslandArea(i, j, grid, seen);
-              maxArea = islandArea > maxArea ? islandArea : maxArea;
+    const seen = {};
+    const colLen = grid.length;
+    const rowLen = grid[0].length;
+    let maxArea = 0;
+    for (let i = 0; i < colLen; i++) {
+        for (let j = 0; j < rowLen; j++) {
+          if (!seen.hasOwnProperty(`${i}-${j}`)) {
+            seen[`${i}-${j}`] = true;
+            if (grid[i][j] === 1) {
+                let islandArea = getIslandArea(i, j, grid, seen, 1);
+                maxArea = islandArea > maxArea ? islandArea : maxArea;
+            }
           }
-      }   
-  }
-  return maxArea;
+        }   
+    }
+    return maxArea;
 };
 
 
-const getIslandArea = (i, j, grid, seen) => {
-  
+const getIslandArea = (i, j, grid, seen, count) => {
+    // check one to the right
+    if (grid[i][j + 1] === 1 && !seen.hasOwnProperty(`${i}-${j + 1}`)) {
+      seen[`${i}-${j + 1}`] = true;
+      count += getIslandArea(i, j + 1, grid, seen, 1);
+    };
+    // check one below
+    if (i + 1 < grid.length && grid[i + 1][j] === 1 && !seen.hasOwnProperty(`${i + 1}-${j}`)) {
+      seen[`${i + 1}-${j}`] = true;
+      count += getIslandArea(i + 1, j, grid, seen, 1);
+    };
+    // check one to the left
+    if (
+      j - 1 >= 0 && 
+      !seen.hasOwnProperty(`${i}-${j - 1}`) && 
+      grid[i][j - 1] === 1
+    ) {
+      seen[`${i}-${j - 1}`] = true;
+      count += getIslandArea(i, j - 1, grid, seen, 1);
+    };
+    // check one above
+    if (
+      i - 1 >= 0 && 
+      !seen.hasOwnProperty(`${i - 1}-${j}`) && 
+      grid[i - 1][j] === 1
+    ) {
+      seen[`${i - 1}-${j}`] = true;
+      count += getIslandArea(i - 1, j, grid, seen, 1);
+    };
+    return count;
 }
