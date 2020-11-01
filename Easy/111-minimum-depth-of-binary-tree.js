@@ -37,6 +37,8 @@ The number of nodes in the tree is in the range [0, 105].
  * }
  */
 /**
+ * Time: O(n)
+ * Space: O(n)
  * @param {TreeNode} root
  * @return {number}
  */
