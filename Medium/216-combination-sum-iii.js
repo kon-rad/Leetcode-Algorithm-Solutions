@@ -52,7 +52,7 @@ Constraints:
 1 <= n <= 60
  */
 
- /**
+/**
  * @param {number} k
  * @param {number} n
  * @return {number[][]}
@@ -73,7 +73,8 @@ const recFindComb = (k, n, res, mI, curr) => {
       return;
   }
   for (let m = mI + 1; m < 10; m++) {
-      recFindComb(k - 1, n - m, res, m, [...curr, m]);
-      recFindComb(k, n, res, m, curr);
+      curr.push(m);
+      recFindComb(k - 1, n - m, res, m, curr.slice(0));
+      curr.pop();
   }
 }
