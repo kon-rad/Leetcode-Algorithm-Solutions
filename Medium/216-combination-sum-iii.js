@@ -53,6 +53,7 @@ Constraints:
  */
 
 /**
+ * Time:  O(k * 9^k)
  * @param {number} k
  * @param {number} n
  * @return {number[][]}
@@ -64,7 +65,7 @@ var combinationSum3 = function(k, n) {
   return res;
 };
 
-const recFindComb = (k, n, res, mI, curr) => {
+const recFindComb = (k, n, res, start, curr) => {
   if (n < 0 || k < 0) {
       return;
   }
@@ -72,7 +73,7 @@ const recFindComb = (k, n, res, mI, curr) => {
       res.push(curr);
       return;
   }
-  for (let m = mI + 1; m < 10; m++) {
+  for (let m = start + 1; m < 10; m++) {
       curr.push(m);
       recFindComb(k - 1, n - m, res, m, curr.slice(0));
       curr.pop();
