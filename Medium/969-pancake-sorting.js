@@ -41,30 +41,29 @@ Constraints:
 All integers in arr are unique (i.e. arr is a permutation of the integers from 1 to arr.length).
 
  */
-
- /**
+/**
  * @param {number[]} arr
  * @return {number[]}
  */
 var pancakeSort = function(arr) {
-    
   let flips = 0;
-  let searching = true;
   const kArr = [];
   let end = arr.length;
   while (end !== 0) {
       let maxI = findMaxI(arr, end);
-      flipArrAtI(arr, maxI);
-      flipArrAtI(arr, end);
+      arr = flipArrAtI(arr, maxI);
+      maxI !== 0 && kArr.push(maxI);
+      arr = flipArrAtI(arr, end - 1);
+      end - 1 !== 0 && kArr.push(end - 1);
       end--;
   }
-  return arr;
+  return kArr;
 };
 
 const findMaxI = (arr, end) => {
   let max = arr[0];
   let maxI = 0
-  for (let i = 0; i < end; i++) {
+  for (let i = 1; i < end; i++) {
       if (arr[i] > max) {
           max = arr[i];
           maxI = i;
@@ -74,7 +73,7 @@ const findMaxI = (arr, end) => {
 }
 
 const flipArrAtI = (arr, i) => {
-  const sub = arr.splice(0, i + 1);
-  const rest = arr.splice(i + 1);
-  arr = [ ...sub.reverse(), ...rest ];
+  const sub = arr.slice(0, i + 1);
+  const rest = arr.slice(i + 1);
+  return [ ...sub.reverse(), ...rest ];
 }
