@@ -52,9 +52,9 @@ var pancakeSort = function(arr) {
   while (end !== 0) {
       let maxI = findMaxI(arr, end);
       arr = flipArrAtI(arr, maxI);
-      maxI !== 0 && kArr.push(maxI);
+      maxI !== 0 && kArr.push(maxI + 1);
       arr = flipArrAtI(arr, end - 1);
-      end - 1 !== 0 && kArr.push(end - 1);
+      end - 1 !== 0 && kArr.push(end);
       end--;
   }
   return kArr;
