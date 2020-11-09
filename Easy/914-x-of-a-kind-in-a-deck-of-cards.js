@@ -51,41 +51,29 @@ Constraints:
 
  * 
  */
-
- /**
+/**
  * @param {number[]} deck
  * @return {boolean}
  */
 var hasGroupsSizeX = function(deck) {
-  const dict = new Map();
-  deck.forEach(num => {
-      if (dict.has(num)) {
-          dict.set(num, [...dict.get(num), num]);
-      } else {
-          dict.set(num, [num]);
-      }
-  });
-  let x = 0;
-  let result = true;
-  for (let arr of dict.values()) {
-      if (x === 0) {
-          x = arr.length;
-          if (x < 2) {
-              result = false;
-              break;
-          }
-      } else {
-          if (x !== arr.length) {
-            if (arr.length % x !== 0) {
-              if (arr.length % 2 === 0 
-                  && x % 2 === 0) {
-                    continue;
-              }
-              result = false;
-              break;
-            }
-          }
-      }
-  };
-  return result;
+    const dict = {};
+    deck.forEach(num => {
+        if (dict.hasOwnProperty(num)) {
+            dict[num] = dict[num] + 1;
+        } else {
+            dict[num] = 1;
+        }
+    });
+    let x = 0;
+    let result = true;
+    const groups = Object.values(dict);
+    let g = groups[0];
+    for (let i = 0; i < groups.length; i++) {
+      let curr = groups[i];
+      g = gcd(curr, g);
+      if (g < 2) return false;
+    };
+    return result;
 };
+
+const gcd = (x, y) => (x === 0 ? y : gcd(y % x, x));
