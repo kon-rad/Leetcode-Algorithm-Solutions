@@ -52,28 +52,28 @@ Constraints:
  * 
  */
 /**
+ * Time: O(n)
+ * Space: O(n)
  * @param {number[]} deck
  * @return {boolean}
  */
 var hasGroupsSizeX = function(deck) {
     const dict = {};
     deck.forEach(num => {
-        if (dict.hasOwnProperty(num)) {
-            dict[num] = dict[num] + 1;
-        } else {
-            dict[num] = 1;
-        }
+        dict[num] = (dict[num] || 0) + 1;
     });
-    let x = 0;
-    let result = true;
     const groups = Object.values(dict);
     let g = groups[0];
     for (let i = 0; i < groups.length; i++) {
-      let curr = groups[i];
-      g = gcd(curr, g);
+      g = gcd(groups[i], g);
       if (g < 2) return false;
     };
-    return result;
+    return true;
 };
 
+/**
+ * Finds the greatest common divisior
+ * @param {*} x 
+ * @param {*} y 
+ */
 const gcd = (x, y) => (x === 0 ? y : gcd(y % x, x));
