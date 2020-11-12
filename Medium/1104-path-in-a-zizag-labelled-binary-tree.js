@@ -27,12 +27,35 @@ Constraints:
 
 1 <= label <= 10^6
  */
-
- /**
+/**
  * @param {number} label
  * @return {number[]}
  */
 var pathInZigZagTree = function(label) {
-    
+  console.log(label);
+  let i = 1;
+  let levels = [];
+  while (i < label) {
+    levels.push(i);
+    i *= 2;
+  }
+  const la = [];
+  let c = 0;
+  levels.forEach(l => {
+    let na = new Array(l).fill(1);
+    la.push(na.map(e => {
+      e += c;
+      c++;
+      return e;
+    }));
+  });
+  // if row is even, labels go from right to left
+  // if row is odd, labels go from left to right
+  // 15 - 12 = 3
+  // 8 + 3 = 11
+  // Math.floor(11/2) = 5
+  return la;
 };
+
+pathInZigZagTree(14);
 
