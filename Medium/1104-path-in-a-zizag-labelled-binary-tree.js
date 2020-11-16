@@ -34,6 +34,7 @@ Constraints:
  */
 var pathInZigZagTree = function(label) {
   console.log(label);
+  const result = [];
   let i = 1;
   let levels = [];
   while (i < label) {
@@ -56,23 +57,29 @@ var pathInZigZagTree = function(label) {
     }
   });
   let cur = label;
+  result.unshift(cur);
   for (let i = finalLevels.length - 1; i >= 0; i--) {
     let isReversed = false;
+    let nextCur;
     if ((i + 1) % 2 === 0) isReversed = true;
     if (isReversed) {
       let first = finalLevels[i][0];
       let diffFromFirst = first - cur;
       let last = finalLevels[i][finalLevels[i].length - 1];
-      let pos = last + diff;
-      let nextCur = Math.floor(pos / 2);
+      let pos = last + diffFromFirst;
+      nextCur = Math.floor(pos / 2);
+    } else {
+      nextCur = Math.floor(cur / 2);
     }
+    result.unshift(nextCur);
+    cur = nextCur;
   }
   // if row is even, labels go from right to left
   // if row is odd, labels go from left to right
   // 15 - 12 = 3
   // 8 + 3 = 11
   // Math.floor(11/2) = 5
-  return finalLevels;
+  return result;
 };
 
 pathInZigZagTree(14);
