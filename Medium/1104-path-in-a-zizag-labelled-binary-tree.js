@@ -58,10 +58,10 @@ var pathInZigZagTree = function(label) {
   });
   let cur = label;
   result.unshift(cur);
-  for (let i = finalLevels.length - 1; i >= 0; i--) {
-    let isReversed = false;
+  for (let i = finalLevels.length - 1; i > 0; i--) {
+    let isReversed = ((i + 1) % 2 === 0) ? true : false;
     let nextCur;
-    if ((i + 1) % 2 === 0) isReversed = true;
+    console.log('isReversed', isReversed);
     if (isReversed) {
       let first = finalLevels[i][0];
       let diffFromFirst = first - cur;
@@ -70,9 +70,12 @@ var pathInZigZagTree = function(label) {
       nextCur = Math.floor(pos / 2);
     } else {
       nextCur = Math.floor(cur / 2);
+      console.log('finalLevels[i]', finalLevels[i]);
     }
     result.unshift(nextCur);
     cur = nextCur;
+    console.log(i, cur, result)
+
   }
   // if row is even, labels go from right to left
   // if row is odd, labels go from left to right
@@ -82,5 +85,6 @@ var pathInZigZagTree = function(label) {
   return result;
 };
 
-pathInZigZagTree(14);
+console.log(pathInZigZagTree(14));
+
 
