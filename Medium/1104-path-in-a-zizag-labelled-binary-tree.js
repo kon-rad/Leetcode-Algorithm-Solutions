@@ -71,6 +71,15 @@ var pathInZigZagTree = function(label) {
     } else {
       nextCur = Math.floor(cur / 2);
       console.log('finalLevels[i]', finalLevels[i]);
+      let nextLevel = finalLevels[i - 1];
+      let firstItemInNextLevel = nextLevel[nextLevel.length - 1];
+      let diff = nextCur - firstItemInNextLevel;
+      nextCur = finalLevels[i - 1][diff];
+      // console.log('nextCurNextLevel', nextCurNextLevel);
+      // console.log('diff', diff);
+      // console.log('nextCur', nextCur);
+      // console.log('firstItemInNextLevel', firstItemInNextLevel);
+      // console.log('finalLevels i', finalLevels, i);
     }
     result.unshift(nextCur);
     cur = nextCur;
@@ -85,6 +94,7 @@ var pathInZigZagTree = function(label) {
   return result;
 };
 
-console.log(pathInZigZagTree(14));
+// 16 [1,3,4,15,16]
+console.log(pathInZigZagTree(16));
 
 
