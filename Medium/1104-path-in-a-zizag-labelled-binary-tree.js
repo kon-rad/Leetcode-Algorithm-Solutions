@@ -82,7 +82,6 @@ var pathInZigZagTree = function(label) {
     }
     result.unshift(nextLabel);
     curLabel = nextLabel;
-
   }
   return result;
 };
