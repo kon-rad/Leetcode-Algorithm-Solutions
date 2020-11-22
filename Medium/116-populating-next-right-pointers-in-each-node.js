@@ -48,6 +48,7 @@ The number of nodes in the given tree is less than 4096.
  * };
  */
 /**
+ * Not constant space, first attempt.
  * @param {Node} root
  * @return {Node}
  */
@@ -80,3 +81,22 @@ const createLevelsArr = (root, arr, levelNum) => {
   createLevelsArr(root.right, arr, levelNum + 1);
 }
 
+/**
+ * Time: O(n)
+ * Space: O(1)
+ * @param {Node} root
+ * @return {Node}
+ */
+var connect = function(root) {
+  recursiveConnect(root);
+  return root;
+};
+
+const recursiveConnect = root => {
+  if (!root || !root.left) return;
+  root.left.next = root.right;
+  root.right.next = root.next ? root.next.left : null;
+
+  recursiveConnect(root.left);
+  recursiveConnect(root.right);
+}
