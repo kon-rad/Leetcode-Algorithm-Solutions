@@ -40,21 +40,34 @@ Note:
  * @return {number[][]}
  */
 var kClosest = function(points, K) {
-  const sortedPoints = [];
+  const result = [];
+  const sortedMap = {};
+  const pointsDist = [];
 
-  points.forEach(point => {
+  points.forEach((point, index) => {
     let xDist = Math.abs(point[0]);
     let yDist = Math.abs(point[1]);
     let euclideanDist = Math.sqrt(xDist * xDist + yDist * yDist);
-    sortedPoints.push(euclideanDist);
+    sortedMap[euclideanDist + '~' + index] = point;
+    pointsDist.push(euclideanDist);
   });
-  console.log(sortedPoints);
-  return sortedPoints;
+  const sortedKeys = Object.keys(sortedMap).sort((a, b) => {
+    let aVal = parseFloat(a.split('~')[0]);
+    let bVal = parseFloat(b.split('~')[0]);
+    return aVal - bVal;
+  });
+  let i = 0;
+  while (i < K) {
+    result.push(sortedMap[sortedKeys[i]]);
+    i++;
+  }
+  return result;
 };
 
 
-let points = [[1,3],[-2,2]], K = 1;
+// let points = [[1,3],[-2,2]], K = 1;
 // Output: [[-2,2]]
+let points = [[0,1],[1,0]], K = 2;
 
-kClosest(points, K);
+console.log(kClosest(points, K));
 
