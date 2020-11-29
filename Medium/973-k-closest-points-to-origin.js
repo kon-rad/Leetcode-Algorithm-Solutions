@@ -39,35 +39,80 @@ Note:
  * @param {number} K
  * @return {number[][]}
  */
-var kClosest = function(points, K) {
-  const result = [];
-  const sortedMap = {};
-  const pointsDist = [];
+// var kClosestV1 = function(points, K) {
+//   const result = [];
+//   const sortedMap = {};
+//   const pointsDist = [];
 
-  points.forEach((point, index) => {
-    let xDist = Math.abs(point[0]);
-    let yDist = Math.abs(point[1]);
-    let euclideanDist = Math.sqrt(xDist * xDist + yDist * yDist);
-    sortedMap[euclideanDist + '~' + index] = point;
-    pointsDist.push(euclideanDist);
-  });
-  const sortedKeys = Object.keys(sortedMap).sort((a, b) => {
-    let aVal = parseFloat(a.split('~')[0]);
-    let bVal = parseFloat(b.split('~')[0]);
-    return aVal - bVal;
-  });
-  let i = 0;
-  while (i < K) {
-    result.push(sortedMap[sortedKeys[i]]);
+//   points.forEach((point, index) => {
+//     let xDist = Math.abs(point[0]);
+//     let yDist = Math.abs(point[1]);
+//     let euclideanDist = Math.sqrt(xDist * xDist + yDist * yDist);
+//     sortedMap[euclideanDist + '~' + index] = point;
+//     pointsDist.push(euclideanDist);
+//   });
+//   const sortedKeys = Object.keys(sortedMap).sort((a, b) => {
+//     let aVal = parseFloat(a.split('~')[0]);
+//     let bVal = parseFloat(b.split('~')[0]);
+//     return aVal - bVal;
+//   });
+//   let i = 0;
+//   while (i < K) {
+//     result.push(sortedMap[sortedKeys[i]]);
+//     i++;
+//   }
+//   return result;
+// };
+
+
+const kClosestV2 = (points, K) => {
+  quickSelect(points, K, 0, points.length - 1);
+  return points.slice(0, K);
+}
+
+const quickSelect = (points, K, low, high) => {
+  console.log('quickSelect', points, K, low, high);
+  if (low >= high) return;
+
+  const partPoint = partition(points, low, high);
+  if (partPoint === K - 1) return;
+  if (partPoint < K - 1) {
+    quickSelect(points, K, partPoint + 1, high);
+  } else {
+    quickSelect(points, K, low, partPoint - 1);
+  }
+}
+
+const partition = (points, low, high) => {
+  console.log('partition', low, high);
+  const pivot = points[high];
+  console.log('partition pivot', pivot);
+  let i = low;
+  let j = low;
+  while (i < high) {
+    if (getDist(points[i]) < getDist(pivot)) {
+      swap(points, i, j);
+      j++;
+    }
     i++;
   }
-  return result;
-};
+  swap(points, high, j);
+  return j;
+}
 
+const getDist = (point) => {
+  return point[0] * point[0] + point[1] * point[1];
+}
+
+const swap = (arr, i, j) => {
+  const temp = arr[i];
+  arr[i] = arr[j];
+  arr[j] = temp;
+}
 
 // let points = [[1,3],[-2,2]], K = 1;
 // Output: [[-2,2]]
-let points = [[0,1],[1,0]], K = 2;
+let points = [[3,3],[5,5],[-2,-2], [20, 20], [100, 100], [10, 10], [14, 14]], K = 2;
 
-console.log(kClosest(points, K));
+console.log(kClosestV2(points, K));
 
