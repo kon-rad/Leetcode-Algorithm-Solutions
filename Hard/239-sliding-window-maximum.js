@@ -80,3 +80,32 @@ const getMax = (nums, start, end) => {
   }
   return [max, maxI];
 }
+
+/**
+ * Time: O(n) In worst case it's O(n * K) when K == nums.length, on average K is less than nums.length
+ * Space: O(K) Creating the slidingWindow of K length, O(n) for the result array
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number[]}
+ */
+var maxSlidingWindow2 = function(nums, k) {
+  const result = [];
+  const slidingWindow = [];
+  for (let i = 0; i < nums.length; i++) {
+    let cur = nums[i];
+    while (slidingWindow.length > 0 && cur > slidingWindow[slidingWindow.length - 1]) {
+      slidingWindow.pop();
+    }
+    slidingWindow.push(cur);
+    if (i >= (k - 1)) {
+      result.push(slidingWindow[0]);
+      if (slidingWindow[0] === nums[i - (k - 1)]) {
+        slidingWindow.shift();
+      }
+    }
+  }
+  return result;
+};
+let nums = [1,3,1,2,0,5], k = 3;
+// [3,3,2,5]
+console.log(maxSlidingWindow(nums, k));
