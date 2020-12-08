@@ -55,5 +55,9 @@ function canPartition(nums) {
         part[i][j] = part[i][j] || part[i - nums[j-1]][j-1];
     }
   }
+  console.log(part, sum, n);
   return part[sum/2][n];
 }
+
+console.log(canPartition([1,5,11,5]));
+

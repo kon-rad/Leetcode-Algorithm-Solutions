@@ -39,30 +39,30 @@ Note:
  * @param {number} K
  * @return {number[][]}
  */
-// var kClosestV1 = function(points, K) {
-//   const result = [];
-//   const sortedMap = {};
-//   const pointsDist = [];
+var kClosestV1 = function(points, K) {
+  const result = [];
+  const sortedMap = {};
+  const pointsDist = [];
 
-//   points.forEach((point, index) => {
-//     let xDist = Math.abs(point[0]);
-//     let yDist = Math.abs(point[1]);
-//     let euclideanDist = Math.sqrt(xDist * xDist + yDist * yDist);
-//     sortedMap[euclideanDist + '~' + index] = point;
-//     pointsDist.push(euclideanDist);
-//   });
-//   const sortedKeys = Object.keys(sortedMap).sort((a, b) => {
-//     let aVal = parseFloat(a.split('~')[0]);
-//     let bVal = parseFloat(b.split('~')[0]);
-//     return aVal - bVal;
-//   });
-//   let i = 0;
-//   while (i < K) {
-//     result.push(sortedMap[sortedKeys[i]]);
-//     i++;
-//   }
-//   return result;
-// };
+  points.forEach((point, index) => {
+    let xDist = Math.abs(point[0]);
+    let yDist = Math.abs(point[1]);
+    let euclideanDist = Math.sqrt(xDist * xDist + yDist * yDist);
+    sortedMap[euclideanDist + '~' + index] = point;
+    pointsDist.push(euclideanDist);
+  });
+  const sortedKeys = Object.keys(sortedMap).sort((a, b) => {
+    let aVal = parseFloat(a.split('~')[0]);
+    let bVal = parseFloat(b.split('~')[0]);
+    return aVal - bVal;
+  });
+  let i = 0;
+  while (i < K) {
+    result.push(sortedMap[sortedKeys[i]]);
+    i++;
+  }
+  return result;
+};
 
 
 const kClosestV2 = (points, K) => {
@@ -71,7 +71,6 @@ const kClosestV2 = (points, K) => {
 }
 
 const quickSelect = (points, K, low, high) => {
-  console.log('quickSelect', points, K, low, high);
   if (low >= high) return;
 
   const partPoint = partition(points, low, high);
@@ -84,9 +83,7 @@ const quickSelect = (points, K, low, high) => {
 }
 
 const partition = (points, low, high) => {
-  console.log('partition', low, high);
   const pivot = points[high];
-  console.log('partition pivot', pivot);
   let i = low;
   let j = low;
   while (i < high) {
@@ -110,8 +107,6 @@ const swap = (arr, i, j) => {
   arr[j] = temp;
 }
 
-// let points = [[1,3],[-2,2]], K = 1;
-// Output: [[-2,2]]
 let points = [[3,3],[5,5],[-2,-2], [20, 20], [100, 100], [10, 10], [14, 14]], K = 2;
 
 console.log(kClosestV2(points, K));
