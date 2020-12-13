@@ -82,3 +82,41 @@ const mergeTreesRec = (t1, t2) => {
 	t1.right = mergeTreesRec(t1.right, t2.right);
 	return t1;
 }
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} t1
+ * @param {TreeNode} t2
+ * @return {TreeNode}
+ */
+var mergeTrees = function(t1, t2) {
+	if (!t1 && !t2) {
+			return null;
+	}
+	const result = new TreeNode();
+	mergeRecursive(result, t1, t2);
+	return result;
+};
+
+const mergeRecursive = (r, t1, t2) => {
+	if (!t1 && !t2) {
+			return;
+	}
+	r.val = (t1 && t1.val || 0) + (t2 && t2.val || 0);
+	
+	if (t1 && t1.left || t2 && t2.left) {
+			r.left = new TreeNode();
+			mergeRecursive(r.left, t1 && t1.left, t2 && t2.left);
+	}
+	if (t1 && t1.right || t2 && t2.right) {
+			r.right = new TreeNode();
+			mergeRecursive(r.right, t1 && t1.right, t2 && t2.right);
+	}
+}
