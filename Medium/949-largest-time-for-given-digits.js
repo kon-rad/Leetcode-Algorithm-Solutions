@@ -37,35 +37,40 @@ arr.length == 4
  */
 
 /**
- * @param {number[]} arr
+ * @param {number[]} A
  * @return {string}
  */
-var largestTimeFromDigits = function (arr) {
-  // hh:mm
-  // 0, 2
-  // 0, 4
-  // 0, 9
-  // 0, 9
-  let sorted = arr.sort((a, b) => b - a);
-  let largestH = 0;
-  let lgIndex;
-  sorted.forEach((c, i) => {
-    if (c < 3 && c > largestH) {
-      largestH = c;
-      lgIndex = i;
-    }
-  });
-  sorted.splice(lgIndex, 1);
-
-  let largestH2 = 0;
-  let lg2Index;
-  sorted.forEach((c, i) => {
-    if (c < 4 && c > largestH2) {
-      largestH2 = c;
-      lg2Index = i;
-    }
-  });
-  sorted.splice(lg2Index, 1);
-
-  return `${[largestH, largestH2].join("")}:${[sorted[0], sorted[1]].join("")}`;
+var largestTimeFromDigits = function (A) {
+  const permutations = permute(A);
+  const filteredPerms = permutations.filter(
+    (arr) => ((arr[0] === 2 && arr[1] <= 3) || arr[0] <= 1) && arr[2] <= 5
+  );
+  console.log(filteredPerms);
 };
+
+const permute = (arr) => {
+  const recursivePermute = (arr, n) => {
+    console.log(arr, n);
+    if (n === 1) {
+      result.push(arr.slice());
+      return;
+    }
+    for (let i = 0; i < n; i++) {
+      recursivePermute(arr, n - 1);
+      if (n % 2 === 0) {
+        [arr[i], arr[n - 1]] = [arr[n - 1], arr[i]];
+      } else {
+        [arr[0], arr[n - 1]] = [arr[n - 1], arr[0]];
+      }
+    }
+  };
+  const result = [];
+  recursivePermute(arr, arr.length);
+  return result;
+};
+
+// let A = [5,5,5,5];
+let A = [2, 3, 5, 6];
+// Output: "23:41"
+
+console.log(largestTimeFromDigits(A));
