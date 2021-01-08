@@ -42,15 +42,24 @@ arr.length == 4
  */
 var largestTimeFromDigits = function (A) {
   const permutations = permute(A);
-  const filteredPerms = permutations.filter(
+  const hhmm = permutations.filter(
     (arr) => ((arr[0] === 2 && arr[1] <= 3) || arr[0] <= 1) && arr[2] <= 5
   );
-  console.log(filteredPerms);
+  if (hhmm.length === 0) {
+    return '';
+  }
+  let res = hhmm
+    .map((e) => parseInt(e.join('')))
+    .sort((a, b) => b - a)[0]
+    .toString();
+  while (res.length < 4) {
+    res = '0' + res;
+  }
+  return res.slice(0, 2) + ':' + res.slice(2);
 };
 
 const permute = (arr) => {
   const recursivePermute = (arr, n) => {
-    console.log(arr, n);
     if (n === 1) {
       result.push(arr.slice());
       return;
