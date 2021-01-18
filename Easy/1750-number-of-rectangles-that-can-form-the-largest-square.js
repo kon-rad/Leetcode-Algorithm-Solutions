@@ -33,3 +33,22 @@ rectangles[i].length == 2
 li != wi
 
  */
+
+/**
+ * @param {number[][]} rectangles
+ * @return {number}
+ */
+var countGoodRectangles = function (rectangles) {
+  const map = {};
+  let max = -1;
+  rectangles.forEach((rect) => {
+    let min = Math.min(rect[0], rect[1]);
+    max = min > max ? min : max;
+    if (map.hasOwnProperty(min)) {
+      map[min]++;
+    } else {
+      map[min] = 1;
+    }
+  });
+  return map[max];
+};
