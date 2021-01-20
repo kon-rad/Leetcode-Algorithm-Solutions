@@ -45,4 +45,18 @@ root.val == min(root.left.val, root.right.val) for each internal node of the tre
  * @param {TreeNode} root
  * @return {number}
  */
-var findSecondMinimumValue = function (root) {};
+var findSecondMinimumValue = function (root) {
+  let values = [];
+  getValues(root, values);
+  values = values.sort((a, b) => a - b);
+  let i = 0;
+  while (values[i] === values[i + 1]) i++;
+  return i + 1 <= values.length - 1 ? values[i + 1] : -1;
+};
+
+const getValues = (root, values) => {
+  if (!root) return;
+  values.push(root.val);
+  getValues(root.left, values);
+  getValues(root.right, values);
+};
