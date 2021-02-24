@@ -39,68 +39,23 @@ word1 and word2 consist only of lowercase English letters.
 
 
  /**
-  * WIP: not passing in one case, try doing simple loop with if else
  * @param {string} word1
  * @param {string} word2
  * @return {string}
  */
 var largestMerge = function(word1, word2) {
     
-  const max = { val: '' };
-  const results = {};
-  recursiveLargestMerge(word1, word2, '', max, results);
-  let sorted = Object.keys(results).sort((b, a) => a.localeCompare(b));
-  return sorted[0];
+  let merge = '';
+  
+  while (word1 || word2) {
+      if (word1.localeCompare(word2) > 0) {
+          merge += word1[0];
+          word1 = word1.substring(1);
+      } else {
+          merge += word2[0];
+          word2 = word2.substring(1);
+      }
+  }
+  return merge;
 };
 
-const recursiveLargestMerge = (w1, w2, merge, max, results) => {
-  if (w1 === '' && w2 === '') {
-      results[merge] = true;
-      return;
-  }
-  let c1 = '';
-  let c2 = '';
-  let mergeW1;
-  let mergeW2;
-  if (w1 !== '') {
-      c1 = w1[0];
-  }
-  if (w2 !== '') {
-      c2 = w2[0];
-  }
-  let comparison = c1.localeCompare(c2);
-  if (comparison === 1) {
-    mergeW1 = merge + c1;
-    max.val = mergeW1;
-    recursiveLargestMerge(w1.substring(1), w2, mergeW1, max, results);
-  } else if (comparison === -1) {
-    mergeW2 = merge + c2;
-    max.val = mergeW2;
-    recursiveLargestMerge(w1, w2.substring(1), mergeW2, max, results);
-  } else if (comparison === 0) {
-    mergeW1 = merge + c1;
-    max.val = mergeW1;
-    if (stringsAreHomogoneus(w1.substring(1), w2.substring(1))) {
-      results[merge + w1 + w2] = true;
-      return;
-    }
-    recursiveLargestMerge(w1.substring(1), w2, mergeW1, max, results);
-    recursiveLargestMerge(w1, w2.substring(1), mergeW1, max, results);
-  }
-}
-const stringsAreHomogoneus = (w1, w2) => {
-let result = true;
-let compare = true;
-let i = 0, j = 0;
-let len1 = w1.length, len2 = w2.length;
-while (i < len1 && j < len2) {
-  if (w1[i] !== w2[j]) {
-    result = false;
-    compare = false;
-    break;
-  }
-  if (i < len1) i++;
-  if (j < len2) j++;
-}
-return result;
-}
