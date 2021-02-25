@@ -35,6 +35,8 @@ s[i] is either '0' or '1'.
  */
 
  /**
+  * Time: O(n)
+  * Space: O(1)
  * @param {string} s
  * @return {number}
  */
