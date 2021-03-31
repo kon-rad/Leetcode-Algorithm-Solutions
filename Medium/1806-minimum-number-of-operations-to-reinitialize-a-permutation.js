@@ -46,4 +46,33 @@ n​​​​​​ is even.
  * @param {number} n
  * @return {number}
  */
-var reinitializePermutation = function (n) {};
+var reinitializePermutation = function (n) {
+  let perm = [];
+  for (let i = 0; i < n; i++) {
+    perm[i] = i;
+  }
+  let count = 0;
+  const ogPerm = perm.slice();
+  let searching = true;
+  while (searching) {
+    count++;
+    const newPerm = [];
+    let isSame = true;
+    for (let i = 0; i < n; i++) {
+      if (i % 2 === 0) {
+        newPerm[i] = perm[i / 2];
+      } else {
+        newPerm[i] = perm[n / 2 + (i - 1) / 2];
+      }
+      if (ogPerm[i] !== newPerm[i]) {
+        isSame = false;
+      }
+    }
+    console.log(newPerm);
+    perm = newPerm;
+    searching = !isSame;
+  }
+  return count;
+};
+
+console.log(reinitializePermutation(6));
