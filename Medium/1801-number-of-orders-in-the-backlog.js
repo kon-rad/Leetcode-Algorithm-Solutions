@@ -52,4 +52,116 @@ orderTypei is either 0 or 1.
  * @param {number[][]} orders
  * @return {number}
  */
-var getNumberOfBacklogOrders = function (orders) {};
+var getNumberOfBacklogOrders = function (orders) {
+  const buy = [];
+  const sell = [];
+  const modResult = Math.pow(10, 9) + 7;
+  orders.forEach((ord) => {
+    if (ord[2] === 0) {
+      // buy order
+      let buyPrice = ord[0];
+      let buyCount = ord[1];
+      while (buyCount > 0) {
+        if (sell.length > 0 && sell[0].price <= buyPrice) {
+          let diff = sell[0].count - buyCount;
+          if (diff <= 0) {
+            buyCount -= sell[0].count;
+            sell.shift();
+          } else {
+            sell[0].count -= buyCount;
+            buyCount = 0;
+          }
+        } else {
+          // add to buy
+          buy.push({ price: buyPrice, count: buyCount });
+          buyCount = 0;
+        }
+      }
+      buy.sort((a, b) => a.price - b.price); // sort ascending
+      console.log('buy', buy);
+    } else {
+      // sell order
+      let sellPrice = ord[0];
+      let sellCount = ord[1];
+      while (sellCount > 0) {
+        if (buy.length > 0 && buy[0].price >= sellPrice) {
+          if (buy[0].count - sellCount <= 0) {
+            sellCount -= buy[0].count;
+            buy.shift();
+          } else {
+            buy[0].count -= sellCount;
+            sellCount = 0;
+          }
+        } else {
+          // add to sell
+          sell.push({ price: sellPrice, count: sellCount });
+          sellCount = 0;
+        }
+      }
+      sell.sort((a, b) => b.price - a.price); // sort descending
+      console.log('sell', sell);
+    }
+  });
+  console.log('end buy - sell', buy, sell);
+  return (
+    (buy.reduce((acc, curr) => (acc += curr.count), 0) +
+      sell.reduce((acc, curr) => (acc += curr.count), 0)) %
+    modResult
+  );
+};
+
+// const orders = [
+//   [10, 5, 0],
+//   [15, 2, 1],
+//   [25, 1, 1],
+//   [30, 4, 0],
+// ];
+
+//  999999984
+// 1999999993
+// let orders = [
+//   [7, 1000000000, 1], // sell
+//   [15, 3, 0], // buy
+//   [5, 999999995, 0], // buy
+//   [5, 1, 1], // sell
+// ];
+let orders = [
+  [26, 7, 0],
+  [16, 1, 1],
+  [14, 20, 0],
+  [23, 15, 1],
+  [24, 26, 0],
+  [19, 4, 1],
+  [1, 1, 0],
+];
+console.log(getNumberOfBacklogOrders(orders));
+
+// If the order is a buy order, you look at the sell
+// order with the smallest price in the backlog. If that
+// sell order's price is smaller than or equal to the
+// current buy order's price, they will match and be
+// executed, and that sell order will be removed from
+//  the backlog. Else, the buy order is added to the backlog.
+
+// Vice versa, if the order is a sell order, you look at
+// the buy order with the largest price in the backlog. If
+// that buy order's price is larger than or equal to the current
+// sell order's price, they will match and be executed, and
+// that buy order will be removed from the backlog. Else, the
+// sell order is added to the backlog.
+
+// // sell
+//   [7, 999999997, 1], // sell
+//   // [5, 1, 1], // sell
+
+// // buy
+//   [5, 999999994, 0], // buy
+
+//   [7, 999999997, 1], // sell
+
+//   [5, 999999994, 0], // buy
+
+//   // buy
+//   [ { price: 5, count: 999999995 } ]
+//   // sell
+//   [ { price: 7, count: 999999997 }, { price: 5, count: 1 } ]
