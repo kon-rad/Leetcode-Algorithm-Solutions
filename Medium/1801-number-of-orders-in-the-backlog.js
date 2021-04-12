@@ -49,6 +49,8 @@ orderTypei is either 0 or 1.
  */
 
 /**
+ * Time: O(n log n) - using JS sorting
+ * Space:
  * @param {number[][]} orders
  * @return {number}
  */
@@ -77,7 +79,6 @@ var getNumberOfBacklogOrders = function (orders) {
           buyAmount = 0;
         }
       }
-      console.log('buy', buy);
     } else {
       // ord[2] === 1
       // sell order
@@ -99,10 +100,8 @@ var getNumberOfBacklogOrders = function (orders) {
           sellAmount = 0;
         }
       }
-      console.log('sell', sell);
     }
   });
-  console.log('end buy - sell', buy, sell);
   return (
     (buy.reduce((acc, curr) => (acc += curr.amount), 0) +
       sell.reduce((acc, curr) => (acc += curr.amount), 0)) %
