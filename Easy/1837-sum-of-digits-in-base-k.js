@@ -27,37 +27,19 @@ Constraints:
  */
 
 /**
- * @param {number} n
- * @param {number} k
- * @return {number}
+ * Successive division
+ * @param {*} n
+ * @param {*} k
+ * @returns
  */
 var sumBase = function (n, k) {
-  const resArr = [];
-  let curr = n;
-  let base = k;
-  const baseArr = [];
-  while (base <= n) {
-    baseArr.push(base);
-    base = base * k;
+  let out = 0;
+
+  while (n > 0) {
+    out += n % k;
+    n = Math.trunc(n / k);
   }
-  baseArr.reverse().forEach((bNum) => {
-    let nextBase = Math.floor(curr / bNum);
-    let mult = nextBase * bNum;
-    curr = curr - mult;
-    console.log(curr, nextBase, bNum);
-    resArr.push(nextBase);
-  });
-  resArr.push(curr);
-  // let res = parseInt(n, k);
-  // const str = res + '';
-  console.log(baseArr, resArr);
-  let resN = resArr
-    .join('')
-    .split('')
-    .reduce((acc, curr) => {
-      return parseInt(curr) + acc;
-    }, 0);
-  return resN;
+  return out;
 };
 
-console.log(sumBase(5, 5));
+console.log(sumBase(68, 2)); // returns 2
