@@ -43,7 +43,11 @@ var longestOnes = function (nums, k) {
     let dist = e - s + 1;
     count += nums[e];
     if (dist - count > k) {
-      e--;
+      while (nums[s] === 1) {
+        dist--;
+        count -= nums[s];
+        s++;
+      }
       dist--;
       count -= nums[s];
       s++;
