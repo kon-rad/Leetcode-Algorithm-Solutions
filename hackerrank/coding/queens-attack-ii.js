@@ -133,13 +133,15 @@ function queensAttack(n, k, r_q, c_q, obstacles) {
 
   obstacles.forEach((ob) => {
     // ob = [r, c]
+    // obstacle is on the same row as queen
     if (ob[0] === r_q) {
-      // obstacle is on the same row as queen
-      if (ob[0] > r_q) {
+      // obstacle is right of queen - on the same row
+      if (ob[1] > c_q) {
         let squaresRemoved = n - ob[1] + 1;
         maxRowRight =
           squaresRemoved > maxRowRight ? squaresRemoved : maxRowRight;
       } else {
+        // obstacle is left of queen
         let squaresRemoved = ob[1];
         maxRowLeft = squaresRemoved > maxRowLeft ? squaresRemoved : maxRowLeft;
       }
@@ -155,30 +157,52 @@ function queensAttack(n, k, r_q, c_q, obstacles) {
         maxColDown = squaresRemoved > maxColDown ? squaresRemoved : maxColDown;
       }
     } else {
+      // check if obstacle is on diagonal with queen
       // check if top right diagonal
       let rowDiff = Math.abs(r_q - ob[0]);
       let colDiff = Math.abs(c_q - ob[1]);
       if (rowDiff === colDiff) {
         // they are on the same diagonal
-        let qCoordMin = Math.min(r_q, c_q);
-        let obCoordMin = Math.min(ob[0], ob[1]);
-        let squaresRemoved = Math.abs(qCoordMin - obCoordMin);
+        // obstacle is above queen
         if (ob[0] > r_q) {
+          // obstacle is right of queen
           if (ob[1] > c_q) {
             // top right
+            if (ob[0] > ob[1]) {
+              // obstacle is closer to left wall
+              squaresRemoved = ob[1];
+            } else {
+              squaresRemoved = n - ob[0] + 1;
+            }
             maxUpRight =
               squaresRemoved > maxUpRight ? squaresRemoved : maxUpRight;
           } else {
             // top left
+            if (ob[1] > n - ob[0] + 1) {
+              squaresRemoved = n - ob[0] + 1; // closer to top
+            } else {
+              squaresRemoved = ob[1]; // closer to left
+            }
             maxUpLeft = squaresRemoved > maxUpLeft ? squaresRemoved : maxUpLeft;
           }
         } else {
+          // obstacle is below queen
           if (ob[1] > c_q) {
             // down right
+            if (ob[0] > n - ob[1]) {
+              squaresRemoved = n - ob[1] + 1;
+            } else {
+              squaresRemoved = ob[0];
+            }
             maxDownRight =
               squaresRemoved > maxDownRight ? squaresRemoved : maxDownRight;
           } else {
             // down left
+            if (ob[0] < ob[1]) {
+              squaresRemoved = ob[0];
+            } else {
+              squaresRemoved = ob[1];
+            }
             maxDownLeft =
               squaresRemoved > maxDownLeft ? squaresRemoved : maxDownLeft;
           }
