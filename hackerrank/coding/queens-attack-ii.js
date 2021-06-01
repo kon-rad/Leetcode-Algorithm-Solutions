@@ -100,7 +100,7 @@ Since there is only one square, and the queen is on it, the queen can move 0 squ
  *  5. 2D_INTEGER_ARRAY obstacles
  */
 
-function queensAttack(n, k, r_q, c_q, obstacles) {
+function queensAttack2(n, k, r_q, c_q, obstacles) {
   // get max possible queen moves
   let sumMoves = 0;
   // get moves on right
@@ -137,24 +137,24 @@ function queensAttack(n, k, r_q, c_q, obstacles) {
     if (ob[0] === r_q) {
       // obstacle is right of queen - on the same row
       if (ob[1] > c_q) {
+        // get the number of squares that are to the right of obstacle, plus 1 for obstacle itself
         let squaresRemoved = n - ob[1] + 1;
-        maxRowRight =
-          squaresRemoved > maxRowRight ? squaresRemoved : maxRowRight;
+        maxRowRight = Math.max(squaresRemoved, maxRowRight);
       } else {
         // obstacle is left of queen
         let squaresRemoved = ob[1];
-        maxRowLeft = squaresRemoved > maxRowLeft ? squaresRemoved : maxRowLeft;
+        maxRowLeft = Math.max(squaresRemoved, maxRowLeft);
       }
     } else if (ob[1] === c_q) {
       // obstacle is on the same column as queen
       if (ob[0] > r_q) {
         // if it is above queen
         let squaresRemoved = n - ob[0] + 1;
-        maxColUp = squaresRemoved > maxColUp ? squaresRemoved : maxColUp;
+        maxColUp = Math.max(squaresRemoved, maxColUp);
       } else {
         // if it is below queen
         let squaresRemoved = ob[0];
-        maxColDown = squaresRemoved > maxColDown ? squaresRemoved : maxColDown;
+        maxColDown = Math.max(squaresRemoved, maxColDown);
       }
     } else {
       // check if obstacle is on diagonal with queen
@@ -169,13 +169,12 @@ function queensAttack(n, k, r_q, c_q, obstacles) {
           if (ob[1] > c_q) {
             // top right
             if (ob[0] > ob[1]) {
-              // obstacle is closer to left wall
-              squaresRemoved = ob[1];
-            } else {
+              // obstacle is closer to upper wall
               squaresRemoved = n - ob[0] + 1;
+            } else {
+              squaresRemoved = n - ob[1] + 1;
             }
-            maxUpRight =
-              squaresRemoved > maxUpRight ? squaresRemoved : maxUpRight;
+            maxUpRight = Math.max(squaresRemoved, maxUpRight);
           } else {
             // top left
             if (ob[1] > n - ob[0] + 1) {
