@@ -118,80 +118,81 @@ function queensAttack(n, k, r_q, c_q, obstacles) {
 
   obstacles.forEach((obs) => {
     // obs = [row, col]
-    let obs_row = obs[0];
-    let obs_col = obs[1];
+    let r_o = obs[0];
+    let c_o = obs[1];
+
     // obstacle is on the same column as queen
-    if (obs_col === c_q) {
-      if (obs_row > r_q && (obs_row < up.r || up.r === -1)) {
+    if (c_o === c_q) {
+      if (r_o > r_q && (r_o < up.r || up.r === -1)) {
         // up
-        up.r = obs_row;
-        up.c = obs_col;
+        up.r = r_o;
+        up.c = c_o;
         return;
-      } else if (obs_row < r_q && (obs_row > up.r || up.r === -1)) {
+      } else if (r_o < r_q && (r_o > down.r || down.r === -1)) {
         // down
-        down.r = obs_row;
-        down.c = obs_col;
+        down.r = r_o;
+        down.c = c_o;
         return;
       }
-    } else if (obs_row === r_q) {
+    } else if (r_o === r_q) {
       // it is on the same row
-      if (obs_col > c_q && (obs_col < right.c || right.c === -1)) {
+      if (c_o > c_q && (c_o < right.c || right.c === -1)) {
         // it is to the right
-        right.r = obs_row;
-        right.c = obs_col;
+        right.r = r_o;
+        right.c = c_o;
         return;
-      } else if (obs_col < c_q && (obs_col > left.c || left.c === -1)) {
+      } else if (c_o < c_q && (c_o > left.c || left.c === -1)) {
         // it is to the left
-        left.c = obs_col;
-        left.r = obs_row;
+        left.c = c_o;
+        left.r = r_o;
         return;
       }
     }
 
     // down right
     if (
-      r_q - obs_row === obs_col - c_q &&
-      obs_col > c_q &&
-      obs_row < r_q &&
-      ((obs_row > dr.r && obs_col < dr.c) || dr.r === -1)
+      r_q - r_o === c_o - c_q &&
+      c_o > c_q &&
+      r_o < r_q &&
+      ((r_o > dr.r && c_o < dr.c) || dr.r === -1)
     ) {
-      dr.r = obs_row;
-      dr.c = obs_col;
+      dr.r = r_o;
+      dr.c = c_o;
       return;
     }
 
     // down left
     if (
-      r_q - obs_row === c_q - obs_col &&
-      obs_col < c_q &&
-      obs_row < r_q &&
-      ((obs_row > dl.r && obs_col > dl.c) || dl.r === -1)
+      r_q - r_o === c_q - c_o &&
+      c_o < c_q &&
+      r_o < r_q &&
+      ((r_o > dl.r && c_o > dl.c) || dl.r === -1)
     ) {
-      dl.r = obs_row;
-      dl.c = obs_col;
+      dl.r = r_o;
+      dl.c = c_o;
       return;
     }
 
     // up right
     if (
-      obs_row - r_q === obs_col - c_q &&
-      obs_row > r_q &&
-      obs_col > c_q &&
-      ((obs_row < ur.r && obs_col < ur.c) || ur.r === -1)
+      r_o - r_q === c_o - c_q &&
+      r_o > r_q &&
+      c_o > c_q &&
+      ((r_o < ur.r && c_o < ur.c) || ur.r === -1)
     ) {
-      ur.r = obs_row;
-      ur.c = obs_col;
+      ur.r = r_o;
+      ur.c = c_o;
       return;
     }
     // up left
     if (
-      c_q - obs_col === obs_row - r_q &&
-      obs_col < c_q &&
-      obs_row > r_q &&
-      ((obs_row < ul.r && obs_col > ul.c) || ul.r === -1)
+      c_q - c_o === r_o - r_q &&
+      c_o < c_q &&
+      r_o > r_q &&
+      ((r_o < ul.r && c_o > ul.c) || ul.r === -1)
     ) {
-      ul.r = obs_row;
-      ul.c = obs_col;
+      ul.r = r_o;
+      ul.c = c_o;
       return;
     }
   });
