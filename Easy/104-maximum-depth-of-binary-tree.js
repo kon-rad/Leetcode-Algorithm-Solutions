@@ -32,7 +32,7 @@ return its depth = 3.
  * @param {TreeNode} root
  * @return {number}
  */
-var maxDepth = function(root) {
+var maxDepth1 = function (root) {
   return recCount(root, 0);
 };
 
@@ -44,6 +44,21 @@ const recCount = (root, count) => {
   let lr = recCount(root.left, count + 1);
   let rr = recCount(root.right, count + 1);
   return lr > rr ? lr : rr;
-}
+};
 
-
+/**
+ * Time: O(n)
+ * Space: O(1)
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var maxDepth = function (root, max = 0) {
+  if (!root) {
+    return max;
+  }
+  let left = 0,
+    right = 0;
+  left = maxDepth(root.left, max + 1);
+  right = maxDepth(root.right, max + 1);
+  return Math.max(left, right);
+};
