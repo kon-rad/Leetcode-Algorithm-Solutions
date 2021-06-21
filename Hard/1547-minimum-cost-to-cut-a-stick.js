@@ -45,7 +45,7 @@ All the integers in cuts array are distinct.
  * @param {number[]} cuts
  * @return {number}
  */
-var minCost = function (n, cuts) {
+var minCost2 = function (n, cuts) {
   const dpo = new Array(n).fill(0);
   const dp = dpo.map((elem) => new Array(n).fill(0));
   const sc = cuts.sort((a, b) => a - b);
@@ -67,6 +67,47 @@ var minCost = function (n, cuts) {
   return dp[0][cuts.length - 1];
 };
 
+var minCost = function (n, cuts) {
+  cuts.push(0, n); // SENTINELS because I can choose the min and max as is
+  cuts.sort((a, b) => a - b);
+  console.log(cuts);
+  let N = cuts.length;
+  let dp = [...Array(N)].map((d) => [...Array(N)].map((d) => Infinity));
+
+  // length of my window is 1
+  //adjacent cuts on my starting array
+  for (let i = 0; i < N; i++) {
+    dp[i][i + 1] = 0; // cant cut it. As in I m never given the option to perform that cut No matter what the numbers are.
+  }
+  console.log('dp1: ', dp);
+
+  // length of my window is 2
+  for (let i = 0; i < N - 1; i++) {
+    dp[i][i + 2] = cuts[i + 2] - cuts[i]; // Obviously, for every triplet a,b,c in cuts, dp[idx(a)][idx(c)]=c-a because I can only perform the cut at b (the middle element)
+  }
+  console.log('dp2: ', dp);
+
+  // for every length
+  for (let len = 3; len < N; len++) {
+    //consider each window i,j of my CUTS ARRAY representing the actual window [cuts[i],cuts[j]]
+    for (let i = 0; i <= N - len; i++) {
+      let j = i + len;
+      //consider each possible MIDDLE CUT k
+      for (let k = i + 1; k < j; k++) {
+        console.log('cuts[j], cuts[i]: ', cuts[j], cuts[i]);
+        console.log('cuts[j] - cuts[i]: ', cuts[j] - cuts[i]);
+        dp[i][j] = Math.min(dp[i][j], cuts[j] - cuts[i] + dp[i][k] + dp[k][j]);
+      }
+    }
+  }
+  console.log('dp3: ', dp);
+
+  console.log(N);
+  return dp[0][N - 1];
+};
+
+// sorted
+// [ 0, 1, 2, 4, 5, 6, 9 ]
 const n = 9;
 const cuts = [5, 6, 1, 4, 2];
 console.log(minCost(n, cuts));

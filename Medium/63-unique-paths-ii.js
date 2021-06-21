@@ -34,7 +34,7 @@ There are two ways to reach the bottom-right corner:
  * @param {number[][]} obstacleGrid
  * @return {number}
  */
-var uniquePathsWithObstacles = function (obstacleGrid) {
+var uniquePathsWithObstacles2 = function (obstacleGrid) {
   if (obstacleGrid[obstacleGrid.length - 1][obstacleGrid[0].length - 1] === 1) {
     return 0;
   }
@@ -42,7 +42,6 @@ var uniquePathsWithObstacles = function (obstacleGrid) {
     .fill()
     .map((row) => new Array(obstacleGrid[0].length).fill(0));
   dp[0][0] = obstacleGrid[0][0] === 0 ? 1 : 0;
-  console.log(dp);
   for (let i = 0; i < obstacleGrid.length; i++) {
     for (let j = 0; j < obstacleGrid[0].length; j++) {
       let up;
@@ -60,13 +59,42 @@ var uniquePathsWithObstacles = function (obstacleGrid) {
       dp[i][j] += +up + left;
     }
   }
-  console.log(dp);
   return dp[dp.length - 1][dp[0].length - 1];
+  p;
+};
+/**
+ * @param {number[][]} obstacleGrid
+ * @return {number}
+ */
+var uniquePathsWithObstacles = function (obstacleGrid) {
+  const height = obstacleGrid.length;
+  const width = obstacleGrid[0].length;
+  const dp = obstacleGrid;
+  if (dp[0][0] === 1) {
+    return 0;
+  } else {
+    dp[0][0] = 1;
+  }
+  for (let i = 1; i < width; i++) {
+    dp[0][i] = dp[0][i] === 0 && dp[0][i - 1] === 1 ? 1 : 0;
+  }
+  for (let j = 1; j < height; j++) {
+    dp[j][0] = dp[j][0] === 0 && dp[j - 1][0] === 1 ? 1 : 0;
+  }
+  for (let i = 1; i < width; i++) {
+    for (let j = 1; j < height; j++) {
+      const left = dp[j - 1][i];
+      const up = dp[j][i - 1];
+      const sum = left + up;
+      dp[j][i] = dp[j][i] === 1 ? 0 : sum;
+    }
+  }
+  return dp[height - 1][width - 1];
 };
 
 const grid = [
-  [0, 0, 0],
-  [0, 1, 0],
-  [0, 0, 0],
+  [0, 0],
+  [1, 1],
+  [0, 0],
 ];
 console.log(uniquePathsWithObstacles(grid));
