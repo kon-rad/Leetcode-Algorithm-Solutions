@@ -38,33 +38,48 @@ cols == matrix[i].length
 0 <= row, cols <= 200
 matrix[i][j] is '0' or '1'.
  */
-
 /**
- * https://leetcode.com/problems/maximal-rectangle/discuss/1228033/DP-concise-explanation-97-faster-Javascript-JS-ES6
- * @param {character[][]} matrix
- * @return {number}
+ * Time: O(m * n) where m is width, and n is height
+ * Space: O(m)
+ * @param {*} matrix
+ * @returns
  */
-const maximalRectangle = function (matrix) {
-  if (!matrix.length) return 0;
-  const ROWS = matrix.length;
-  const COLS = matrix[0].length;
-  const dp = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
-  let maxArea = 0;
+var maximalRectangle = function (matrix) {
+  if (matrix.length === 0) {
+    return 0;
+  }
+  let max = 0;
+  const cols = matrix[0].length;
+  const rows = matrix.length;
+  const memo = new Array(cols).fill(0);
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      memo[j] = matrix[i][j] === '1' ? memo[j] + 1 : 0;
 
-  for (let row = 0; row < ROWS; row++) {
-    for (let col = 0; col < COLS; col++) {
-      //update height
-      if (row === 0) dp[row][col] = matrix[row][col] == '1' ? 1 : 0;
-      else dp[row][col] = matrix[row][col] == '1' ? dp[row - 1][col] + 1 : 0;
-
-      //update area
-      let minHeight = dp[row][col];
-      for (let pointer = col; pointer >= 0; pointer--) {
-        if (minHeight === 0) break;
-        if (dp[row][pointer] < minHeight) minHeight = dp[row][pointer];
-        maxArea = Math.max(maxArea, minHeight * (col - pointer + 1));
+      let minHeight = memo[j];
+      let end = j;
+      let pointer = j;
+      while (pointer >= 0) {
+        if (memo[pointer] === 0) {
+          pointer--;
+          end = pointer;
+          // memo[-1] is undefined
+          minHeight = memo[pointer];
+          continue;
+        }
+        let histLen = end - pointer + 1;
+        minHeight = Math.min(minHeight, memo[pointer]);
+        max = Math.max(max, minHeight * histLen);
+        pointer--;
       }
     }
   }
-  return maxArea;
+  return max;
 };
+const m = [
+  ['1', '0', '1', '0', '0'],
+  ['1', '0', '1', '1', '1'],
+  ['1', '1', '1', '1', '1'],
+  ['0', '0', '0', '1', '0'],
+];
+console.log(maximalRectangle(m));
