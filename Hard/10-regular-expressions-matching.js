@@ -58,62 +58,93 @@ Output: false
 
 /**
  * Dynamic programming
- * 
- * @param {string} s
- * @param {string} p
- * @return {boolean}
- */
-var isMatch = function(s, p) {
-  let pLen = p.length;
-  let sLen = s.length;
-
-  const subArr = new Array(sLen+1).fill(0);
-  const cache = subArr.map(() => new Array(pLen + 1).fill(0));
-
-  const match = function(iS, iP) {
-      if (iS === sLen && iP === pLen) return true;
-      if ((iS === sLen && p[iP + 1] !== '*') || iP === pLen) return false;
-      if (cache[iS][iP] !== 0) return cache[iS][iP] === 1;
-
-      let isMatching = false;
-      let current = p[iP], next = p[iP+1];
-      if (current === '.' || current === s[iS]) {
-          if (iS === sLen) {
-              if (next === '*') {
-                  isMatching = match(iS, iP + 2);
-              } else {
-                  isMatching = false;
-              }
-          } else {
-              if (next === '*') {
-                  isMatching = match(iS+1, iP) || match(iS+1, iP+2) || match(iS, iP+2);
-              } else {
-                  isMatching = match(iS+1, iP+1);
-              }
-          }
-      } else {
-          if (next === '*') {
-              isMatching = match(iS, iP + 2);
-          }
-      }
-      cache[iS][iP] = isMatching ? 1 : -1;
-
-      return isMatching;
-  }
-
-
-  return match(0, 0);
-};
-
-
-
-/**
- * Using regex
  *
  * @param {string} s
  * @param {string} p
  * @return {boolean}
  */
-var isMatch = function(s, p) {
-  return (new RegExp('^' + p + '$').test(s));
+var isMatch1 = function (s, p) {
+  let pLen = p.length;
+  let sLen = s.length;
+
+  const subArr = new Array(sLen + 1).fill(0);
+  const cache = subArr.map(() => new Array(pLen + 1).fill(0));
+
+  const match = function (iS, iP) {
+    if (iS === sLen && iP === pLen) return true;
+    if ((iS === sLen && p[iP + 1] !== '*') || iP === pLen) return false;
+    if (cache[iS][iP] !== 0) return cache[iS][iP] === 1;
+
+    let isMatching = false;
+    let current = p[iP],
+      next = p[iP + 1];
+    if (current === '.' || current === s[iS]) {
+      if (iS === sLen) {
+        if (next === '*') {
+          isMatching = match(iS, iP + 2);
+        } else {
+          isMatching = false;
+        }
+      } else {
+        if (next === '*') {
+          isMatching =
+            match(iS + 1, iP) || match(iS + 1, iP + 2) || match(iS, iP + 2);
+        } else {
+          isMatching = match(iS + 1, iP + 1);
+        }
+      }
+    } else {
+      if (next === '*') {
+        isMatching = match(iS, iP + 2);
+      }
+    }
+    cache[iS][iP] = isMatching ? 1 : -1;
+
+    return isMatching;
+  };
+
+  return match(0, 0);
 };
+
+/**
+ * Dynamic Programming
+ * @param {*} s
+ * @param {*} p
+ * @returns
+ */
+var isMatch = function (s, p) {
+  let dp = [[true]];
+  for (let i = 1; i < p.length + 1; i++) {
+    if (p[i - 1] === '*') {
+      dp[0][i] = dp[0][i - 2];
+    } else {
+      dp[0][i] = false;
+    }
+  }
+  for (let i = 1; i < s.length + 1; i++) {
+    dp.push([]);
+    dp[i][0] = false;
+    for (let j = 1; j < p.length + 1; j++) {
+      if (p[j - 1] === s[i - 1] || p[j - 1] === '.') {
+        dp[i][j] = dp[i - 1][j - 1];
+      } else if (p[j - 1] === '*') {
+        if (p[j - 2] === s[i - 1] || p[j - 2] === '.') {
+          dp[i][j] =
+            dp[i][j - 2] === true ||
+            dp[i][j - 1] === true ||
+            dp[i - 1][j] === true;
+        } else {
+          dp[i][j] = dp[i][j - 2];
+        }
+      } else {
+        dp[i][j] = false;
+      }
+    }
+  }
+  console.log(dp);
+  return dp[s.length][p.length];
+};
+
+let s = 'aab',
+  p = 'c*a*b';
+console.log(isMatch(s, p));

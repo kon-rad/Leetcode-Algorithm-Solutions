@@ -61,15 +61,17 @@ var longestPalindrome = function (s) {
       // if yes, it is a palindrome
       if (table[i + 1][j - 1] && s[i] === s[j]) {
         table[i][j] = 1;
+        console.log('is match', i, j);
         if (k > longest) {
           start = i;
           longest = k;
+          console.log('longest', i, j);
         }
       }
     }
   }
 
-  console.log(table);
+  console.log(table.map((t) => t.join('')));
   return s.slice(start, start + longest);
 };
 
@@ -102,6 +104,6 @@ const isPalindrome = function (s) {
   return s === s.split('').reverse().join('');
 };
 
-const s = 'babad';
+const s = 'babaddda';
 
 console.log(longestPalindrome(s));
