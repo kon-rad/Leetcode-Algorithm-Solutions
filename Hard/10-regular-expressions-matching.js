@@ -112,7 +112,7 @@ var isMatch1 = function (s, p) {
  * @param {*} p
  * @returns
  */
-var isMatch = function (s, p) {
+var isMatch2 = function (s, p) {
   let dp = [[true]];
   for (let i = 1; i < p.length + 1; i++) {
     if (p[i - 1] === '*') {
@@ -145,6 +145,59 @@ var isMatch = function (s, p) {
   return dp[s.length][p.length];
 };
 
-let s = 'aab',
-  p = 'c*a*b';
+/**
+ * @param {string} s
+ * @param {string} p
+ * @return {boolean}
+ */
+var isMatch = function (s, p) {
+  const sLen = s.length;
+  const pLen = p.length;
+  const dp = new Array(sLen + 1)
+    .fill()
+    .map(() => new Array(pLen + 1).fill(false));
+
+  //   const table = new Array(len).fill().map(() => new Array(len).fill(0));
+  dp[0][0] = true;
+  console.log(dp);
+
+  for (let i = 1; i < sLen + 1; i++) {
+    dp[i][0] = false;
+  }
+  for (let j = 1; j < pLen + 1; j++) {
+    if (p[j - 1] === '*') {
+      dp[0][j] = dp[0][j - 2];
+    } else {
+      dp[0][j] = false;
+    }
+  }
+
+  for (let i = 1; i < sLen + 1; i++) {
+    for (let j = 1; j < pLen + 1; j++) {
+      if (p[j - 1] === s[i - 1]) {
+        dp[i][j] = dp[i - 1][j - 1];
+      } else if (p[j - 1] === '*') {
+        if (s[i - 1] === p[j - 2] || p[j - 2] === '.') {
+          dp[i][j] = dp[i][j - 2] || dp[i][j - 1] || dp[i - 1][j];
+        } else {
+          dp[i][j] = dp[i][j - 2];
+        }
+      } else if (p[j - 1] == '.') {
+        dp[i][j] = dp[i - 1][j - 1];
+      } else {
+        dp[i][j] = false;
+      }
+    }
+  }
+  console.log(dp);
+  return dp[sLen][pLen];
+};
+
+// let s = 'ab',
+//   p = '.*';
+// let s = 'aa',
+//   p = 'a';
+let s = 'mississippi',
+  p = 'mis*is*ip*.';
+// expected true
 console.log(isMatch(s, p));
