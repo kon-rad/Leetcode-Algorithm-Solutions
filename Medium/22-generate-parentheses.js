@@ -27,6 +27,7 @@ var generateParenthesis = function (n) {
 };
 
 function recursiveGenerateParentheses(string, result, open, closed) {
+  console.log(string, result, open, closed);
   if (closed < open) return;
   if (open === 0 && closed === 0) {
     result.push(string);
@@ -40,39 +41,4 @@ function recursiveGenerateParentheses(string, result, open, closed) {
   }
 }
 
-/**
- * @param {number} n
- * @return {string[]}
- */
-var generateParenthesis2 = function (n) {
-  if (n === 0) {
-    return '';
-  }
-  return genRec(n - 1, ['()']);
-};
-
-const genRec = (n, comb) => {
-  if (n === 0) {
-    return comb;
-  }
-  const newComb = [];
-  const seen = {};
-  comb.forEach((item) => {
-    const op1 = item + '()';
-    const op2 = '()' + item;
-    const op3 = `(${item})`;
-    if (!seen[op1]) {
-      newComb.push(op1);
-      seen[op1] = true;
-    }
-    if (!seen[op2]) {
-      newComb.push(op2);
-      seen[op2] = true;
-    }
-    if (!seen[op3]) {
-      newComb.push(op3);
-      seen[op3] = true;
-    }
-  });
-  return genRec(n - 1, newComb);
-};
+console.log(generateParenthesis(4));

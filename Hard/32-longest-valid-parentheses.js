@@ -19,7 +19,7 @@ Explanation: The longest valid parentheses substring is "()()"
  * @param {string} s
  * @return {number}
  */
-var longestValidParentheses = function(s) {
+var longestValidParentheses2 = function(s) {
     const len = s.length;
     let open, close, substringLen, longest = 0;
     if (len <= 1) {
@@ -64,3 +64,17 @@ var longestValidParentheses = function(s) {
     }
     return longest;
 };
+
+const longestValidParentheses = s => {
+    let max = 0;
+    const dp = new Array(s.length).fill(0);
+    for (let i = 1; i < s.length; i++) {
+        if (s[i] === ')') {
+            dp[i] = (i >= 2 ? dp[i - 2] : 0) + 2;
+        } else if (i - dp[i - 1] > 0 && s[i - dp[i - 1] - 1] === '(') {
+            dp[i] = dp[i - 1] + ((i - dp[i - 1]) >= 2 ? dp[i - dp[i -1] - 2] : 0) + 2);)
+        }
+        max = Math.max(max, dp[i]);
+    }
+    return max;
+}
