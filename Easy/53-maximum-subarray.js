@@ -11,23 +11,37 @@
  If you have figured out the O(n) solution, try coding another solution using the divide and conquer approach, which is more subtle.
  */
 
-
 /**
  * @param {number[]} nums
  * @return {number}
  */
-var maxSubArray = function(nums) {
-  let max = - Number.MAX_SAFE_INTEGER;
+var maxSubArray1 = function (nums) {
+  let max = -Number.MAX_SAFE_INTEGER;
   let cur = 0;
   for (let i = 0; i < nums.length; i++) {
     cur = cur + nums[i];
     if (max < cur) {
       max = cur;
     }
-    if (cur < 0){
+    if (cur < 0) {
       cur = 0;
     }
   }
 
   return max;
+};
+
+/**
+ * Algorithm discussed by Jon Bentley (Sep. 1984 Vol. 27 No. 9 Communications of the ACM P885)
+ * @param {number[]} nums
+ * @return {number}
+ */
+var maxSubArray = function (nums) {
+  let maxEndingHere = nums[0];
+  let maxSoFar = nums[0];
+  for (let i = 1; i < nums.length; i++) {
+    maxEndingHere = Math.max(maxEndingHere + nums[i], nums[i]);
+    maxSoFar = Math.max(maxEndingHere, maxSoFar);
+  }
+  return maxSoFar;
 };
